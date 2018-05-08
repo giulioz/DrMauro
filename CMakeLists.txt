@@ -21,3 +21,6 @@ target_link_libraries(
     m
     ${SDL2_LIBRARY}
 )
+
+# copy assets into build folder
+file(COPY "assets" DESTINATION ".")

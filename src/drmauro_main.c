@@ -54,12 +54,12 @@ void load_spites() {
   int i;
   SDL_Rect rect = {0};
 
-  dr_font = make_font("img/font.bmp", 8, 16);
+  dr_font = make_font("assets/font.bmp", 8, 16);
   rect.w = 196; rect.h = 44;
 
-  logo = make_sprite("img/drmauro_logo.bmp", rect, NULL);
+  logo = make_sprite("assets/drmauro_logo.bmp", rect, NULL);
   rect.w = 128; rect.h = 164;
-  score_bg = make_sprite("img/score_bg.bmp", rect, NULL);
+  score_bg = make_sprite("assets/score_bg.bmp", rect, NULL);
 
   enemies = malloc(sizeof(sprite*) * enemies_len);
   pills = malloc(sizeof(sprite*) * pills_len);
@@ -73,13 +73,13 @@ void load_spites() {
     };
     int frames_len = sizeof(frames)/sizeof(frames[0]);
     animation *an = make_animation(frames, frames_len, 0.2*(i+1));
-    sprintf(buf, "img/enemy_%d.bmp", i);
+    sprintf(buf, "assets/enemy_%d.bmp", i);
     enemies[i] = make_sprite(buf, rect, an);
   }
   for (i=0; i<pills_len; i++) {
     SDL_Rect rect = {0, 0, CELL_SIZE, CELL_SIZE};
     char buf[512];
-    sprintf(buf, "img/pill_%d.bmp", i);
+    sprintf(buf, "assets/pill_%d.bmp", i);
     pills[i] = make_sprite(buf, rect, NULL);
   }
 }
