@@ -10,17 +10,17 @@ enum mossa { NONE, DESTRA, SINISTRA, GIU, ROT_DX, ROT_SX };
 enum stato { IN_CORSO, VITTORIA, SCONFITTA };
 
 struct cella {
-  enum contenuto tipo;
-  enum colore colore;
-  /* ---- */
-  int id;
+    enum contenuto tipo;
+    enum colore colore;
+    /* ---- */
+    int id;
 };
 
 struct gioco {
-  struct cella campo[RIGHE][COLONNE];
-  int punti;
-  /* ---- */
-  int active_id;
+    struct cella campo[RIGHE][COLONNE];
+    int punti;
+    /* ---- */
+    int active_id;
 };
 
 
