@@ -18,5 +18,6 @@ file(GLOB INCLUDES include/*.h)
 add_executable(DrMauro ${SOURCES})
 target_link_libraries(
     DrMauro
+    m
     ${SDL2_LIBRARY}
 )
