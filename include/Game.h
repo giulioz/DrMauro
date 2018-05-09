@@ -1,9 +1,9 @@
-//
-//  Game.h
-//  Copyright © 2018 Giulio Zausa, Alessio Marotta
-//
-//  Wraps around SDL, represents a generic game
-//
+/*
+ *  Game.h
+ *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  Wraps around SDL, represents a generic game
+ */
 
 #ifndef GAME_H
 #define GAME_H
@@ -15,18 +15,18 @@
 #include "ExceptionManager.h"
 
 typedef struct {
-    // Graphics
+    /* Graphics */
     SDL_Window *Window;
     SDL_Surface *ScreenSurface;
 
-    // Game state
+    /* Game state */
     bool Running;
     uint32_t LastTicks;
 
-    // Callbacks
+    /* Callbacks */
     void (*Update)(const double deltaTime);
     void (*Draw)();
-
+    
 } Game;
 
 void Game_Init(Game* game, const char* title, const int width, const int height);
