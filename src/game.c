@@ -1,1 +1,39 @@
+//
+//  Game.c
+//  Copyright © 2018 Giulio Zausa, Alessio Marotta
+//
+//  Wraps around SDL, represents a generic game
+//
+
 #include "Game.h"
+
+void Game_Init(Game* game, const char* title, const int width, const int height) {
+    // Init struct variables
+    game->Running = false;
+
+    // Starts SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        ThrowError("SDL_INIT failed!");
+    }
+
+    // Create Window and Surface
+    game->Window = SDL_CreateWindow(
+        title,                                                  // title
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,       // position
+        width, height,                                          // size
+        SDL_WINDOW_SHOWN                                        // flags
+    );
+    if (!game->Window) ThrowError("SDL_CreateWindow failed!");
+    game->ScreenSurface = SDL_GetWindowSurface(game->Window);
+}
+
+void Game_End(Game* game) {
+}
+
+void Game_Run(Game* game) {
+    game->Running = true;
+
+    while (game->Running) {
+        
+    }
+}
