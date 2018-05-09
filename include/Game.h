@@ -23,7 +23,8 @@ typedef struct {
     bool Running;
 
     // Callbacks
-    void 
+    void (*Update)(const float deltaTime);
+    void (*Draw)();
 
 } Game;
 

@@ -10,6 +10,8 @@
 void Game_Init(Game* game, const char* title, const int width, const int height) {
     // Init struct variables
     game->Running = false;
+    game->Update = NULL;
+    game->Draw = NULL;
 
     // Starts SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -34,6 +36,6 @@ void Game_Run(Game* game) {
     game->Running = true;
 
     while (game->Running) {
-        
+
     }
 }
