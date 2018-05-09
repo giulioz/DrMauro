@@ -25,7 +25,6 @@ void riempi_campo(struct gioco *gioco, int difficolta) {
 
 	srand(time(NULL));
 
-	gioco->punti = 0;
 	gioco->active_id = 0;
 
 	for (row = 0; row < RIGHE; row++) {
