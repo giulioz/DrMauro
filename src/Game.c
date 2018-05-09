@@ -8,7 +8,6 @@
 #include "Game.h"
 
 void Game_Init(Game* game, const char* title, const int width, const int height) {
-    /* Init struct variables */
     game->Running = false;
     game->Update = NULL;
     game->Draw = NULL;
@@ -34,10 +33,14 @@ void Game_End(Game* game) {
 
     /* Clear SDL */
     SDL_FreeSurface(game->ScreenSurface);
+    SDL_DestroyWindow(game->Window);
     SDL_Quit();
 }
 
 void Game_Run(Game* game) {
+    if (!game->Update) ThrowError("No update function defined!");
+    if (!game->Draw) ThrowError("No draw function defined!");
+
     game->Running = true;
     game->LastTime = SDL_GetTicks();
 
@@ -45,6 +48,19 @@ void Game_Run(Game* game) {
     while (game->Running) {
         Uint32 currentTime = SDL_GetTicks();
         double deltaTime = (currentTime - game->LastTime) / (double)1000;
+
+        /* Pool Events */
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    game->Running = false;
+                    break;
+                case SDL_KEYUP:
+                    break;
+            }
+        }
+
         game->Update(game, deltaTime);
         game->Draw(game);
         game->LastTime = SDL_GetTicks();
