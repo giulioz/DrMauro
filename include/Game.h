@@ -21,9 +21,10 @@ typedef struct {
 
     // Game state
     bool Running;
+    uint32_t LastTicks;
 
     // Callbacks
-    void (*Update)(const float deltaTime);
+    void (*Update)(const double deltaTime);
     void (*Draw)();
 
 } Game;

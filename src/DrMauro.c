@@ -1,6 +1,6 @@
 #include "DrMauro.h"
 
-static void Update(const float deltaTime) {
+static void Update(const double deltaTime) {
 
 }
 
@@ -14,4 +14,6 @@ int main(int argc, char **argv) {
     game.Update = Update;
     game.Draw = Draw;
     Game_Run(&game);
+    
+    return 0;
 }
