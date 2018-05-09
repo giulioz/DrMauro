@@ -37,7 +37,13 @@ void Game_End(Game* game) {
 
 void Game_Run(Game* game) {
     game->Running = true;
+    game->LastTime = SDL_GetTicks();
 
     while (game->Running) {
+        Uint32 currentTime = SDL_GetTicks();
+        double deltaTime = (currentTime - game->LastTime) / (double)1000;
+        game->Update(game, deltaTime);
+        game->Draw(game);
+        game->LastTime = SDL_GetTicks();
     }
 }

@@ -1,3 +1,10 @@
+/*
+ *  DrMauro.h
+ *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  Game entry point
+ */
+
 #ifndef DRMAURO_H
 #define DRMAURO_H
 

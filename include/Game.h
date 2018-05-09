@@ -14,19 +14,19 @@
 #include "Bool.h"
 #include "ExceptionManager.h"
 
-typedef struct {
+typedef struct Game {
     /* Graphics */
     SDL_Window *Window;
     SDL_Surface *ScreenSurface;
 
     /* Game state */
     bool Running;
-    uint32_t LastTicks;
+    Uint32 LastTime;
 
     /* Callbacks */
-    void (*Update)(const double deltaTime);
-    void (*Draw)();
-    
+    void (*Update)(struct Game* game, const double deltaTime);
+    void (*Draw)(struct Game* game);
+
 } Game;
 
 void Game_Init(Game* game, const char* title, const int width, const int height);

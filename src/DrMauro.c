@@ -1,10 +1,17 @@
+/*
+ *  DrMauro.c
+ *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  Game entry point
+ */
+
 #include "DrMauro.h"
 
-static void Update(const double deltaTime) {
+static void Update(Game* game, const double deltaTime) {
 
 }
 
-static void Draw() {
+static void Draw(Game* game) {
 
 }
 
