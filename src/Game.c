@@ -30,6 +30,8 @@ void Game_Init(Game* game, const char* title, const int width, const int height)
 }
 
 void Game_End(Game* game) {
+    game->Running = false;
+
     /* Clear SDL */
     SDL_FreeSurface(game->ScreenSurface);
     SDL_Quit();
@@ -39,6 +41,7 @@ void Game_Run(Game* game) {
     game->Running = true;
     game->LastTime = SDL_GetTicks();
 
+    /* Main cycle */
     while (game->Running) {
         Uint32 currentTime = SDL_GetTicks();
         double deltaTime = (currentTime - game->LastTime) / (double)1000;
