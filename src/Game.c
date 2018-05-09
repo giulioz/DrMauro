@@ -30,12 +30,14 @@ void Game_Init(Game* game, const char* title, const int width, const int height)
 }
 
 void Game_End(Game* game) {
+    // Clear SDL
+    SDL_FreeSurface(game->ScreenSurface);
+    SDL_Quit();
 }
 
 void Game_Run(Game* game) {
     game->Running = true;
 
     while (game->Running) {
-
     }
 }
