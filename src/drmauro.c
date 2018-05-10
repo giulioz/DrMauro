@@ -12,30 +12,68 @@ int randInt(int min, int max) {
 	return (rand() % (max - min)) + min;
 }
 
-/* TODO: rename this function */
-int clamp(int n, int max) {
-	return n < max ? n : max;
+int canPutVirus(struct cella bottle[RIGHE][COLONNE], int row, int col) {
+	int curCell, aboveCell, belowCell, leftCell, rightCell;
+	int i;
+
+	int colorFlags[4] = {0};
+	int val = 0;
+
+	curCell = bottle[row][col].colore;
+	aboveCell = bottle[row-2][col].colore;
+	belowCell = -1;
+	leftCell = -1;
+	rightCell = -1;
+
+	if (curCell != -1)
+		return FALSE;
+
+	if (row < RIGHE-2)
+		belowCell = bottle[row+2][col].colore;
+
+	if (col > 1)
+		leftCell = bottle[row][col-2].colore;
+
+	if (col < COLONNE-2)
+		rightCell = bottle[row][col+2].colore;
+
+	colorFlags[aboveCell+1] = 1;
+	colorFlags[belowCell+1] = 1;
+	colorFlags[leftCell+1] = 1;
+	colorFlags[rightCell+1] = 1;
+
+	for (i = 1; i < 4; i++)
+		val += colorFlags[i];
+
+	return val != 3 ? TRUE : FALSE;
 }
 
-int canPutVirus(struct cella field[RIGHE][COLONNE], int row, int col) {
-	enum contenuto curCell, aboveCell, leftCell, rightCell;
+int generateVirus(struct cella bottle[RIGHE][COLONNE], int virusIndex) {
+	struct cella *curCell;
+	int row, col, color;
 
-	curCell = field[row][col].tipo;
-	aboveCell = field[row-1][col].tipo;
-	rightCell = field[row][col+1].tipo;
+	row = randInt(5, RIGHE);
+	col = randInt(0, COLONNE);
+	color = virusIndex % (BLU + 1); 
 
-	if (col > 0)
-		leftCell = field[row][col-1].tipo;
+	while (!canPutVirus(bottle, row, col)) {
+		col++;
 
-	else
-		leftCell = field[row][col].tipo;
+		if (col == COLONNE) {
+			col = 0;
+			row++;
+		}
 
-	if (curCell == VUOTO && aboveCell == VUOTO) {
-		if (leftCell == VUOTO && rightCell == VUOTO)
-			return TRUE;
+		if (row == RIGHE) {
+			return virusIndex;
+		}
 	}
 
-	return FALSE;
+	curCell = &bottle[row][col];
+	curCell->tipo = MOSTRO;
+	curCell->colore = color;
+
+	return virusIndex + 1;
 }
 
 void carica_campo(struct gioco *gioco, char *percorso) {
@@ -43,11 +81,9 @@ void carica_campo(struct gioco *gioco, char *percorso) {
 }
 
 void riempi_campo(struct gioco *gioco, int difficolta) {
+	int virusNumber = 4 * (difficolta + 1);
 	int randSeed = time(NULL);
 	int i = 0;
-
-	int virusNumber = 4 * (difficolta + 1);
-	int upperLimit = 5;
 
 	struct cella *curCell;
 	int row, col;
@@ -61,21 +97,12 @@ void riempi_campo(struct gioco *gioco, int difficolta) {
 		for (col = 0; col < COLONNE; col++) {
 			curCell = &gioco->campo[row][col];
 			curCell->tipo = VUOTO;
+			curCell->colore = -1;
 		}
 	}
 
 	while (i < virusNumber) {
-		row = clamp(randInt(upperLimit, upperLimit+3), RIGHE-1);
-		col = randInt(0, COLONNE);
-		upperLimit = row;
-
-		if (canPutVirus(gioco->campo, row, col)) {
-			curCell = &gioco->campo[row][col];
-
-			curCell->tipo = MOSTRO;
-			curCell->colore = randInt(ROSSO, BLU+1);
-			i++;
-		}
+		i = generateVirus(gioco->campo, i);
 	}
 }
 
