@@ -9,6 +9,6 @@
 #define DRMAURO_H
 
 #include "Bool.h"
-#include "Game.h"
+#include "Window.h"
 
 #endif

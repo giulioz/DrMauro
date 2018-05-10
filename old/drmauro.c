@@ -5,7 +5,7 @@
 #include "drmauro.h"
 
 void carica_campo(struct gioco *gioco, char *percorso) {
-
+	
 }
 
 void riempi_campo(struct gioco *gioco, int difficolta) {
