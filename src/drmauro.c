@@ -12,40 +12,50 @@ int randInt(int min, int max) {
 	return (rand() % (max - min)) + min;
 }
 
-int canPutVirus(struct cella bottle[RIGHE][COLONNE], int row, int col) {
-	int curCell, aboveCell, belowCell, leftCell, rightCell;
-	int i;
-
-	int colorFlags[4] = {0};
-	int val = 0;
+int isLegal(struct cella bottle[RIGHE][COLONNE], int row, int col, enum colore target) {
+	int curCell, aboveCell1, aboveCell2, belowCell1, belowCell2, leftCell1, leftCell2, rightCell1, rightCell2;
+	int hor, ver;
 
 	curCell = bottle[row][col].colore;
-	aboveCell = bottle[row-2][col].colore;
-	belowCell = -1;
-	leftCell = -1;
-	rightCell = -1;
+	aboveCell1 = bottle[row-1][col].colore;
+	aboveCell2 = bottle[row-2][col].colore;
+	belowCell1 = -1;
+	belowCell2 = -1;
+	leftCell1 = -1;
+	leftCell2 = -1;
+	rightCell1 = -1;
+	rightCell2 = -1;
 
 	if (curCell != -1)
 		return FALSE;
 
+	if (row < RIGHE-1)
+		belowCell1 = bottle[row+1][col].colore;
+
 	if (row < RIGHE-2)
-		belowCell = bottle[row+2][col].colore;
+		belowCell2 = bottle[row+2][col].colore;
+
+	if (col > 0)
+		leftCell1 = bottle[row][col-1].colore;
 
 	if (col > 1)
-		leftCell = bottle[row][col-2].colore;
+		leftCell2 = bottle[row][col-2].colore;
+
+	if (col < COLONNE-1)
+		rightCell1 = bottle[row][col+1].colore;
 
 	if (col < COLONNE-2)
-		rightCell = bottle[row][col+2].colore;
+		rightCell2 = bottle[row][col+2].colore;
 
-	colorFlags[aboveCell+1] = 1;
-	colorFlags[belowCell+1] = 1;
-	colorFlags[leftCell+1] = 1;
-	colorFlags[rightCell+1] = 1;
+	hor = (leftCell1 == target && leftCell2 == target)   ||
+		  (rightCell1 == target && rightCell2 == target) ||
+		  (leftCell1 == target && rightCell1 == target);
 
-	for (i = 1; i < 4; i++)
-		val += colorFlags[i];
+	ver = (aboveCell1 == target && aboveCell2 == target) ||
+		  (belowCell1 == target && belowCell2 == target) ||
+		  (aboveCell1 == target && belowCell1 == target);
 
-	return val != 3 ? TRUE : FALSE;
+	return hor + ver == 0;
 }
 
 int generateVirus(struct cella bottle[RIGHE][COLONNE], int virusIndex) {
@@ -56,24 +66,15 @@ int generateVirus(struct cella bottle[RIGHE][COLONNE], int virusIndex) {
 	col = randInt(0, COLONNE);
 	color = virusIndex % (BLU + 1); 
 
-	while (!canPutVirus(bottle, row, col)) {
-		col++;
+	if (isLegal(bottle, row, col, color)) {
+		curCell = &bottle[row][col];
+		curCell->tipo = MOSTRO;
+		curCell->colore = color;
 
-		if (col == COLONNE) {
-			col = 0;
-			row++;
-		}
-
-		if (row == RIGHE) {
-			return virusIndex;
-		}
+		return virusIndex + 1;
 	}
 
-	curCell = &bottle[row][col];
-	curCell->tipo = MOSTRO;
-	curCell->colore = color;
-
-	return virusIndex + 1;
+	return virusIndex;
 }
 
 void carica_campo(struct gioco *gioco, char *percorso) {
