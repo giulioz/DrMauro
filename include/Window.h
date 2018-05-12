@@ -13,15 +13,17 @@
 
 #include "Bool.h"
 #include "ExceptionManager.h"
+#include "AssetManager.h"
 
 #define PressedKeys_Size 256
 
 typedef struct Window {
-    /* Graphics */
+    /* Graphics internals */
     SDL_Window *Window;
     SDL_Surface *ScreenSurface;
 
     /* Window state */
+    int WindowWidth, WindowHeight;
     bool Running;
     Uint32 LastTime;
     bool PressedKeys[PressedKeys_Size];
@@ -29,6 +31,9 @@ typedef struct Window {
     /* Callbacks */
     void (*Update)(struct Window* game, const double deltaTime);
     void (*Draw)(struct Window* game);
+
+    /* Services */
+    AssetManager* AssetManager;
 
 } Window;
 

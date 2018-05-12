@@ -3,3 +3,4 @@ build
 build_*
 *.o
 drmauro
+cmake-*

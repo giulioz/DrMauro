@@ -15,7 +15,7 @@ include_directories(
 file(GLOB SOURCES src/*.c)
 file(GLOB INCLUDES include/*.h)
 
-add_executable(DrMauro ${SOURCES})
+add_executable(DrMauro ${SOURCES} ${INCLUDES})
 target_link_libraries(
     DrMauro
     m

@@ -14,6 +14,8 @@ void Window_Init(Window* window, const char* title, const int width, const int h
     window->Update = NULL;
     window->Draw = NULL;
     for (i = 0; i < PressedKeys_Size; i++) window->PressedKeys[i] = false;
+    window->WindowWidth = width;
+    window->WindowHeight = height;
 
     /* Starts SDL */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
