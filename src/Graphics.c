@@ -10,8 +10,11 @@
 #include "string.h"
 
 void Graphics_Clear(Window* window) {
-    memset(Window_GetFramebuffer(window), 10, window->WindowWidth * window->WindowHeight * 4);
+    memset(Window_GetFramebuffer(window), 0, window->WindowWidth * window->WindowHeight * 4);
 }
+
+/* ------------------------------------------------------------------ */
+/* Internals                                                          */
 
 void pixelCopy(Window* window, Texture* texture, int wx, int wy, int tx, int ty, unsigned char* framebuffer) {
     unsigned char *fbegin, *tbegin;
@@ -41,6 +44,9 @@ void pixelCopy(Window* window, Texture* texture, int wx, int wy, int tx, int ty,
             ThrowWarning("Texture data type not supported");
     }
 }
+
+/* ------------------------------------------------------------------ */
+/* Texture Drawing                                                    */
 
 void Graphics_DrawTexture(Window* window, Texture* texture, int px, int py) {
     unsigned char* framebuffer = Window_GetFramebuffer(window);

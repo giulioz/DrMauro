@@ -17,6 +17,7 @@ static void Update(Window* window, const double deltaTime) {
 static void Draw(Window* window) {
     Graphics_Clear(window);
     Panel3_Draw(&game.Panel1, 10, 15, 150, window);
+    Panel3_Draw(&game.Panel2, 140, 30, 70, window);
 }
 
 static void LoadAssets() {
@@ -25,7 +26,9 @@ static void LoadAssets() {
 
     /* GUI */
     AssetManager_Add(&game.AssetManager, (BaseAsset*)Texture_LoadFromFileRGB_Keyed("panel1.png", &game.AssetManager, "\xFF\xFF\xFF\xFF"));
+    AssetManager_Add(&game.AssetManager, (BaseAsset*)Texture_LoadFromFileRGB_Keyed("panel2.png", &game.AssetManager, "\xFF\xFF\xFF\xFF"));
     game.Panel1 = Panel3_Create((Texture*)AssetManager_Get(&game.AssetManager, "panel1.png"), 13, 1, 6);
+    game.Panel2 = Panel3_Create((Texture*)AssetManager_Get(&game.AssetManager, "panel2.png"), 13, 1, 6);
 }
 
 int main(int argc, char **argv) {

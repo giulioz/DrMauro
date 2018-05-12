@@ -61,7 +61,7 @@ void Vector_Set(Vector* vector, const size_t index, const void* element) {
     if (index < vector->Count) {
         setUnchecked(vector, index, element);
     } else {
-        ThrowError("Set array out of bounds"); /* cannot set outside */
+        ThrowError("Set array out of bounds"); /* cannot set outside, use add instead */
     }
 }
 

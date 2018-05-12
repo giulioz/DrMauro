@@ -62,10 +62,10 @@ void Window_Run(Window* window) {
                     window->Running = false;
                     break;
                 case SDL_KEYUP:
-                    window->PressedKeys[event.key.keysym.sym] = false;
+                    //window->PressedKeys[event.key.keysym.sym] = false;
                     break;
                 case SDL_KEYDOWN:
-                    window->PressedKeys[event.key.keysym.sym] = true;
+                    //window->PressedKeys[event.key.keysym.sym] = true;
                     break;
             }
         }

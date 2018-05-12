@@ -49,8 +49,8 @@ void AssetManager_Unload(AssetManager* assetManager, const char* name) {
 void AssetManager_UnloadAll(AssetManager* assetManager) {
     int i;
     Vector_Foreach(assetManager->Assets, i) {
-        (*(BaseAsset**)Vector_Get(&assetManager->Assets, i))
-                ->Asset_Unload(Vector_Get(&assetManager->Assets, i));
+        BaseAsset* asset = *(BaseAsset**)Vector_Get(&assetManager->Assets, i);
+        asset->Asset_Unload(asset);
     }
     Vector_Clear(&assetManager->Assets);
 }
