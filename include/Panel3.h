@@ -13,11 +13,11 @@
 #include "Window.h"
 
 typedef struct {
-    const Texture* Texture;
+    Texture* Texture;
     unsigned short TopHeight, MiddleHeight, BottomHeight;
 } Panel3;
 
-Panel3 Panel3_Create(const Texture* texture, unsigned short TopHeight, unsigned short MiddleHeight, unsigned short BottomHeight);
+Panel3 Panel3_Create(Texture* texture, unsigned short TopHeight, unsigned short MiddleHeight, unsigned short BottomHeight);
 void Panel3_Draw(const Panel3* panel3, int x, int y, int innerHeight, Window* window);
 
 #endif

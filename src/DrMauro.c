@@ -6,7 +6,6 @@
  */
 
 #include <DrMauro.h>
-#include <Font.h>
 
 const char* AssetsBaseFolder = "assets/";
 static DrMauro game;
@@ -16,28 +15,22 @@ static void Update(Window* window, const double deltaTime) {
 }
 
 static void Draw(Window* window) {
-    Texture* testTexture = (Texture*)AssetManager_Get(&game.AssetManager, "panel1.png");
-    unsigned char* framebuffer = Window_GetFramebuffer(window);
-    for (int y = 0; y < testTexture->Height; ++y) {
-        for (int x = 0; x < testTexture->Width; ++x) {
-            framebuffer[(x + y * window->WindowWidth)*4+2] = ((unsigned char*)testTexture->TextureData)[(x + y * testTexture->Width)*3];
-            framebuffer[(x + y * window->WindowWidth)*4+1] = ((unsigned char*)testTexture->TextureData)[(x + y * testTexture->Width)*3+1];
-            framebuffer[(x + y * window->WindowWidth)*4] = ((unsigned char*)testTexture->TextureData)[(x + y * testTexture->Width)*3+2];
-        }
-    }
+    Graphics_Clear(window);
+    Panel3_Draw(&game.Panel1, 10, 15, 150, window);
 }
 
-static void LoadAssets(DrMauro* game) {
+static void LoadAssets() {
     /* Asset Manager */
-    game->AssetManager = AssetManager_Create(AssetsBaseFolder);
+    game.AssetManager = AssetManager_Create(AssetsBaseFolder);
 
     /* GUI */
-    AssetManager_Add(&game->AssetManager, (BaseAsset*)Texture_LoadFromFileRGB("panel1.png", &game->AssetManager));
+    AssetManager_Add(&game.AssetManager, (BaseAsset*)Texture_LoadFromFileRGB_Keyed("panel1.png", &game.AssetManager, "\xFF\xFF\xFF\xFF"));
+    game.Panel1 = Panel3_Create((Texture*)AssetManager_Get(&game.AssetManager, "panel1.png"), 13, 1, 6);
 }
 
 int main(int argc, char **argv) {
     /* Load Game */
-    LoadAssets(&game);
+    LoadAssets();
 
     /* Window */
     Window_Init(&game.Window, "DR. MAURO", 256, 240); /* Original NES Resolution */

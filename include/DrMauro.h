@@ -10,6 +10,7 @@
 
 #include "Bool.h"
 #include "Window.h"
+#include "Graphics.h"
 #include "AssetManager.h"
 #include "Texture.h"
 #include "Font.h"
@@ -17,7 +18,10 @@
 
 typedef struct {
     Window Window;
+
+    /* Assets */
     AssetManager AssetManager;
+    Panel3 Panel1, Panel2;
 } DrMauro;
 
 #endif
