@@ -12,32 +12,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/Panel3.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/stb_image.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Panel3.c" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Texture.c" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/enemy_0.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/enemy_1.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/enemy_2.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/font.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/pill_0.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/pill_1.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/pill_2.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/score_bg.bmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/single_sprites/font.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/single_sprites/mag.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/single_sprites/panel1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/single_sprites/panel2.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/AssetManager.h" afterPath="$PROJECT_DIR$/include/AssetManager.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/DrMauro.h" afterPath="$PROJECT_DIR$/include/DrMauro.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/ExceptionManager.h" afterPath="$PROJECT_DIR$/include/ExceptionManager.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Texture.h" afterPath="$PROJECT_DIR$/include/Texture.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/Graphics.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Graphics.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Sprite.h" afterPath="$PROJECT_DIR$/include/Sprite.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Window.h" afterPath="$PROJECT_DIR$/include/Window.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AssetManager.c" afterPath="$PROJECT_DIR$/src/AssetManager.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DrMauro.c" afterPath="$PROJECT_DIR$/src/DrMauro.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Vector.c" afterPath="$PROJECT_DIR$/src/Vector.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Window.c" afterPath="$PROJECT_DIR$/src/Window.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -50,87 +32,67 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DrMauro.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DrMauro.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DrMauro.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DrMauro.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/DrMauro.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="18" lean-forward="false" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AssetManager.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AssetManager.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="54" column="23" lean-forward="false" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
+            <state relative-caret-position="220">
+              <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
               <folding>
-                <element signature="e#118#143#0" expanded="true" />
+                <element signature="e#97#117#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AssetManager.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/AssetManager.h">
+      <file leaf-file-name="Window.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Window.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="31" column="81" lean-forward="true" selection-start-line="31" selection-start-column="81" selection-end-line="31" selection-end-column="81" />
+            <state relative-caret-position="285">
+              <caret line="77" column="48" lean-forward="false" selection-start-line="77" selection-start-column="48" selection-end-line="77" selection-end-column="48" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Texture.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Texture.c">
+      <file leaf-file-name="Window.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/Window.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="52" column="19" lean-forward="false" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
+            <state relative-caret-position="405">
+              <caret line="32" column="38" lean-forward="false" selection-start-line="32" selection-start-column="38" selection-end-line="32" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Graphics.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Graphics.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Graphics.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/Graphics.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
-                <element signature="e#73#93#0" expanded="true" />
+                <element signature="e#152#171#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Texture.h" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/include/Texture.h">
+      <file leaf-file-name="Sprite.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/Sprite.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="83" lean-forward="false" selection-start-line="26" selection-start-column="83" selection-end-line="26" selection-end-column="83" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Panel3.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Panel3.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="26" lean-forward="false" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Panel3.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/Panel3.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="10" lean-forward="false" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+            <state relative-caret-position="360">
+              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
-                <element signature="e#142#167#0" expanded="true" />
+                <element signature="e#107#127#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -154,18 +116,23 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/include/ExceptionManager.h" />
-        <option value="$PROJECT_DIR$/src/Vector.c" />
-        <option value="$PROJECT_DIR$/include/Vector.h" />
         <option value="$PROJECT_DIR$/include/Panel.h" />
         <option value="$PROJECT_DIR$/src/Panel3.c" />
         <option value="$PROJECT_DIR$/include/DrMauro.h" />
         <option value="$PROJECT_DIR$/include/Texture.h" />
         <option value="$PROJECT_DIR$/include/AssetManager.h" />
-        <option value="$PROJECT_DIR$/src/AssetManager.c" />
-        <option value="$PROJECT_DIR$/src/DrMauro.c" />
         <option value="$PROJECT_DIR$/src/Texture.c" />
         <option value="$PROJECT_DIR$/include/Panel3.h" />
         <option value="$PROJECT_DIR$/include/stb_image.h" />
+        <option value="$PROJECT_DIR$/src/Graphics.c" />
+        <option value="$PROJECT_DIR$/include/Sprite.h" />
+        <option value="$PROJECT_DIR$/include/Vector.h" />
+        <option value="$PROJECT_DIR$/src/Vector.c" />
+        <option value="$PROJECT_DIR$/include/Graphics.h" />
+        <option value="$PROJECT_DIR$/include/Window.h" />
+        <option value="$PROJECT_DIR$/src/AssetManager.c" />
+        <option value="$PROJECT_DIR$/src/Window.c" />
+        <option value="$PROJECT_DIR$/src/DrMauro.c" />
       </list>
     </option>
   </component>
@@ -263,12 +230,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1526129318234</updated>
-      <workItem from="1526129323360" duration="9667000" />
+      <workItem from="1526129323360" duration="13955000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9667000" />
+    <option name="totallyTimeSpent" value="13955000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -302,7 +269,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="6" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -326,14 +295,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Vector.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="81" column="47" lean-forward="false" selection-start-line="81" selection-start-column="47" selection-end-line="81" selection-end-column="47" />
           <folding />
         </state>
       </provider>
@@ -376,62 +337,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/Vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Font.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/DrMauro.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="18" lean-forward="false" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Texture.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="52" column="19" lean-forward="false" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
-          <folding>
-            <element signature="e#73#93#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/AssetManager.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="31" column="81" lean-forward="true" selection-start-line="31" selection-start-column="81" selection-end-line="31" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AssetManager.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="54" column="23" lean-forward="false" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
-          <folding>
-            <element signature="e#118#143#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DrMauro.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -449,7 +358,7 @@
         <state relative-caret-position="225">
           <caret line="15" column="10" lean-forward="false" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
           <folding>
-            <element signature="e#142#167#0" expanded="true" />
+            <element signature="e#142#167#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -459,8 +368,8 @@
         <state relative-caret-position="373">
           <caret line="7462" column="0" lean-forward="true" selection-start-line="7462" selection-start-column="0" selection-end-line="7462" selection-end-column="0" />
           <folding>
-            <element signature="e#13649#13661#0" expanded="true" />
-            <element signature="e#13694#13716#0" expanded="true" />
+            <element signature="e#13649#13661#0" expanded="false" />
+            <element signature="e#13694#13716#0" expanded="false" />
             <marker date="1526140341595" expanded="true" signature="19755:246936" ph="..." />
           </folding>
         </state>
@@ -468,9 +377,125 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/Texture.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="83" lean-forward="false" selection-start-line="26" selection-start-column="83" selection-end-line="26" selection-end-column="83" />
+        <state relative-caret-position="345">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/AssetManager.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="81" lean-forward="true" selection-start-line="31" selection-start-column="81" selection-end-line="31" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/sys/_types/_size_t.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="17" lean-forward="true" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/DrMauro.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding>
+            <element signature="e#134#151#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Sprite.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#107#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="56" lean-forward="false" selection-start-line="29" selection-start-column="56" selection-end-line="29" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Vector.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="37" column="92" lean-forward="false" selection-start-line="37" selection-start-column="92" selection-end-line="37" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AssetManager.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="33" lean-forward="false" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="33" />
+          <folding>
+            <element signature="e#118#143#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Graphics.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Graphics.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#152#171#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Texture.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding>
+            <element signature="e#73#93#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Window.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="77" column="48" lean-forward="false" selection-start-line="77" selection-start-column="48" selection-end-line="77" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Window.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="32" column="38" lean-forward="false" selection-start-line="32" selection-start-column="38" selection-end-line="32" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DrMauro.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding>
+            <element signature="e#97#117#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

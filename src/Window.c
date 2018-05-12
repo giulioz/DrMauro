@@ -72,7 +72,15 @@ void Window_Run(Window* window) {
 
         /* Callbacks */
         window->Update(window, deltaTime);
+        SDL_LockSurface(window->ScreenSurface);
         window->Draw(window);
+        SDL_UnlockSurface(window->ScreenSurface);
+        SDL_UpdateWindowSurface(window->Window);
+
         window->LastTime = SDL_GetTicks();
     }
+}
+
+unsigned char* Window_GetFramebuffer(Window* window) {
+    return window->ScreenSurface->pixels;
 }

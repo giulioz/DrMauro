@@ -76,12 +76,12 @@ void *Vector_Get(const Vector* vector, const size_t index) {
 
 void Vector_Insert(Vector* vector, const size_t index, const void* element) {
     // TODO
-    ThrowWarning("Unimplemented");
+    ThrowWarning("Unimplemented: insert on vector");
 }
 
 void Vector_Delete(Vector* vector, const size_t index) {
     // TODO
-    ThrowWarning("Unimplemented");
+    ThrowWarning("Unimplemented: delete vector element");
 }
 
 void Vector_Clear(Vector* vector) {

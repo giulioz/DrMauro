@@ -29,16 +29,14 @@ typedef struct Window {
     bool PressedKeys[PressedKeys_Size];
 
     /* Callbacks */
-    void (*Update)(struct Window* game, const double deltaTime);
-    void (*Draw)(struct Window* game);
-
-    /* Services */
-    AssetManager* AssetManager;
+    void (*Update)(struct Window* window, const double deltaTime);
+    void (*Draw)(struct Window* window);
 
 } Window;
 
-void Window_Init(Window* game, const char* title, const int width, const int height);
-void Window_End(Window* game);
-void Window_Run(Window* game);
+void Window_Init(Window* window, const char* title, int width, int height);
+void Window_End(Window* window);
+void Window_Run(Window* window);
+unsigned char* Window_GetFramebuffer(Window* window);
 
 #endif

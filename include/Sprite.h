@@ -7,6 +7,7 @@
 #define SPRITE_H
 
 #include "Texture.h"
+#include "Vector.h"
 
 typedef struct {
     int StartFrame, EndFrame;  /* frames must be linear */
@@ -14,9 +15,10 @@ typedef struct {
 } SpriteAnimation;
 
 typedef struct {
-    Texture* Texture;
-    unsigned int SpriteWidth, SpriteHeight;
-    SpriteAnimation* Animations;
+    const Texture* Texture;
+    size_t SpriteWidth, SpriteHeight;
+    int CurrentAnimation; /* -1 for no animation */
+    Vector Animations;
 } Sprite;
 
 #endif
