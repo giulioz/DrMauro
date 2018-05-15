@@ -7,31 +7,31 @@
 
 #include "Graphics.h"
 #include "ExceptionManager.h"
-#include "string.h"
+#include <string.h>
 
 void Graphics_Clear(Window* window) {
     memset(Window_GetFramebuffer(window), 0, window->WindowWidth * window->WindowHeight * 4);
 }
 
 void Graphics_DrawCheckerboard(Window* window, int step, int colorA, int colorB) {
-    int x, y, runningX = 0, runningY = 0, state = 0, i = 0;
+    int x, y, runningX = 0, runningY = 0, state = 1, i = 0;
     int* framebuffer = (int *) Window_GetFramebuffer(window);
     for (y = 0; y < window->WindowHeight; y++) {
         for (x = 0; x < window->WindowWidth; x++) {
-            runningX++;
             if (runningX >= step) {
                 runningX = 0;
                 state = !state;
             }
+            runningX++;
             if (state) framebuffer[i] = colorA;
             else framebuffer[i] = colorB;
             i++;
         }
-        runningY++;
         if (runningY >= step) {
             runningY = 0;
             state = !state;
         }
+        runningY++;
     }
 }
 

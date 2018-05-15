@@ -15,12 +15,11 @@ static void Update(Window* window, const double deltaTime) {
 }
 
 static void Draw(Window* window) {
-    Graphics_Clear(window);
+    /* Background */
     Graphics_DrawCheckerboard(window, 8, 0x4C00AB, 0x000000);
     Panel3_Draw(&game.Panel1, 8, 34, 59, window);
     Panel3_Draw(&game.Panel2, 176, 122, 83, window);
-
-    // 76,0,171
+    
 }
 
 static void LoadAssets() {
