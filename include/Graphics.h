@@ -20,6 +20,9 @@
 
 void Graphics_Clear(Window* window);
 
+/* Generic drawing */
+void Graphics_DrawCheckerboard(Window* window, int step, int colorA, int colorB);
+
 /* Texture drawing */
 void Graphics_DrawTexture(Window* window, Texture* texture, int x, int y);
 void Graphics_DrawTextureClipped(Window* window, Texture* texture, int x, int y, int w, int h);

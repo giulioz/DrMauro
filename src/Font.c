@@ -5,11 +5,6 @@
 
 #include "Font.h"
 
-typedef struct {
-    Texture* Texture;
-    size_t CharWidth;
-} Font;
-
 Font Font_Create(Texture* texture, size_t charWidth) {
 
 }

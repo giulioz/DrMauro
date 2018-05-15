@@ -1,1 +1,2 @@
 add_subdirectory(headerize)
+add_subdirectory(imgtool)
