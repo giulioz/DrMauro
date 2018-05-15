@@ -81,12 +81,6 @@ Texture* Texture_LoadFromFileRGB_Keyed(const char* filename, AssetManager* asset
 bool Texture_TransparentKey(Texture* texture, const void* start) {
     if (!texture->TransparentKey) return true;
     else {
-        //return (bool)(memcmp(start, texture->TransparentKey, texture->BPP) != 0);
-        bool t = true;
-        int i;
-        for (i = 0; i < texture->BPP; ++i) {
-            t &= (((unsigned char*)start)[i] == ((unsigned char*)texture->TransparentKey)[i]);
-        }
-        return t == 0;
+        return (bool)(memcmp(start, texture->TransparentKey, texture->BPP) != 0);
     }
 }

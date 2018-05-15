@@ -67,6 +67,8 @@ void Window_Run(Window* window) {
                 case SDL_KEYDOWN:
                     //window->PressedKeys[event.key.keysym.sym] = true;
                     break;
+                default:
+                    break;
             }
         }
 

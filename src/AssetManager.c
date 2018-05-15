@@ -22,7 +22,7 @@ void AssetManager_Add(AssetManager* assetManager, BaseAsset* asset) {
 }
 
 BaseAsset* AssetManager_Get(AssetManager* assetManager, const char* name) {
-    int i;
+    size_t i;
     Vector_Foreach(assetManager->Assets, i) {
         BaseAsset* asset = *(BaseAsset**)Vector_Get(&assetManager->Assets, i);
         if (strcmp(asset->AssetName, name) == 0) {
@@ -34,12 +34,12 @@ BaseAsset* AssetManager_Get(AssetManager* assetManager, const char* name) {
 }
 
 void AssetManager_Unload(AssetManager* assetManager, const char* name) {
-    int i;
+    size_t i;
     Vector_Foreach(assetManager->Assets, i) {
         BaseAsset* asset = *(BaseAsset**)Vector_Get(&assetManager->Assets, i);
         if (strcmp(asset->AssetName, name) == 0) {
             asset->Asset_Unload(asset);
-            Vector_Delete(&assetManager->Assets, asset);
+            Vector_Delete(&assetManager->Assets, i);
             return;
         }
     }
@@ -47,7 +47,7 @@ void AssetManager_Unload(AssetManager* assetManager, const char* name) {
 }
 
 void AssetManager_UnloadAll(AssetManager* assetManager) {
-    int i;
+    size_t i;
     Vector_Foreach(assetManager->Assets, i) {
         BaseAsset* asset = *(BaseAsset**)Vector_Get(&assetManager->Assets, i);
         asset->Asset_Unload(asset);
