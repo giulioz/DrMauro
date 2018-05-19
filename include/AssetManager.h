@@ -9,15 +9,12 @@
 #define ASSETMANAGER_H
 
 #include "Vector.h"
+#include "Object.h"
 
-#define AssetManager_InitialSize 10
-
-#define _BaseAsset_Implementation_ \
-    void (*Asset_Unload)(void* asset); \
+typedef class Asset {
+    void (*unload)(class Asset* asset);
     char* AssetName;
-typedef struct {
-    _BaseAsset_Implementation_
-} BaseAsset;
+} Asset;
 
 typedef struct {
     const char* BaseFolder;

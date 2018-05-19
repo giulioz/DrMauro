@@ -13,7 +13,7 @@ void printUsage() {
 int main(int argc, char **argv) {
     if (argc != 3) {
         printUsage();
-        return 0;
+        return 1;
     }
 
     ifstream inFile;

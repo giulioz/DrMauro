@@ -3,7 +3,7 @@ project(headerize)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-add_executable(headerize imgtool.cpp headerize.h)
+add_executable(headerize headerize.cpp headerize.h)
 target_link_libraries(
         headerize
         m

@@ -12,8 +12,8 @@ include_directories(
     ${SDL2_INCLUDE_DIR}
 )
 
-file(GLOB SOURCES src/*.c)
-file(GLOB INCLUDES include/*.h)
+file(GLOB SOURCES src/*.c src/*/*.c)
+file(GLOB INCLUDES include/*.h include/*/*.h)
 
 add_executable(DrMauro ${SOURCES} ${INCLUDES})
 target_link_libraries(

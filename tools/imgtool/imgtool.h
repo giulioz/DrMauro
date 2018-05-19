@@ -2,12 +2,15 @@
 // Created by Giulio Zausa on 15/05/18.
 //
 
-#ifndef DRMAURO_IMGTOOL_CPP_H
-#define DRMAURO_IMGTOOL_CPP_H
+#ifndef DRMAURO_IMGTOOL_C_H
+#define DRMAURO_IMGTOOL_C_H
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <iomanip>
+#include <stdio.h>
+#include <stdlib.h>
+#include "stb_image.h"
 
-#endif //DRMAURO_IMGTOOL_CPP_H
+typedef struct {
+    uint16_t width, height;
+} Texture;
+
+#endif //DRMAURO_IMGTOOL_C_H

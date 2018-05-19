@@ -12,6 +12,8 @@
 #define ErrorConcat(a,b) \
     strcat(a "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", b)
 
+#define ASSERT(x) if(!(x)) ThrowError("assert on __FILE__ __LINE__")
+
 void ThrowWarning(const char* warning);
 void ThrowError(const char* error);
 

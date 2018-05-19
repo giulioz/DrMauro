@@ -9,24 +9,53 @@
 #define VECTOR_H
 
 #include <stdlib.h>
+#include "Object.h"
 
-typedef struct {
-    void* Data;
-    size_t ElementSize;     /* bytes per element */
-    size_t Count;           /* in elements */
-    size_t AllocatedCount;  /* free space (elements, not bytes) */
+struct Vector_VTABLE;
+
+typedef class Vector {
+    void* data;
+    size_t elementSize;     /* bytes per element */
+    size_t count;           /* in elements */
+    size_t allocatedCount;  /* free space (elements, not bytes) */
+    
+    struct Vector_VTABLE *VTABLE;
 } Vector;
 
-Vector Vector_Create(size_t initialSize, size_t elementSize);
-size_t Vector_Count(const Vector* vector);
-void Vector_Add(Vector* vector, const void* element);
-void Vector_Set(Vector* vector, size_t index, const void* element);
-void *Vector_Get(const Vector* vector, size_t index);
-void Vector_Insert(Vector* vector, size_t index, const void* element);
-void Vector_Delete(Vector* vector, size_t index);
-void Vector_Clear(Vector* vector);
-void Vector_Free(Vector* vector);
+struct Vector_VTABLE {
+    /* Returns element in the vector */
+    size_t (*count)(const this_p(Vector));
 
-#define Vector_Foreach(vec,i) for ((i) = 0; (i) < (vec).Count; (i)++)
+    /* Adds an element to the end of the vector */
+    void (*add)(this_p(Vector), const void* element);
+
+    /* Sets an element of the vector given an index and a pointer to an element (doesn't change size) */
+    void (*set)(this_p(Vector), const size_t index, const void* element);
+
+    /* Returns the pointer to an element */
+    void* (*get)(const this_p(Vector), const size_t index);
+
+    /* Insert an element on the vector (changes size) */
+    void (*insert)(this_p(Vector), const size_t index, const void* element);
+
+    /* Removes an element (changes size) */
+    void (*delete)(this_p(Vector), const size_t index);
+
+    /* Sets the count to 0 */
+    void (*clear)(this_p(Vector));
+
+    /* Frees the entire vector (cannot use after) */
+    void (*dispose)(this_p(Vector));
+
+    /* Changes vector allocated size */
+    void (*realloc)(this_p(Vector), const size_t destSize);
+
+    /* Changes vector allocated size to minimum possible*/
+    void (*shrink)(this_p(Vector));
+};
+
+Vector Vector_init(size_t initialSize, size_t elementSize);
+
+#define Vector_foreach(vec,i) for ((i) = 0; (i) < (vec).Count; (i)++)
 
 #endif

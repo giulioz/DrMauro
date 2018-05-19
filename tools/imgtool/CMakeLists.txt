@@ -3,7 +3,7 @@ project(imgtool)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-add_executable(imgtool imgtool.cpp imgtool.h)
+add_executable(imgtool imgtool.c imgtool.h stb_image.h)
 target_link_libraries(
         imgtool
         m

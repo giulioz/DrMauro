@@ -9,19 +9,14 @@
 #define DRMAURO_H
 
 #include "Bool.h"
-#include "Window.h"
+#include "Screen.h"
 #include "Graphics.h"
 #include "AssetManager.h"
 #include "Texture.h"
 #include "Font.h"
-#include "Panel3.h"
+#include "Engine.h"
+#include "GameState.h"
 
-typedef struct {
-    Window Window;
-
-    /* Assets */
-    AssetManager AssetManager;
-    Panel3 Panel1, Panel2;
-} DrMauro;
+#include "states/BootState.h"
 
 #endif

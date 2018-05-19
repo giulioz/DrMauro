@@ -9,87 +9,114 @@
 #include "ExceptionManager.h"
 
 #include <string.h>
+#include <Vector.h>
 
-/* ------------------------------------------------------------------ */
-/* Vector creation                                                     */
-
-Vector Vector_Create(const size_t initialSize, const size_t elementSize) {
-    Vector vector;
-    vector.ElementSize = elementSize;
-    vector.AllocatedCount = initialSize;
-    vector.Count = 0;
-    vector.Data = calloc(initialSize, elementSize);
-    if (!vector.Data) ThrowError("Malloc failed!");
-    return vector;
-}
-
-size_t Vector_Count(const Vector* vector) {
-    return vector->Count;
+static size_t _count(const Vector* vector) {
+    return vector->count;
 }
 
 /* ------------------------------------------------------------------ */
 /* Internals                                                          */
 
-static size_t getDataIndex(const Vector* vector, const int index) {
-    return index * vector->ElementSize;
+static size_t getDataIndex(const Vector* vector, const size_t index) {
+    return index * vector->elementSize;
 }
 
 static void setUnchecked(Vector* vector, const size_t index, const void* element) {
-    memcpy((char*)vector->Data + getDataIndex(vector, index), element, vector->ElementSize);
+    memcpy((char*)vector->data + getDataIndex(vector, index), element, vector->elementSize);
 }
 
 static void grow(Vector* vector, const size_t destElemSize) {
-    if (!realloc(vector->Data, destElemSize * vector->ElementSize)) {
-        ThrowError("Error growing array");
+    if (!realloc(vector->data, destElemSize * vector->elementSize)) {
+        ThrowError("Error rellocing array");
     } else {
-        vector->AllocatedCount = destElemSize;
+        vector->allocatedCount = destElemSize;
     }
 }
 
 /* ------------------------------------------------------------------ */
 /* Vector Operations                                                  */
 
-void Vector_Add(Vector* vector, const void* element) {
-    if (vector->AllocatedCount < vector->Count)
-        grow(vector, vector->Count + 1);
+static void _add(Vector* vector, const void* element) {
+    if (vector->allocatedCount < vector->count)
+        grow(vector, vector->count + 1);
 
-    setUnchecked(vector, vector->Count, element);
-    vector->Count++;
+    setUnchecked(vector, vector->count, element);
+    vector->count++;
 }
 
-void Vector_Set(Vector* vector, const size_t index, const void* element) {
-    if (index < vector->Count) {
+static void _set(Vector* vector, const size_t index, const void* element) {
+    if (index < vector->count) {
         setUnchecked(vector, index, element);
     } else {
         ThrowError("Set array out of bounds"); /* cannot set outside, use add instead */
     }
 }
 
-void *Vector_Get(const Vector* vector, const size_t index) {
-    if (index < vector->Count) {
-        return (char*)vector->Data + getDataIndex(vector, index);
+static void* _get(const Vector* vector, const size_t index) {
+    if (index < vector->count) {
+        return (char*)vector->data + getDataIndex(vector, index);
     } else {
         ThrowError("Get array out of bounds");
         return NULL;
     }
 }
 
-void Vector_Insert(Vector* vector, const size_t index, const void* element) {
+static void _insert(Vector* vector, const size_t index, const void* element) {
     // TODO
     ThrowWarning("Unimplemented: insert on vector");
 }
 
-void Vector_Delete(Vector* vector, const size_t index) {
+static void _delete(Vector* vector, const size_t index) {
     // TODO
     ThrowWarning("Unimplemented: delete vector element");
 }
 
-void Vector_Clear(Vector* vector) {
-    vector->Count = 0;
+static void _clear(Vector* vector) {
+    vector->count = 0;
 }
 
-void Vector_Free(Vector* vector) {
-    free(vector->Data);
-    vector->Count = 0;
-    vector->AllocatedCount = 0;
+static void _dispose(Vector* vector) {
+    free(vector->data);
+    vector->count = 0;
+    vector->allocatedCount = 0;
+}
+
+static void _realloc(Vector* vector, const size_t destSize) {
+    if (destSize < vector->count) ThrowError("Realloc destination is less than vector element count");
+    else grow(vector, destSize);
+}
+
+static void _shrink(Vector *vector) {
+    grow(vector, vector->count);
+}
+
+/* ------------------------------------------------------------------ */
+/* VTABLE                                                             */
+
+static struct Vector_VTABLE _vtable = {
+        _count,
+        _add,
+        _set,
+        _get,
+        _insert,
+        _delete,
+        _clear,
+        _dispose,
+        _realloc,
+        _shrink
+};
+
+/* ------------------------------------------------------------------ */
+/* Vector creation                                                    */
+
+Vector Vector_init(const size_t initialSize, const size_t elementSize) {
+    Vector vector;
+    vector.elementSize = elementSize;
+    vector.allocatedCount = initialSize;
+    vector.count = 0;
+    vector.data = calloc(initialSize, elementSize);
+    if (!vector.data) ThrowError("Malloc failed!");
+    vector.VTABLE = &_vtable;
+    return vector;
 }

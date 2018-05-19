@@ -10,7 +10,7 @@
 #include <Font.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "../tools/imgtool/stb_image.h"
 
 void Texture_Unload(void* texture) {
     free(((Texture*)texture)->AssetName);
