@@ -10,6 +10,8 @@
 
 #include <stdlib.h>
 
+#include "IntTypes.h"
+
 typedef struct Color {
     unsigned char r, g, b, a;
 } Color;

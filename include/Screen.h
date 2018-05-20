@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 
+#include "IntTypes.h"
 #include "Object.h"
 #include "Bool.h"
 
