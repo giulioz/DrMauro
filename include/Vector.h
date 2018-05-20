@@ -2,7 +2,7 @@
  *  Vector.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  *
- *  A C++ std::vector-like heap dynamic array
+ *  A C++ std::vector-like dynamic array
  */
 
 #ifndef VECTOR_H
@@ -54,7 +54,8 @@ struct Vector_VTABLE {
     void (*shrink)(this_p(Vector));
 };
 
-Vector Vector_init(size_t initialSize, size_t elementSize);
+void HeapVector_init(this_p(Vector), size_t initialSize, size_t elementSize);
+void StackVector_init(this_p(Vector), size_t allocatedSize, size_t elementSize, void* stackArray);
 
 #define Vector_foreach(vec,i) for ((i) = 0; (i) < (vec).Count; (i)++)
 

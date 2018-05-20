@@ -8,11 +8,18 @@
 
 #include "Object.h"
 
+class GameState;
+
+struct GameState_VTABLE {
+    void (*update)(this_p(GameState), double deltaTime);
+    void (*draw)(this_p(GameState));
+    void (*load)(this_p(GameState));
+    void (*unload)(this_p(GameState));
+};
+
 typedef class GameState {
-    void (*load)();
-    void (*unload)();
-    void (*update)(double deltaTime);
-    void (*draw)();
+    struct GameState_VTABLE *VTABLE;
+    class Engine *engine;
 } GameState;
 
 #endif

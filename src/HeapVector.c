@@ -1,15 +1,14 @@
 /*
- *  Vector.c
+ *  HeapVector.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  *
- *  A C++ std::vector-like heap dynamic array
+ *  A C++ std::vector-like heap-allocated dynamic array
  */
 
 #include "Vector.h"
 #include "ExceptionManager.h"
 
 #include <string.h>
-#include <Vector.h>
 
 static size_t _count(const Vector* vector) {
     return vector->count;
@@ -110,13 +109,11 @@ static struct Vector_VTABLE _vtable = {
 /* ------------------------------------------------------------------ */
 /* Vector creation                                                    */
 
-Vector Vector_init(const size_t initialSize, const size_t elementSize) {
-    Vector vector;
-    vector.elementSize = elementSize;
-    vector.allocatedCount = initialSize;
-    vector.count = 0;
-    vector.data = calloc(initialSize, elementSize);
-    if (!vector.data) ThrowError("Malloc failed!");
-    vector.VTABLE = &_vtable;
-    return vector;
+void HeapVector_init(this_p(Vector), const size_t initialSize, const size_t elementSize) {
+    this->elementSize = elementSize;
+    this->allocatedCount = initialSize;
+    this->count = 0;
+    this->data = calloc(initialSize, elementSize);
+    if (!this->data) ThrowError("Malloc failed!");
+    VTP(this) = &_vtable;
 }

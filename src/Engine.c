@@ -5,46 +5,38 @@
 
 #include "Engine.h"
 
-/* singleton */
-static Engine _engine;
-static Engine *this;
-
-static void startup(Screen *screen, GameState *bootState) {
+static void startup(this_p(Engine), Screen *screen, GameState *bootState) {
     this->screen = screen;
-    this->screen->init(this->screen);
+    VTP(this->screen)->init(this->screen);
 
-    this->loadState(bootState);
-    this->screen->run(this->screen);
+    VTP(this)->loadState(this, bootState);
+    VTP(this->screen)->run(this->screen);
 }
 
-static void shutdown() {
-    this->currentState->unload();
-    this->screen->close(this->screen);
+static void shutdown(this_p(Engine)) {
+    VTP(this->currentState)->unload(this->currentState);
+    VTP(this->screen)->close(this->screen);
 }
 
-static void loadState(GameState *state) {
+static void loadState(this_p(Engine), GameState *state) {
     /* unload old state */
     if (this->currentState)
-        this->currentState->unload();
+        VTP(this->currentState)->unload(this->currentState);
 
     /* load new state */
     this->currentState = state;
-    this->currentState->load();
-    this->screen->update = this->currentState->update;
-    this->screen->draw = this->currentState->draw;
+    VTP(this->currentState)->load(this->currentState);
+    this->screen->callbacks = (ScreenCallbacks *) state;
 }
 
-Engine *Engine_init() {
-    this = &_engine;
-    this->startup = startup;
-    this->shutdown = shutdown;
-    this->loadState = loadState;
+static struct Engine_VTABLE _vtable = {
+        startup, shutdown, loadState
+};
+
+Engine *Engine_init(this_p(Engine)) {
+    VTP(this) = &_vtable;
 
     this->screen = NULL;
     this->currentState = NULL;
-    return this;
-}
-
-Engine *Engine_get() {
     return this;
 }

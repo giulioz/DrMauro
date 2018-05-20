@@ -8,11 +8,13 @@
 
 #include "Object.h"
 #include "GameState.h"
+#include "Graphics.h"
+#include "Engine.h"
 
 typedef class BootState {
     GameState base;
 } BootState;
 
-BootState* BootState_new();
+BootState* BootState_new(Engine *engine);
 
 #endif

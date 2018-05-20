@@ -24,9 +24,6 @@ static void init(this_p(Screen)) {
 }
 
 static void run(this_p(Screen)) {
-    ASSERT(this->update);
-    ASSERT(this->draw);
-
     this->running = true;
     this->lastTime = SDL_GetTicks();
 
@@ -54,10 +51,8 @@ static void run(this_p(Screen)) {
         }
 
         /* callbacks */
-        this->update(deltaTime);
-        SDL_LockSurface(((SDL_Screen*)this)->screenSurface);
-        this->draw();
-        SDL_UnlockSurface(((SDL_Screen*)this)->screenSurface);
+        VTP(this->callbacks)->update(this->callbacks, deltaTime);
+        VTP(this->callbacks)->draw(this->callbacks);
         SDL_UpdateWindowSurface(((SDL_Screen*)this)->window);
 
         this->lastTime = SDL_GetTicks();
@@ -74,23 +69,24 @@ static void close(this_p(Screen)) {
 }
 
 static Graphics* getGraphics(this_p(Screen)) {
-
+    SDL_Screen *screen = ((SDL_Screen*)this);
+    return (Graphics *) &(screen->graphics);
 }
+
+static struct Screen_VTABLE _vtable = {
+        init, run, close, getGraphics
+};
 
 /* ********************************************************* */
 /* Constructor                                               */
-void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle) {
-    this->base.init = init;
-    this->base.run = run;
-    this->base.close = close;
-    this->base.getGraphics = getGraphics;
-
-    this->base.update = NULL;
-    this->base.draw = NULL;
+void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, ScreenCallbacks* callbacks) {
+    VT(this->base) = &_vtable;
+    this->base.callbacks = callbacks;
 
     this->base.width = width;
     this->base.height = height;
     this->base.lastTime = 0;
     this->base.running = false;
     this->windowTitle = windowTitle;
+    SDL_Graphics_init(&this->graphics, this);
 }

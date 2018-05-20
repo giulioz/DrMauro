@@ -11,11 +11,11 @@
 #include "Bool.h"
 #include "Screen.h"
 #include "Graphics.h"
-#include "AssetManager.h"
 #include "Texture.h"
 #include "Font.h"
 #include "Engine.h"
 #include "GameState.h"
+#include "SDL/SDL_Screen.h"
 
 #include "states/BootState.h"
 

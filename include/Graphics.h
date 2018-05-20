@@ -16,8 +16,14 @@
 #include "Sprite.h"
 #include "Color.h"
 
-typedef class Graphics {
+class Graphics;
+
+struct Graphics_VTABLE {
     void (*drawCheckerboard)(this_p(Graphics), int step, Color colorA, Color colorB);
+};
+
+typedef class Graphics {
+    struct Graphics_VTABLE *VTABLE;
 } Graphics;
 
 #endif

@@ -26,6 +26,6 @@ typedef class SDL_Screen {
     SDL_Graphics graphics;
 } SDL_Screen;
 
-void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle);
+void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, ScreenCallbacks* callbacks);
 
 #endif

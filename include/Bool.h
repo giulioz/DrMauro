@@ -1,8 +1,8 @@
 /*
- * Bool.h
- * Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *  Bool.h
+ *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  *
- * Boolean types
+ *  Boolean type
  */
 
 #ifndef BOOL_H

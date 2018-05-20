@@ -9,8 +9,8 @@
 #include "Texture.h"
 
 typedef struct {
-    Texture* Texture;
-    unsigned int CharWidth;
+    Texture* texture;
+    unsigned int charWidth;
 } Font;
 
 #endif

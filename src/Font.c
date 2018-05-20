@@ -4,7 +4,3 @@
  */
 
 #include "Font.h"
-
-Font Font_Create(Texture* texture, size_t charWidth) {
-
-}

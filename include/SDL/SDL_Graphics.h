@@ -14,13 +14,13 @@
 #include "ExceptionManager.h"
 #include "Graphics.h"
 
-typedef struct SDL_Screen SDL_Screen;
+class SDL_Screen;
 
 typedef class SDL_Graphics {
     Graphics base;
-    SDL_Screen* screen;
+    class SDL_Screen* screen;
 } SDL_Graphics;
 
-void SDL_Graphics_init(this_p(SDL_Graphics), SDL_Screen* screen);
+void SDL_Graphics_init(this_p(SDL_Graphics), class SDL_Screen* screen);
 
 #endif

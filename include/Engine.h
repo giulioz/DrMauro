@@ -10,17 +10,21 @@
 #include "Screen.h"
 #include "GameState.h"
 
+class Engine;
+
+struct Engine_VTABLE {
+    void (*startup)(this_p(Engine), Screen *screen, GameState *bootState);
+    void (*shutdown)(this_p(Engine));
+    void (*loadState)(this_p(Engine), GameState *state);
+};
+
 typedef class Engine {
-    void (*startup)(Screen *screen, GameState *bootState);
-    void (*shutdown)();
-    void (*loadState)(GameState *state);
+    struct Engine_VTABLE *VTABLE;
 
     Screen *screen;
     GameState *currentState;
 } Engine;
 
-/* singleton */
-Engine* Engine_init();
-Engine *Engine_get();
+Engine* Engine_init(this_p(Engine));
 
 #endif

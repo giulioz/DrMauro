@@ -11,16 +11,29 @@
 #include "Object.h"
 #include "Bool.h"
 
-typedef class Graphics Graphics;
+class Graphics;
+class Screen;
+class ScreenCallbacks;
 
-typedef class Screen {
+struct ScreenCallbacks_VTABLE {
+    void (*update)(this_p(ScreenCallbacks), double deltaTime);
+    void (*draw)(this_p(ScreenCallbacks));
+};
+
+typedef class ScreenCallbacks {
+    struct ScreenCallbacks_VTABLE *VTABLE;
+} ScreenCallbacks;
+
+struct Screen_VTABLE {
     void (*init)(this_p(Screen));
     void (*run)(this_p(Screen));
     void (*close)(this_p(Screen));
-    Graphics* (*getGraphics)();
+    class Graphics* (*getGraphics)(this_p(Screen));
+};
 
-    void (*update)(double deltaTime);
-    void (*draw)();
+typedef class Screen {
+    struct Screen_VTABLE *VTABLE;
+    ScreenCallbacks* callbacks;
 
     uint16_t width, height;
     bool running;
