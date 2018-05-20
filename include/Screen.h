@@ -6,8 +6,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include <stdlib.h>
-
 #include "IntTypes.h"
 #include "Object.h"
 #include "Bool.h"

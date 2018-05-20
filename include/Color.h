@@ -8,8 +8,6 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include <stdlib.h>
-
 #include "IntTypes.h"
 
 typedef struct Color {

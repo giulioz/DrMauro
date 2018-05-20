@@ -5,8 +5,8 @@
  *  Standard integer types definitions
  */
 
-#ifndef EXCEPTIONMANAGER_H
-#define EXCEPTIONMANAGER_H
+#ifndef INTTYPES_H
+#define INTTYPES_H
 
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;

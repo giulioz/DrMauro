@@ -14,34 +14,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/external/stb_image.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Color.c" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/include/AssetManager.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AssetManager.c" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Vector.c" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Bool.h" afterPath="$PROJECT_DIR$/include/Bool.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Color.h" afterPath="$PROJECT_DIR$/include/Color.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/DrMauro.h" afterPath="$PROJECT_DIR$/include/DrMauro.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Engine.h" afterPath="$PROJECT_DIR$/include/Engine.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Font.h" afterPath="$PROJECT_DIR$/include/Font.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/GameState.h" afterPath="$PROJECT_DIR$/include/GameState.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Graphics.h" afterPath="$PROJECT_DIR$/include/Graphics.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/SDL/SDL_Graphics.h" afterPath="$PROJECT_DIR$/include/SDL/SDL_Graphics.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/SDL/SDL_Screen.h" afterPath="$PROJECT_DIR$/include/SDL/SDL_Screen.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/IntTypes.h" afterPath="$PROJECT_DIR$/include/IntTypes.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Screen.h" afterPath="$PROJECT_DIR$/include/Screen.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Sprite.h" afterPath="$PROJECT_DIR$/include/Sprite.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Texture.h" afterPath="$PROJECT_DIR$/include/Texture.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Vector.h" afterPath="$PROJECT_DIR$/include/Vector.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/states/BootState.h" afterPath="$PROJECT_DIR$/include/states/BootState.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DrMauro.c" afterPath="$PROJECT_DIR$/src/DrMauro.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Engine.c" afterPath="$PROJECT_DIR$/src/Engine.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Font.c" afterPath="$PROJECT_DIR$/src/Font.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SDL/SDL_Graphics.c" afterPath="$PROJECT_DIR$/src/SDL/SDL_Graphics.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SDL/SDL_Screen.c" afterPath="$PROJECT_DIR$/src/SDL/SDL_Screen.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Sprite.c" afterPath="$PROJECT_DIR$/src/Sprite.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Texture.c" afterPath="$PROJECT_DIR$/src/Texture.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/BootState.c" afterPath="$PROJECT_DIR$/src/states/BootState.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,85 +29,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DrMauro.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DrMauro.c">
+      <file leaf-file-name="SDL_Graphics.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/include/SDL/SDL_Graphics.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Sprite.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Sprite.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Graphics.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/Graphics.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="25" column="35" lean-forward="false" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Sprite.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/Sprite.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+            <state relative-caret-position="270">
+              <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
               <folding>
-                <element signature="e#107#127#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Engine.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Engine.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SDL_Screen.c" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Screen.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BootState.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/states/BootState.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SDL_Graphics.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Graphics.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="50" column="26" lean-forward="false" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
-              <folding>
-                <element signature="e#78#107#0" expanded="true" />
+                <element signature="e#123#142#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -169,7 +73,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/include/Panel.h" />
         <option value="$PROJECT_DIR$/include/stb_image.h" />
         <option value="$PROJECT_DIR$/include/Window.h" />
@@ -212,14 +115,15 @@
         <option value="$PROJECT_DIR$/src/Font.c" />
         <option value="$PROJECT_DIR$/include/states/BootState.h" />
         <option value="$PROJECT_DIR$/src/DrMauro.c" />
-        <option value="$PROJECT_DIR$/include/Color.h" />
         <option value="$PROJECT_DIR$/src/Color.c" />
         <option value="$PROJECT_DIR$/include/GameState.h" />
         <option value="$PROJECT_DIR$/src/Engine.c" />
         <option value="$PROJECT_DIR$/src/SDL/SDL_Screen.c" />
         <option value="$PROJECT_DIR$/src/states/BootState.c" />
-        <option value="$PROJECT_DIR$/include/Screen.h" />
         <option value="$PROJECT_DIR$/src/SDL/SDL_Graphics.c" />
+        <option value="$PROJECT_DIR$/include/IntTypes.h" />
+        <option value="$PROJECT_DIR$/include/Color.h" />
+        <option value="$PROJECT_DIR$/include/Screen.h" />
       </list>
     </option>
   </component>
@@ -386,12 +290,12 @@
       <option name="presentableId" value="Default" />
       <updated>1526129318234</updated>
       <workItem from="1526129323360" duration="31064000" />
-      <workItem from="1526292893152" duration="72363000" />
+      <workItem from="1526292893152" duration="73033000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="103427000" />
+    <option name="totallyTimeSpent" value="104097000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -401,7 +305,7 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24609375" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -431,16 +335,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tools/imgtool/stb_image.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106470">
-          <caret line="7462" column="0" lean-forward="false" selection-start-line="7462" selection-start-column="0" selection-end-line="7462" selection-end-column="0" />
-          <folding>
-            <marker date="1526140341595" expanded="true" signature="19755:246936" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tools/headerize/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -617,14 +511,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/Vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Texture.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -743,16 +629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/Color.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <marker date="1526825209324" expanded="true" signature="219:252" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Color.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -777,16 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/Sprite.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding>
-            <element signature="e#107#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/SDL/SDL_Screen.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -803,40 +669,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/Graphics.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="25" column="35" lean-forward="false" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/BootState.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/SDL/SDL_Graphics.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Graphics.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" column="26" lean-forward="false" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
-          <folding>
-            <element signature="e#78#107#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/GameState.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -845,19 +677,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/Screen.h">
+    <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Screen.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="30" column="48" lean-forward="false" selection-start-line="30" selection-start-column="48" selection-end-line="30" selection-end-column="48" />
+        <state relative-caret-position="-445">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Screen.c">
+    <entry file="file://$PROJECT_DIR$/src/states/BootState.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state relative-caret-position="570">
+          <caret line="38" column="0" lean-forward="true" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Graphics.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="19" lean-forward="true" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/IntTypes.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="18" lean-forward="true" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Color.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="915">
+          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Sprite.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Screen.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#107#128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Graphics.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="25" column="35" lean-forward="false" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/SDL/SDL_Graphics.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+          <folding>
+            <element signature="e#123#142#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
