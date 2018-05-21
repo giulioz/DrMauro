@@ -10,6 +10,7 @@
 #include "GameState.h"
 #include "Graphics.h"
 #include "Engine.h"
+#include "assets/Assets.h"
 
 typedef class BootState {
     GameState base;

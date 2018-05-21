@@ -7,10 +7,12 @@
 #define FONT_H
 
 #include "Texture.h"
+#include "Object.h"
 
-typedef struct {
+typedef class Font {
     Texture* texture;
     unsigned int charWidth;
+    int* charMap;
 } Font;
 
 #endif

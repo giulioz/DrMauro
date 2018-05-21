@@ -2,7 +2,7 @@
  *  Color.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  *
- *  Colors are defined as RGBA (8 bit per channel) packed into an int
+ *  Colors are defined as ARGB (8 bit per channel) packed into an int (BGRA for endiannes)
  */
 
 #ifndef COLOR_H
@@ -11,7 +11,7 @@
 #include "IntTypes.h"
 
 typedef struct Color {
-    unsigned char r, g, b, a;
+    unsigned char b, g, r, a;
 } Color;
 
 Color Color_FromInt(uint32_t code);

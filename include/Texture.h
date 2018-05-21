@@ -11,20 +11,11 @@
 #include "Color.h"
 #include "Vector.h"
 
-struct Texture_VTABLE;
-
 typedef class Texture {
-    struct Texture_VTABLE* VTABLE;
     size_t width, height;
-    Vector textureData;
-    bool transparentKeyed;
-    int transparentKey;
+    int* textureData;
 } Texture;
 
-struct Texture_VTABLE {
-    bool (*transparent)(this_p(Texture), const int* pos);
-};
-
-void Texture_init(this_p(Texture), size_t width, size_t height, int* data, bool keyed, int key);
+void Texture_init(this_p(Texture), size_t width, size_t height, int* data);
 
 #endif

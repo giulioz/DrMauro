@@ -5,6 +5,10 @@
 
 #include "states/BootState.h"
 
+static Color checkerboardColorA = { 0xAB, 0x00, 0x4C, 0xFF };
+static Color checkerboardColorB = { 0x00, 0x00, 0x00, 0xFF };
+static Color whiteColor = { 0xFF, 0xFF, 0xFF, 0xFF };
+
 static void load(this_p(GameState)) {
 
 }
@@ -21,7 +25,9 @@ static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
 
     /* Background */
-    VTP(graphics)->drawCheckerboard(graphics, 8, Color_FromInt(0x4C00AB), Color_FromInt(0x000000));
+    //VTP(graphics)->drawCheckerboard(graphics, 8, checkerboardColorA, checkerboardColorB);
+    VTP(graphics)->fill(graphics, whiteColor);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 100, 100, "test diocane");
     /*Panel3_draw(&game.Panel1, 8, 34, 59, window);
     Panel3_draw(&game.Panel2, 176, 122, 83, window);*/
 }

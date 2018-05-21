@@ -24,7 +24,7 @@ typedef class SpriteClass {
 class Sprite;
 
 struct Sprite_VTABLE {
-    void (*draw)(this_p(Sprite));
+
 };
 
 typedef class Sprite {
