@@ -5,7 +5,7 @@
  *  Colors are defined as RGBA (8 bit per channel) packed into an int
  */
 
-#include "Color.h"
+#include "graphics/Color.h"
 
 Color Color_FromInt(uint32_t code) {
     /* HACK: watch out for alignment */

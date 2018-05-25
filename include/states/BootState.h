@@ -11,11 +11,14 @@
 #include "Graphics.h"
 #include "Engine.h"
 #include "assets/Assets.h"
+#include "InGameState.h"
 
 typedef class BootState {
     GameState base;
+
+    InGameState inGameState;
 } BootState;
 
-BootState* BootState_new(Engine *engine);
+void BootState_init(this_p(BootState), Engine *engine);
 
 #endif

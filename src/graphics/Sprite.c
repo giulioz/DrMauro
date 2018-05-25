@@ -3,4 +3,4 @@
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  */
 
-#include "Sprite.h"
+#include "graphics/Sprite.h"

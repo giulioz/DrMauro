@@ -3,7 +3,7 @@
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  */
 
-#include "SDL/SDL_Screen.h"
+#include "SDL_Screen.h"
 
 static void init(this_p(Screen)) {
     SDL_Screen *screen = (SDL_Screen*)this;

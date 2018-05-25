@@ -13,6 +13,8 @@
 #include "Bool.h"
 #include "ExceptionManager.h"
 #include "Graphics.h"
+#include "Texture.h"
+#include "Box.h"
 
 class SDL_Screen;
 
