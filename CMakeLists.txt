@@ -13,7 +13,10 @@ file(GLOB INCLUDES include/*.h include/*/*.h)
 
 include_directories(
         ${DrMauro_SOURCE_DIR}/include
-        ${INCLUDE_DIRS}
+        ${DrMauro_SOURCE_DIR}/include/assets
+        ${DrMauro_SOURCE_DIR}/include/graphics
+        ${DrMauro_SOURCE_DIR}/include/SDL
+        ${DrMauro_SOURCE_DIR}/include/states
         ${SDL2_INCLUDE_DIR}
 )
 
