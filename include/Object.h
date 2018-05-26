@@ -12,8 +12,6 @@
 
 #define class struct
 #define this_p(type) class type *this
-#define new(type) malloc(sizeof(type));
-//#define delete(ptr) free(ptr);
 #define VTP(obj) obj->VTABLE
 #define VT(obj) obj.VTABLE
 

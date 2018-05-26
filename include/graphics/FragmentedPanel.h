@@ -13,7 +13,7 @@
 class FragmentedPanel;
 
 struct FragmentedPanel_VTABLE {
-    void (*draw)(this_p(FragmentedPanel), class Graphics* panel,
+    void (*draw)(this_p(FragmentedPanel), Graphics* panel,
                  size_t px, size_t py, size_t height);
 };
 

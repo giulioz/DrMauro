@@ -40,10 +40,8 @@ static void run(this_p(Screen)) {
                     this->running = false;
                     break;
                 case SDL_KEYUP:
-                    //window->PressedKeys[event.key.keysym.sym] = false;
                     break;
                 case SDL_KEYDOWN:
-                    //window->PressedKeys[event.key.keysym.sym] = true;
                     break;
                 default:
                     break;

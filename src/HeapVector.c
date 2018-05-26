@@ -62,12 +62,12 @@ static void* _get(const Vector* vector, const size_t index) {
 }
 
 static void _insert(Vector* vector, const size_t index, const void* element) {
-    // TODO
+    /* TODO */
     ThrowWarning("Unimplemented: insert on vector");
 }
 
 static void _delete(Vector* vector, const size_t index) {
-    // TODO
+    /* TODO */
     ThrowWarning("Unimplemented: delete vector element");
 }
 

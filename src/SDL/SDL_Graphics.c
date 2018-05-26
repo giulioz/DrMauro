@@ -31,8 +31,9 @@ static void textureBlit(this_p(Graphics), Texture* texture, int *framebuffer,   
     for (sy = _sy, dy = _dy; dy < dyEnd && dy < screen->height; sy++, dy++) {
         if (sy >= syEnd) sy = _sy;
         for (sx = _sx, dx = _dx; dx < dxEnd && dx < screen->width; sx++, dx++) {
+            int pixel;
             if (sx >= sxEnd) sx = _sx;
-            int pixel = VTP(texture)->getXY(texture, sx, sy);
+            pixel = VTP(texture)->getXY(texture, sx, sy);
             if (((Color*)(&pixel))->a) {
                 /* HACK: reverse byte order */
                 Color *c = ((Color*)(&pixel));
@@ -64,7 +65,6 @@ static void fill(this_p(Graphics), Color color) {
 
 static void fbMirrorX(this_p(Graphics), size_t startX, size_t endX, size_t startY, size_t endY) {
     SDL_Graphics *graphics = (SDL_Graphics *) this;
-    Screen *screen = (Screen *) graphics->screen;
     int* framebuffer = (int *) beginDraw(this);
     size_t x, y, dx;
     size_t width = endX - startX;
