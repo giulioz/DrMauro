@@ -8,7 +8,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DrMauro_SOURCE_DIR}/cmake")
 find_package(SDL2 REQUIRED)
 
 file(GLOB SOURCES src/*.c src/*/*.c)
-file(GLOB INCLUDE_DIRS include/*/)
+file(GLOB INCLUDE_DIRS include/*)
 file(GLOB INCLUDES include/*.h include/*/*.h)
 
 include_directories(
