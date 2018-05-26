@@ -8,8 +8,19 @@
 
 #include "Texture.h"
 #include "Object.h"
+#include "Graphics.h"
+
+class FragmentedPanel;
+
+struct FragmentedPanel_VTABLE {
+    void (*draw)(this_p(FragmentedPanel), class Graphics* panel,
+                 size_t px, size_t py, size_t height);
+};
+
+extern struct FragmentedPanel_VTABLE FragmentedPanel_VTABLE_DEFAULT;
 
 typedef class FragmentedPanel {
+    struct FragmentedPanel_VTABLE* VTABLE;
     Texture* texture;
     size_t xBorderA, xBorderB, xBorderC;
     size_t yBorderA, yBorderB;

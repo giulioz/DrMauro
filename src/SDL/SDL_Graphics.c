@@ -46,115 +46,6 @@ static void textureBlit(this_p(Graphics), Texture* texture, int *framebuffer,   
     }
 }
 
-static void fragmentedPanelHalfDraw(this_p(Graphics), int* framebuffer, FragmentedPanel* panel,
-                                    size_t px, size_t py, size_t height) {
-    Texture *texture = panel->texture;
-
-    /* Left border */
-    textureBlit(this, texture, framebuffer,
-                px, py,
-                px + panel->xBorderA, py + panel->yBorderA,
-
-                0, 0,
-                panel->xBorderA, panel->yBorderA);
-
-    textureBlit(this, texture, framebuffer,
-                px, py + panel->yBorderA,
-                px + panel->xBorderA, py + panel->yBorderA + height,
-
-                0, panel->yBorderA,
-                panel->xBorderA, panel->yBorderB);
-
-    textureBlit(this, texture, framebuffer,
-                px, py + panel->yBorderA + height,
-                px + panel->xBorderA, py + panel->yBorderA + height + (texture->height - panel->yBorderB),
-
-                0, panel->yBorderB,
-                panel->xBorderA, texture->height);
-
-    /* Left padding */
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderA, py,
-                px + panel->xBorderA + panel->widthBorderA, py + panel->yBorderA,
-
-                panel->xBorderA, 0,
-                panel->xBorderB, panel->yBorderA);
-
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderA, py + panel->yBorderA,
-                px + panel->xBorderA + panel->widthBorderA, py + panel->yBorderA + height,
-                panel->xBorderA, panel->yBorderA,
-                panel->xBorderB, panel->yBorderB);
-
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderA, py + panel->yBorderA + height,
-                px + panel->xBorderA + panel->widthBorderA, py + panel->yBorderA + height + (texture->height - panel->yBorderB),
-
-                panel->xBorderA, panel->yBorderB,
-                panel->xBorderB, texture->height);
-
-    /* Left handle begin */
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderA + panel->widthBorderA, py,
-                px + panel->xBorderC + panel->widthBorderA, py + panel->yBorderA,
-
-                panel->xBorderA, 0,
-                panel->xBorderC, panel->yBorderA);
-
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderA + panel->widthBorderA, py + panel->yBorderA,
-                px + panel->xBorderC + panel->widthBorderA, py + panel->yBorderA + height,
-
-                panel->xBorderA, panel->yBorderA,
-                panel->xBorderC, panel->yBorderB);
-
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderA + panel->widthBorderA, py + panel->yBorderA + height,
-                px + panel->xBorderC + panel->widthBorderA, py + panel->yBorderA + height + (texture->height - panel->yBorderB),
-
-                panel->xBorderA, panel->yBorderB,
-                panel->xBorderC, texture->height);
-
-    /* Handle padding */
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderC + panel->widthBorderA, py,
-                px + panel->xBorderC + panel->widthBorderA + panel->widthBorderB, py + panel->yBorderA,
-
-                panel->xBorderC, 0,
-                texture->width, panel->yBorderA);
-
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderC + panel->widthBorderA, py + panel->yBorderA,
-                px + panel->xBorderC + panel->widthBorderA + panel->widthBorderB, py + panel->yBorderA + height,
-
-                panel->xBorderC, panel->yBorderA,
-                texture->width, panel->yBorderB);
-
-    textureBlit(this, texture, framebuffer,
-                px + panel->xBorderC + panel->widthBorderA, py + panel->yBorderA + height,
-                px + panel->xBorderC + panel->widthBorderA + panel->widthBorderB, py + panel->yBorderA + height + (texture->height - panel->yBorderB),
-
-                panel->xBorderC, panel->yBorderB,
-                texture->width, texture->height);
-}
-
-static void fbMirrorX(this_p(Graphics), int* framebuffer,
-                      size_t startX, size_t endX, size_t startY, size_t endY) {
-    SDL_Graphics *graphics = (SDL_Graphics *) this;
-    Screen *screen = (Screen *) graphics->screen;
-    size_t x, y, dx;
-    size_t width = endX - startX;
-    for (y = startY; y < endY; y++) {
-        for (x = startX, dx = endX + width - 1; x < endX && dx >= endX; x++, dx--) {
-            size_t sindex = x + y * graphics->screen->base.width;
-            Color scolor = ((Color*)framebuffer)[sindex];
-            if (scolor.a) {
-                framebuffer[dx + y * graphics->screen->base.width] = framebuffer[sindex];
-            }
-        }
-    }
-}
-
 /* ****************************************************** */
 /* Graphics functions                                     */
 
@@ -168,6 +59,32 @@ static void fill(this_p(Graphics), Color color) {
             i++;
         }
     }
+    endDraw(this);
+}
+
+static void fbMirrorX(this_p(Graphics), size_t startX, size_t endX, size_t startY, size_t endY) {
+    SDL_Graphics *graphics = (SDL_Graphics *) this;
+    Screen *screen = (Screen *) graphics->screen;
+    int* framebuffer = (int *) beginDraw(this);
+    size_t x, y, dx;
+    size_t width = endX - startX;
+    for (y = startY; y < endY; y++) {
+        for (x = startX, dx = endX + width - 1; x < endX && dx >= endX; x++, dx--) {
+            size_t sindex = x + y * graphics->screen->base.width;
+            Color scolor = ((Color*)framebuffer)[sindex];
+            if (scolor.a) {
+                framebuffer[dx + y * graphics->screen->base.width] = framebuffer[sindex];
+            }
+        }
+    }
+    endDraw(this);
+}
+
+static void drawTexture(this_p(Graphics), Texture* texture,
+                        size_t _dx, size_t _dy, size_t dxEnd, size_t dyEnd,
+                        size_t _sx, size_t _sy, size_t sxEnd, size_t syEnd) {
+    int* framebuffer = (int *) beginDraw(this);
+    textureBlit(this, texture, framebuffer, _dx, _dy, dxEnd, dyEnd, _sx, _sy, sxEnd, syEnd);
     endDraw(this);
 }
 
@@ -192,15 +109,6 @@ static void drawCheckerboard(this_p(Graphics), int step, Color colorA, Color col
             i++;
         }
     }
-    endDraw(this);
-}
-
-static void drawFragmentedPanel(this_p(Graphics), FragmentedPanel* panel, size_t px, size_t py, size_t height) {
-    int* framebuffer = (int *) beginDraw(this);
-    fragmentedPanelHalfDraw(this, framebuffer, panel, px, py, height);
-    fbMirrorX(this, framebuffer,
-              px, px + panel->xBorderC + panel->widthBorderA + panel->widthBorderB,
-              py, py + panel->yBorderA + height + (panel->texture->height - panel->yBorderB));
     endDraw(this);
 }
 
@@ -231,9 +139,9 @@ static void drawString(this_p(Graphics), Font* font, size_t px, size_t py, char*
 
 static struct Graphics_VTABLE _vtable = {
         fill,
+        fbMirrorX,
+        drawTexture,
         drawCheckerboard,
-        drawFragmentedPanel,
-        drawBox,
         drawChar,
         drawString
 };

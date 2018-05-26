@@ -30,13 +30,13 @@ static void draw(this_p(GameState)) {
     VTP(graphics)->drawCheckerboard(graphics, 8, checkerboardColorA, checkerboardColorB);
 
     /* Panels */
-    VTP(graphics)->drawFragmentedPanel(graphics, &Asset_PanelLarge, 8, 34, 59);
+    VT(Asset_PanelLarge)->draw(&Asset_PanelLarge, graphics, 8, 34, 59);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP");
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 63, "0010000");
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 79, "SCORE");
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 87, "0000200");
 
-    VTP(graphics)->drawFragmentedPanel(graphics, &Asset_PanelSmall, 176, 122, 83);
+    VT(Asset_PanelSmall)->draw(&Asset_PanelSmall, graphics, 176, 122, 83);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL");
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 151, "00");
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 167, "SPEED");

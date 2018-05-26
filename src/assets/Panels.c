@@ -14,6 +14,7 @@ static Texture Panel_Texture = {
 };
 
 FragmentedPanel Asset_PanelSmall = {
+        &FragmentedPanel_VTABLE_DEFAULT,
         &Panel_Texture,
         6, 7, 12,
         13, 14,
@@ -21,6 +22,7 @@ FragmentedPanel Asset_PanelSmall = {
 };
 
 FragmentedPanel Asset_PanelLarge = {
+        &FragmentedPanel_VTABLE_DEFAULT,
         &Panel_Texture,
         6, 7, 12,
         13, 14,

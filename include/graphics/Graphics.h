@@ -21,9 +21,11 @@ class Graphics;
 
 struct Graphics_VTABLE {
     void (*fill)(this_p(Graphics), Color color);
+    void (*fbMirrorX)(this_p(Graphics), size_t startX, size_t endX, size_t startY, size_t endY);
+    void (*drawTexture)(this_p(Graphics), Texture* texture,
+                        size_t _dx, size_t _dy, size_t dxEnd, size_t dyEnd,
+                        size_t _sx, size_t _sy, size_t sxEnd, size_t syEnd);
     void (*drawCheckerboard)(this_p(Graphics), int step, Color colorA, Color colorB);
-    void (*drawFragmentedPanel)(this_p(Graphics), FragmentedPanel* panel, size_t px, size_t py, size_t height);
-    void (*drawBox)(this_p(Graphics), Box* box, size_t px, size_t py, size_t width, size_t height);
     void (*drawChar)(this_p(Graphics), Font* font, size_t px, size_t py, char c);
     void (*drawString)(this_p(Graphics), Font* font, size_t px, size_t py, char* str);
 };
