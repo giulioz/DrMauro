@@ -7,6 +7,7 @@
 
 #include "SDL_Graphics.h"
 #include "SDL_Screen.h"
+#include "Assets.h"
 
 /* ****************************************************** */
 /* Internals                                              */
@@ -33,14 +34,8 @@ static void textureBlit(this_p(Graphics), Texture* texture, int *framebuffer,   
         for (sx = _sx, dx = _dx; dx < dxEnd && dx < screen->width; sx++, dx++) {
             int pixel;
             if (sx >= sxEnd) sx = _sx;
-            pixel = VTP(texture)->getXY(texture, sx, sy);
+            pixel = VTP(texture)->getXY(texture, this->currentPalette, sx, sy);
             if (((Color*)(&pixel))->a) {
-                /* HACK: reverse byte order */
-                Color *c = ((Color*)(&pixel));
-                unsigned char t = c->r;
-                c->r = c->b;
-                c->b = t;
-
                 framebuffer[dx + dy * graphics->screen->base.width] = pixel;
             }
         }
@@ -50,13 +45,13 @@ static void textureBlit(this_p(Graphics), Texture* texture, int *framebuffer,   
 /* ****************************************************** */
 /* Graphics functions                                     */
 
-static void fill(this_p(Graphics), Color color) {
+static void fill(this_p(Graphics), ColorIndex color) {
     SDL_Graphics* graphics = (SDL_Graphics*)this;
-    Color* framebuffer = beginDraw(this);
+    int* framebuffer = (int *) beginDraw(this);
     int x, y, i = 0;
     for (y = 0; y < ((Screen*)graphics->screen)->height; y++) {
         for (x = 0; x < ((Screen*)graphics->screen)->width; x++) {
-            framebuffer[i] = color;
+            framebuffer[i] = this->currentPalette->colors[color];
             i++;
         }
     }
@@ -80,6 +75,23 @@ static void fbMirrorX(this_p(Graphics), size_t startX, size_t endX, size_t start
     endDraw(this);
 }
 
+static void fbMirrorY(this_p(Graphics), size_t startX, size_t endX, size_t startY, size_t endY) {
+    SDL_Graphics *graphics = (SDL_Graphics *) this;
+    int* framebuffer = (int *) beginDraw(this);
+    size_t x, y, dy;
+    size_t height = endY - startY;
+    for (y = startY, dy = endY + height - 1; y < endY && dy >= endY; y++, dy--) {
+        for (x = startX; x < endX; x++) {
+            size_t sindex = x + y * graphics->screen->base.width;
+            Color scolor = ((Color*)framebuffer)[sindex];
+            if (scolor.a) {
+                framebuffer[x + dy * graphics->screen->base.width] = framebuffer[sindex];
+            }
+        }
+    }
+    endDraw(this);
+}
+
 static void drawTexture(this_p(Graphics), Texture* texture,
                         size_t _dx, size_t _dy, size_t dxEnd, size_t dyEnd,
                         size_t _sx, size_t _sy, size_t sxEnd, size_t syEnd) {
@@ -88,10 +100,10 @@ static void drawTexture(this_p(Graphics), Texture* texture,
     endDraw(this);
 }
 
-static void drawCheckerboard(this_p(Graphics), int step, Color colorA, Color colorB) {
+static void drawCheckerboard(this_p(Graphics), int step, ColorIndex colorA, ColorIndex colorB) {
     SDL_Graphics* graphics = (SDL_Graphics*)this;
     int x, y, runningX = 0, runningY = 0, state = 1, i = 0;
-    Color* framebuffer = beginDraw(this);
+    int* framebuffer = (int *) beginDraw(this);
     for (y = 0; y < ((Screen*)graphics->screen)->height; y++) {
         if (runningY >= step) {
             runningY = 0;
@@ -104,16 +116,12 @@ static void drawCheckerboard(this_p(Graphics), int step, Color colorA, Color col
                 state = !state;
             }
             runningX++;
-            if (state) framebuffer[i] = colorA;
-            else framebuffer[i] = colorB;
+            if (state) framebuffer[i] = this->currentPalette->colors[colorA];
+            else framebuffer[i] = this->currentPalette->colors[colorB];
             i++;
         }
     }
     endDraw(this);
-}
-
-static void drawBox(this_p(Graphics), Box* box, size_t px, size_t py, size_t width, size_t height) {
-
 }
 
 static void drawChar(this_p(Graphics), Font* font, size_t px, size_t py, char c) {
@@ -140,6 +148,7 @@ static void drawString(this_p(Graphics), Font* font, size_t px, size_t py, char*
 static struct Graphics_VTABLE _vtable = {
         fill,
         fbMirrorX,
+        fbMirrorY,
         drawTexture,
         drawCheckerboard,
         drawChar,
@@ -149,4 +158,5 @@ static struct Graphics_VTABLE _vtable = {
 void SDL_Graphics_init(this_p(SDL_Graphics), SDL_Screen* screen) {
     VT(this->base) = &_vtable;
     this->screen = screen;
+    this->base.currentPalette = &Asset_DefaultPalette;
 }

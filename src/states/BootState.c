@@ -5,9 +5,6 @@
 
 #include "BootState.h"
 
-/* Static resources */
-static Color whiteColor = { 0xFF, 0xFF, 0xFF, 0xFF };
-
 static void load(this_p(GameState)) {
 
 }
@@ -24,7 +21,7 @@ static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
 
     /* Loading screen (nearly useless) */
-    VTP(graphics)->fill(graphics, whiteColor);
+    VTP(graphics)->fill(graphics, 1);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 10, 10, "Loading");
 
     /* Load next state */

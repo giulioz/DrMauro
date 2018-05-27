@@ -59,4 +59,12 @@ void StackVector_init(this_p(Vector), size_t allocatedSize, size_t elementSize, 
 
 #define Vector_foreach(vec,i) for ((i) = 0; (i) < (vec).Count; (i)++)
 
+#define StackVector_Empty(name, elementSize, allocSize) \
+Vector name = { \
+    NULL, \
+    elementSize, \
+    0, \
+    allocSize \
+}
+
 #endif

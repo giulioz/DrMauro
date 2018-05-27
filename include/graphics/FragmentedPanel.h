@@ -22,7 +22,7 @@ extern struct FragmentedPanel_VTABLE FragmentedPanel_VTABLE_DEFAULT;
 typedef class FragmentedPanel {
     struct FragmentedPanel_VTABLE* VTABLE;
     Texture* texture;
-    size_t xBorderA, xBorderB, xBorderC;
+    size_t xBorderA, xBorderC;
     size_t yBorderA, yBorderB;
     size_t widthBorderA, widthBorderB;
 } FragmentedPanel;

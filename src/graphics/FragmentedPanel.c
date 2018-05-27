@@ -39,20 +39,20 @@ static void fragmentedPanelHalfDraw(this_p(FragmentedPanel), Graphics* graphics,
                 px + this->xBorderA + this->widthBorderA, py + this->yBorderA,
 
                 this->xBorderA, 0,
-                this->xBorderB, this->yBorderA);
+                this->xBorderA + 1, this->yBorderA);
 
     VTP(graphics)->drawTexture(graphics, texture,
                 px + this->xBorderA, py + this->yBorderA,
                 px + this->xBorderA + this->widthBorderA, py + this->yBorderA + height,
                 this->xBorderA, this->yBorderA,
-                this->xBorderB, this->yBorderB);
+                this->xBorderA + 1, this->yBorderB);
 
     VTP(graphics)->drawTexture(graphics, texture,
                 px + this->xBorderA, py + this->yBorderA + height,
                 px + this->xBorderA + this->widthBorderA, py + this->yBorderA + height + (texture->height - this->yBorderB),
 
                 this->xBorderA, this->yBorderB,
-                this->xBorderB, texture->height);
+                this->xBorderA + 1, texture->height);
 
     /* Left handle begin */
     VTP(graphics)->drawTexture(graphics, texture,
