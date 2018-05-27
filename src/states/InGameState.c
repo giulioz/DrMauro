@@ -6,6 +6,8 @@
 #include "SDL_Screen.h"
 #include "InGameState.h"
 
+//#define SAVE_DEBUG
+
 /* *************************************************************** */
 /* Internals                                                       */
 
@@ -15,10 +17,10 @@ static void drawScorePanel(this_p(GameState), Graphics* graphics, int top, int s
     sprintf(score_c, "%07d", score);
 
     VT(Asset_PanelLarge)->draw(&Asset_PanelLarge, graphics, 8, 34, 59);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP");
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 63, top_c);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 79, "SCORE");
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 87, score_c);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP", 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 63, top_c, 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 79, "SCORE", 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 87, score_c, 0);
 }
 
 static void drawLevelPanel(this_p(GameState), Graphics* graphics, int level, int speed, int virus) {
@@ -27,12 +29,28 @@ static void drawLevelPanel(this_p(GameState), Graphics* graphics, int level, int
     sprintf(virus_c, "%02d", virus);
 
     VT(Asset_PanelSmall)->draw(&Asset_PanelSmall, graphics, 176, 122, 83);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL");
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 151, level_c);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 167, "SPEED");
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "MED");
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 191, "VIRUS");
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 199, virus_c);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL", 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 151, level_c, 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 167, "SPEED", 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "MED", 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 191, "VIRUS", 0);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 199, virus_c, 0);
+}
+
+static void drawEndMessage(this_p(GameState), Graphics* graphics, bool won) {
+    if (won) {
+        VT(Asset_EndBox)->draw(&Asset_EndBox, graphics, 98, 90, 49, 56);
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 104, 103, "STAGE", 0);
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 112, 111, "CLEAR", 0);
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 104, 127, "TRY", 0);
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 120, 135, "NEXT", 0);
+    } else {
+        VT(Asset_EndBox)->draw(&Asset_EndBox, graphics, 98, 98, 49, 40);
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 112, 111, "GAME", 0);
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 112, 127, "OVER", 0);
+    }
+
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 109, 195, "START", 1);
 }
 
 /* *************************************************************** */
@@ -57,6 +75,7 @@ static void draw(this_p(GameState)) {
     /* Background */
     VTP(graphics)->drawCheckerboard(graphics, 8, 2, 0);
     VTP(graphics)->drawTexture(graphics, &Asset_Logo, 159, 26, 159 + Asset_Logo.width, 26 + Asset_Logo.height, 0, 0, Asset_Logo.width, Asset_Logo.height);
+    VTP(graphics)->drawTexture(graphics, &Asset_MagVirus, 0, 128, 0 + Asset_MagVirus.width, 128 + Asset_MagVirus.height, 0, 0, Asset_MagVirus.width, Asset_MagVirus.height);
     VT(Asset_PanelBottle)->draw(&Asset_PanelBottle, graphics, 88, 40, 128);
     VT(Asset_MarioBox)->draw(&Asset_MarioBox, graphics, 176, 64, 38, 38);
 
@@ -64,8 +83,12 @@ static void draw(this_p(GameState)) {
     drawScorePanel(this, graphics, 10000, 200);
     drawLevelPanel(this, graphics, 0, 5, 02);
 
-    /*SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");
-    ThrowError("debug");*/
+    drawEndMessage(this, graphics, true);
+
+#ifdef SAVE_DEBUG
+    SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");
+    ThrowError("debug");
+#endif
 }
 
 

@@ -26,8 +26,8 @@ struct Graphics_VTABLE {
                         size_t _dx, size_t _dy, size_t dxEnd, size_t dyEnd,
                         size_t _sx, size_t _sy, size_t sxEnd, size_t syEnd);
     void (*drawCheckerboard)(this_p(Graphics), int step, ColorIndex colorA, ColorIndex colorB);
-    void (*drawChar)(this_p(Graphics), Font* font, size_t px, size_t py, char c);
-    void (*drawString)(this_p(Graphics), Font* font, size_t px, size_t py, char* str);
+    void (*drawChar)(this_p(Graphics), Font* font, size_t px, size_t py, char c, ColorIndex color);
+    void (*drawString)(this_p(Graphics), Font* font, size_t px, size_t py, char* str, ColorIndex color);
 };
 
 typedef class Graphics {

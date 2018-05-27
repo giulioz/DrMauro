@@ -21,8 +21,7 @@ static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
 
     /* Loading screen (nearly useless) */
-    VTP(graphics)->fill(graphics, 1);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 10, 10, "Loading");
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 10, 10, "Loading", 1);
 
     /* Load next state */
     InGameState_init(&((BootState*)this)->inGameState, this->engine);

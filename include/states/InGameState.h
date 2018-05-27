@@ -11,9 +11,12 @@
 #include "Graphics.h"
 #include "Engine.h"
 #include "Assets.h"
+#include "Bool.h"
 
 typedef class InGameState {
     GameState base;
+
+
 } InGameState;
 
 void InGameState_init(this_p(InGameState), Engine *engine);

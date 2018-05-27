@@ -42,6 +42,26 @@ static void textureBlit(this_p(Graphics), Texture* texture, int *framebuffer,   
     }
 }
 
+static void textureBlitColor(this_p(Graphics), Texture* texture, int *framebuffer,/* Must be between begin and end draw */
+                        size_t _dx, size_t _dy, size_t dxEnd, size_t dyEnd,       /* destination start and end */
+                        size_t _sx, size_t _sy, size_t sxEnd, size_t syEnd,       /* source start and end */
+                        ColorIndex  color) {                                      /* color override */
+    SDL_Graphics *graphics = (SDL_Graphics *) this;
+    Screen *screen = (Screen *) graphics->screen;
+    size_t sx, sy, dx, dy;
+    for (sy = _sy, dy = _dy; dy < dyEnd && dy < screen->height; sy++, dy++) {
+        if (sy >= syEnd) sy = _sy;
+        for (sx = _sx, dx = _dx; dx < dxEnd && dx < screen->width; sx++, dx++) {
+            int pixel;
+            if (sx >= sxEnd) sx = _sx;
+            pixel = VTP(texture)->getXY(texture, this->currentPalette, sx, sy);
+            if (((Color*)(&pixel))->a) {
+                framebuffer[dx + dy * graphics->screen->base.width] = this->currentPalette->colors[color];
+            }
+        }
+    }
+}
+
 /* ****************************************************** */
 /* Graphics functions                                     */
 
@@ -124,18 +144,18 @@ static void drawCheckerboard(this_p(Graphics), int step, ColorIndex colorA, Colo
     endDraw(this);
 }
 
-static void drawChar(this_p(Graphics), Font* font, size_t px, size_t py, char c) {
+static void drawChar(this_p(Graphics), Font* font, size_t px, size_t py, char c, ColorIndex color) {
     int* framebuffer = (int *) beginDraw(this);
     size_t sX = font->charMap[(int)c] * font->charWidth; /* x shift for character */
-    textureBlit(this, font->texture, framebuffer,
+    textureBlitColor(this, font->texture, framebuffer,
                 px, py, px + font->charWidth, py + font->texture->height,
-                sX, 0, sX + font->charWidth, font->texture->height);
+                sX, 0, sX + font->charWidth, font->texture->height, color);
     endDraw(this);
 }
 
-static void drawString(this_p(Graphics), Font* font, size_t px, size_t py, char* str) {
+static void drawString(this_p(Graphics), Font* font, size_t px, size_t py, char* str, ColorIndex color) {
     while (*str) {
-        drawChar(this, font, px, py, *str);
+        drawChar(this, font, px, py, *str, color);
         px += font->charWidth;
         str++;
     }
