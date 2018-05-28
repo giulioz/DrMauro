@@ -13,12 +13,19 @@
 #include "Assets.h"
 #include "Bool.h"
 #include "Sprite.h"
+#include "SinglePlayerGame.h"
 
 typedef class InGameState {
     GameState base;
 
-    Sprite marioSprite;
-    Sprite virusLargeBlueSprite, virusLargeYellowSprite, virusLargeRedSprite;
+    /* Game logic */
+    SinglePlayerGame logic;
+
+
+    /* Sprites */
+    Vector sprites;
+    Sprite *marioSprite;
+    Sprite *virusLargeBlueSprite, *virusLargeYellowSprite, *virusLargeRedSprite;
 } InGameState;
 
 void InGameState_init(this_p(InGameState), Engine *engine);

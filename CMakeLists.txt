@@ -17,6 +17,7 @@ include_directories(
         ${DrMauro_SOURCE_DIR}/include/graphics
         ${DrMauro_SOURCE_DIR}/include/SDL
         ${DrMauro_SOURCE_DIR}/include/states
+        ${DrMauro_SOURCE_DIR}/include/gamelogic
         ${SDL2_INCLUDE_DIR}
 )
 

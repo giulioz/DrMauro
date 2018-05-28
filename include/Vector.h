@@ -29,6 +29,9 @@ struct Vector_VTABLE {
     /* Adds an element to the end of the vector */
     void (*add)(this_p(Vector), const void* element);
 
+    /* Adds an element empty to the end of the vector */
+    void* (*addEmpty)(this_p(Vector));
+
     /* Sets an element of the vector given an index and a pointer to an element (doesn't change size) */
     void (*set)(this_p(Vector), const size_t index, const void* element);
 
@@ -59,7 +62,7 @@ void StackVector_init(this_p(Vector), size_t allocatedSize, size_t elementSize, 
 
 extern struct Vector_VTABLE StaticVector_VTABLE_DEFAULT;
 
-#define Vector_foreach(vec,i) for ((i) = 0; (i) < (vec).Count; (i)++)
+#define Vector_foreach(vec,i) for ((i) = 0; (i) < (vec).count; (i)++)
 
 #define StackVector_Empty(name, elementSize, allocSize) \
 Vector name = { \

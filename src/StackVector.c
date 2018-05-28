@@ -57,6 +57,14 @@ static void* _get(const Vector* vector, const size_t index) {
     }
 }
 
+static void* _addEmpty(Vector* vector) {
+    if (vector->allocatedCount < vector->count)
+        grow(vector, vector->count + 1);
+
+    vector->count++;
+    return _get(vector, vector->count - 1);
+}
+
 static void _insert(Vector* vector, const size_t index, const void* element) {
     // TODO
     ThrowWarning("Unimplemented: insert on vector");
@@ -90,6 +98,7 @@ static void _shrink(Vector *vector) {
 struct Vector_VTABLE StaticVector_VTABLE_DEFAULT = {
         _count,
         _add,
+        _addEmpty,
         _set,
         _get,
         _insert,
