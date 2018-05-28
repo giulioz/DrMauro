@@ -50,7 +50,8 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, bool won) {
         VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 112, 127, "OVER", 0);
     }
 
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 109, 195, "START", 1);
+    if (VTP(this->engine->screen)->getCurrentTime(this->engine->screen) % 300 > 150)
+        VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 109, 195, "START", 1);
 }
 
 /* *************************************************************** */
@@ -60,7 +61,11 @@ static void load(this_p(GameState)) {
     InGameState *state = (InGameState *) this;
 
     Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 0);
-    VT(state->marioSprite)->setAnimation(&state->marioSprite, this->engine->screen, 1);
+    //VT(state->marioSprite)->setAnimation(&state->marioSprite, this->engine->screen, 1);
+
+    Sprite_init(&state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
+    Sprite_init(&state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
+    Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
 }
 
 static void unload(this_p(GameState)) {
@@ -90,6 +95,9 @@ static void draw(this_p(GameState)) {
     drawEndMessage(this, graphics, true);
 
     VT(state->marioSprite)->draw(&state->marioSprite, this->engine->screen, graphics);
+    VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
+    VT(state->virusLargeYellowSprite)->draw(&state->virusLargeYellowSprite, this->engine->screen, graphics);
+    VT(state->virusLargeRedSprite)->draw(&state->virusLargeRedSprite, this->engine->screen, graphics);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");

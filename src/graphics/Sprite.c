@@ -13,13 +13,21 @@ static void draw(this_p(Sprite), Screen* screen, Graphics *graphics) {
 
     /* it's next frame time! */
     if (currentTime > this->lastTime + anim->speed) {
-        this->lastFrame++;
+        this->lastFrame += this->direction;
 
         /* wrap */
-        if (this->lastFrame > anim->endFrame) {
-            if (anim->oneShot) this->lastFrame--;
-            else this->lastFrame = anim->startFrame;
+        if (!anim->oneShot) {
+            if (this->lastFrame > anim->endFrame)
+                this->lastFrame = anim->startFrame;
+            if (anim->cyclic && (this->lastFrame >= anim->endFrame || this->lastFrame <= anim->startFrame))
+                this->direction = -this->direction;
+        } else {
+            if (this->lastFrame > anim->endFrame)
+                this->lastFrame = anim->endFrame;
         }
+
+        /* update time */
+        this->lastTime = currentTime;
     }
 
     /* draw the sprite */
@@ -34,6 +42,7 @@ static void setAnimation(this_p(Sprite), Screen* screen, size_t animation) {
     this->lastFrame = ((SpriteAnimation*)VTP(this->spriteClass->animations)
             ->get(this->spriteClass->animations, animation))->startFrame;
     this->lastTime = VTP(screen)->getCurrentTime(screen);
+    this->direction = 1;
 }
 
 
@@ -49,4 +58,5 @@ void Sprite_init(this_p(Sprite), Screen *screen, SpriteClass *sclass, uint32_t x
     this->currentAnimation = currentAnimation;
     this->lastTime = VTP(screen)->getCurrentTime(screen);
     this->lastFrame = ((SpriteAnimation*)VTP(sclass->animations)->get(sclass->animations, currentAnimation))->startFrame;
+    this->direction = 1;
 }

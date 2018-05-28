@@ -15,7 +15,7 @@
 typedef class SpriteAnimation {
     size_t startFrame, endFrame;  /* frames must be linear */
     int speed;                 /* in milliseconds between frame shift, -1 for still */
-    bool oneShot;
+    bool oneShot, cyclic;
 } SpriteAnimation;
 
 typedef class SpriteClass {
@@ -38,6 +38,7 @@ typedef class Sprite {
     size_t currentAnimation;
     uint32_t lastTime;
     size_t lastFrame;
+    char direction;
 } Sprite;
 
 void Sprite_init(this_p(Sprite), Screen *screen, SpriteClass *sclass, uint32_t x, uint32_t y, size_t currentAnimation);

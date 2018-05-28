@@ -15,17 +15,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/Mario.c" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/assets/Sprites.c" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/VirusLarge.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Screen.h" afterPath="$PROJECT_DIR$/include/Screen.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Vector.h" afterPath="$PROJECT_DIR$/include/Vector.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/assets/Assets.h" afterPath="$PROJECT_DIR$/include/assets/Assets.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/graphics/Graphics.h" afterPath="$PROJECT_DIR$/include/graphics/Graphics.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/graphics/Sprite.h" afterPath="$PROJECT_DIR$/include/graphics/Sprite.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/states/InGameState.h" afterPath="$PROJECT_DIR$/include/states/InGameState.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SDL/SDL_Screen.c" afterPath="$PROJECT_DIR$/src/SDL/SDL_Screen.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/StackVector.c" afterPath="$PROJECT_DIR$/src/StackVector.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/Mario.c" afterPath="$PROJECT_DIR$/src/assets/Mario.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/graphics/Sprite.c" afterPath="$PROJECT_DIR$/src/graphics/Sprite.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/InGameState.c" afterPath="$PROJECT_DIR$/src/states/InGameState.c" />
     </list>
@@ -42,11 +37,11 @@
       <file leaf-file-name="InGameState.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/states/InGameState.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+            <state relative-caret-position="365">
+              <caret line="53" column="8" lean-forward="false" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
               <folding>
                 <element signature="e#77#100#0" expanded="true" />
-                <element signature="e#4102#4198#0" expanded="true" />
+                <element signature="e#4825#4921#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -55,8 +50,8 @@
       <file leaf-file-name="InGameState.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/states/InGameState.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="22" lean-forward="false" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+            <state relative-caret-position="270">
+              <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
                 <element signature="e#122#141#0" expanded="true" />
               </folding>
@@ -64,11 +59,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="VirusLarge.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/assets/VirusLarge.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="20214" lean-forward="false" selection-start-line="8" selection-start-column="20214" selection-end-line="8" selection-end-column="20214" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Mario.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/assets/Mario.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="18" column="43" lean-forward="true" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
+            <state relative-caret-position="-8">
+              <caret line="7" column="43948" lean-forward="false" selection-start-line="7" selection-start-column="43948" selection-end-line="7" selection-end-column="43948" />
               <folding />
             </state>
           </provider>
@@ -77,8 +82,30 @@
       <file leaf-file-name="Assets.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/assets/Assets.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="16" lean-forward="false" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+            <state relative-caret-position="330">
+              <caret line="22" column="97" lean-forward="false" selection-start-line="22" selection-start-column="97" selection-end-line="22" selection-end-column="97" />
+              <folding>
+                <element signature="e#107#127#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sprite.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphics/Sprite.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sprite.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/graphics/Sprite.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="515">
+              <caret line="40" column="19" lean-forward="false" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -132,6 +159,7 @@
       <find>panel</find>
       <find>textureBlit(this, texture,</find>
       <find>xBorderB</find>
+      <find>SDL</find>
     </findStrings>
     <replaceStrings>
       <replace>window-&gt;getFramebuffer();</replace>
@@ -152,7 +180,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/include/Sprite.h" />
         <option value="$PROJECT_DIR$/include/Panel.h" />
         <option value="$PROJECT_DIR$/src/Texture.c" />
         <option value="$PROJECT_DIR$/include/Texture.h" />
@@ -195,13 +222,14 @@
         <option value="$PROJECT_DIR$/src/Engine.c" />
         <option value="$PROJECT_DIR$/include/Engine.h" />
         <option value="$PROJECT_DIR$/src/SDL/SDL_Screen.c" />
-        <option value="$PROJECT_DIR$/include/assets/Assets.h" />
-        <option value="$PROJECT_DIR$/include/states/InGameState.h" />
         <option value="$PROJECT_DIR$/src/StackVector.c" />
         <option value="$PROJECT_DIR$/include/Vector.h" />
-        <option value="$PROJECT_DIR$/include/graphics/Sprite.h" />
         <option value="$PROJECT_DIR$/src/assets/Mario.c" />
+        <option value="$PROJECT_DIR$/include/graphics/Sprite.h" />
         <option value="$PROJECT_DIR$/src/graphics/Sprite.c" />
+        <option value="$PROJECT_DIR$/include/states/InGameState.h" />
+        <option value="$PROJECT_DIR$/include/assets/Assets.h" />
+        <option value="$PROJECT_DIR$/src/assets/VirusLarge.c" />
         <option value="$PROJECT_DIR$/src/states/InGameState.c" />
       </list>
     </option>
@@ -405,12 +433,12 @@
       <updated>1526129318234</updated>
       <workItem from="1526129323360" duration="31064000" />
       <workItem from="1526292893152" duration="132600000" />
-      <workItem from="1527437785092" duration="13512000" />
+      <workItem from="1527437785092" duration="17710000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="177176000" />
+    <option name="totallyTimeSpent" value="181374000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -451,7 +479,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Panel.c" />
     <entry file="file://$PROJECT_DIR$/include/Panel.h" />
     <entry file="file://$PROJECT_DIR$/src/Font.c" />
     <entry file="file://$PROJECT_DIR$/tools/charmapgen/CMakeLists.txt">
@@ -772,16 +799,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/graphics/Graphics.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding>
-            <element signature="e#139#156#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/SDL/SDL_Graphics.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -794,24 +811,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/graphics/Sprite.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/graphics/Sprite.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="23" column="12" lean-forward="false" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
-          <folding>
-            <element signature="e#107#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Vector.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
@@ -820,39 +819,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/assets/Assets.h">
+    <entry file="file://$PROJECT_DIR$/include/graphics/Graphics.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="16" lean-forward="false" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+        <state relative-caret-position="555">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding>
+            <element signature="e#139#156#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/graphics/Sprite.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="40" column="19" lean-forward="false" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/states/InGameState.h">
+    <entry file="file://$PROJECT_DIR$/src/graphics/Sprite.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="22" lean-forward="false" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+        <state relative-caret-position="286">
+          <caret line="25" column="49" lean-forward="false" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/assets/Assets.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="97" lean-forward="false" selection-start-line="22" selection-start-column="97" selection-end-line="22" selection-end-column="97" />
           <folding>
-            <element signature="e#122#141#0" expanded="true" />
+            <element signature="e#107#127#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/assets/Mario.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="18" column="43" lean-forward="true" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
+        <state relative-caret-position="-8">
+          <caret line="7" column="43948" lean-forward="false" selection-start-line="7" selection-start-column="43948" selection-end-line="7" selection-end-column="43948" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/VirusLarge.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="20214" lean-forward="false" selection-start-line="8" selection-start-column="20214" selection-end-line="8" selection-end-column="20214" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/states/InGameState.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#122#141#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/states/InGameState.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+        <state relative-caret-position="365">
+          <caret line="53" column="8" lean-forward="false" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
           <folding>
             <element signature="e#77#100#0" expanded="true" />
-            <element signature="e#4102#4198#0" expanded="true" />
+            <element signature="e#4825#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
