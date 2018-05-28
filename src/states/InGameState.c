@@ -6,8 +6,12 @@
 #include "SDL_Screen.h"
 #include "InGameState.h"
 
+/* Sprite prealloc */
+#define SPRITE_PREALLOC 50
+
 /* Save bmp for photoshop confrontation */
 /* #define SAVE_DEBUG */
+
 
 /* *************************************************************** */
 /* Graphics Elements                                               */
@@ -98,7 +102,7 @@ static void draw(this_p(GameState)) {
     drawLevelPanel(graphics, state->logic.level, state->logic.speed, state->logic.virus);
 
     /* End game */
-    if (state->logic.state != PLAYING)
+    if (state->logic.state == END_LOOSE || state->logic.state == END_WON)
         drawEndMessage(this, graphics, state->logic.state);
 
     /* Sprites */
@@ -129,13 +133,13 @@ static void load(this_p(GameState)) {
     InGameState *state = (InGameState *) this;
 
     /* Sprites vector */
-    HeapVector_init(&state->sprites, 20, sizeof(Sprite));
+    HeapVector_init(&state->sprites, SPRITE_PREALLOC, sizeof(Sprite));
 
-    /* Add sprites */
+    /* Mario */
     state->marioSprite = VT(state->sprites)->addEmpty(&state->sprites);
     Sprite_init(state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 0);
-    //VT(state->marioSprite)->setAnimation(&state->marioSprite, this->engine->screen, 1);
 
+    /* Large viruses */
     state->virusLargeBlueSprite = VT(state->sprites)->addEmpty(&state->sprites);
     state->virusLargeYellowSprite = VT(state->sprites)->addEmpty(&state->sprites);
     state->virusLargeRedSprite = VT(state->sprites)->addEmpty(&state->sprites);
