@@ -87,7 +87,7 @@ static void _shrink(Vector *vector) {
 /* ------------------------------------------------------------------ */
 /* VTABLE                                                             */
 
-static struct Vector_VTABLE _vtable = {
+struct Vector_VTABLE StaticVector_VTABLE_DEFAULT = {
         _count,
         _add,
         _set,
@@ -109,5 +109,5 @@ void StackVector_init(this_p(Vector), const size_t allocatedSize, const size_t e
     this->count = 0;
     this->data = stackArray;
     if (!this->data) ThrowError("Void pointer!");
-    VTP(this) = &_vtable;
+    VTP(this) = &StaticVector_VTABLE_DEFAULT;
 }

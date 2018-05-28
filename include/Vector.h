@@ -14,12 +14,12 @@
 struct Vector_VTABLE;
 
 typedef class Vector {
+    struct Vector_VTABLE *VTABLE;
+
     void* data;
     size_t elementSize;     /* bytes per element */
     size_t count;           /* in elements */
     size_t allocatedCount;  /* free space (elements, not bytes) */
-    
-    struct Vector_VTABLE *VTABLE;
 } Vector;
 
 struct Vector_VTABLE {
@@ -57,13 +57,25 @@ struct Vector_VTABLE {
 void HeapVector_init(this_p(Vector), size_t initialSize, size_t elementSize);
 void StackVector_init(this_p(Vector), size_t allocatedSize, size_t elementSize, void* stackArray);
 
+extern struct Vector_VTABLE StaticVector_VTABLE_DEFAULT;
+
 #define Vector_foreach(vec,i) for ((i) = 0; (i) < (vec).Count; (i)++)
 
 #define StackVector_Empty(name, elementSize, allocSize) \
 Vector name = { \
+    &StaticVector_VTABLE_DEFAULT, \
     NULL, \
     elementSize, \
     0, \
+    allocSize \
+}
+
+#define StackVector_Static(name, elementSize, count, allocSize, array) \
+Vector name = { \
+    &StaticVector_VTABLE_DEFAULT, \
+    array, \
+    elementSize, \
+    count, \
     allocSize \
 }
 

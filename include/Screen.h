@@ -28,6 +28,7 @@ struct Screen_VTABLE {
     void (*run)(this_p(Screen));
     void (*close)(this_p(Screen));
     class Graphics* (*getGraphics)(this_p(Screen));
+    uint32_t (*getCurrentTime)(this_p(Screen));
 };
 
 typedef class Screen {

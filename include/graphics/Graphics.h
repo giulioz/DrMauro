@@ -11,7 +11,6 @@
 #include "Bool.h"
 #include "Object.h"
 #include "Texture.h"
-#include "Sprite.h"
 #include "Color.h"
 #include "Font.h"
 #include "Palette.h"

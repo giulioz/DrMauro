@@ -12,11 +12,12 @@
 #include "Engine.h"
 #include "Assets.h"
 #include "Bool.h"
+#include "Sprite.h"
 
 typedef class InGameState {
     GameState base;
 
-
+    Sprite marioSprite;
 } InGameState;
 
 void InGameState_init(this_p(InGameState), Engine *engine);

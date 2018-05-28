@@ -8,27 +8,38 @@
 
 #include "Texture.h"
 #include "Object.h"
+#include "IntTypes.h"
+#include "Graphics.h"
+#include "Engine.h"
 
 typedef class SpriteAnimation {
-    int startFrame, endFrame;  /* frames must be linear */
-    int speed;                 /* in milliseconds between frame shift */
+    size_t startFrame, endFrame;  /* frames must be linear */
+    int speed;                 /* in milliseconds between frame shift, -1 for still */
+    bool oneShot;
 } SpriteAnimation;
 
 typedef class SpriteClass {
     Texture* texture;
     size_t spriteWidth, spriteHeight;
-    int currentAnimation; /* -1 for no animation */
-    Vector animations;
+    Vector* animations;
 } SpriteClass;
 
 class Sprite;
 
 struct Sprite_VTABLE {
-
+    void (*draw)(this_p(Sprite), Screen* screen, Graphics *graphics);
+    void (*setAnimation)(this_p(Sprite), Screen* screen, size_t animation);
 };
 
 typedef class Sprite {
     struct Sprite_VTABLE *VTABLE;
+    SpriteClass *spriteClass;
+    uint32_t x, y;
+    size_t currentAnimation;
+    uint32_t lastTime;
+    size_t lastFrame;
 } Sprite;
+
+void Sprite_init(this_p(Sprite), Screen *screen, SpriteClass *sclass, uint32_t x, uint32_t y, size_t currentAnimation);
 
 #endif

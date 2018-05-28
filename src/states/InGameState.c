@@ -57,7 +57,10 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, bool won) {
 /* Interface                                                       */
 
 static void load(this_p(GameState)) {
+    InGameState *state = (InGameState *) this;
 
+    Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 0);
+    VT(state->marioSprite)->setAnimation(&state->marioSprite, this->engine->screen, 1);
 }
 
 static void unload(this_p(GameState)) {
@@ -70,6 +73,7 @@ static void update(this_p(GameState), double deltaTime) {
 
 static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
+    InGameState *state = (InGameState *) this;
     graphics->currentPalette = &Asset_DefaultPalette;
 
     /* Background */
@@ -84,6 +88,8 @@ static void draw(this_p(GameState)) {
     drawLevelPanel(this, graphics, 0, 5, 02);
 
     drawEndMessage(this, graphics, true);
+
+    VT(state->marioSprite)->draw(&state->marioSprite, this->engine->screen, graphics);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");

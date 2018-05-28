@@ -53,6 +53,8 @@ static void run(this_p(Screen)) {
         VTP(this->callbacks)->draw(this->callbacks);
         SDL_UpdateWindowSurface(((SDL_Screen*)this)->window);
 
+        /* HACK: lowers battery usage */
+        SDL_Delay(10);
         this->lastTime = SDL_GetTicks();
     }
 }
@@ -71,8 +73,12 @@ static Graphics* getGraphics(this_p(Screen)) {
     return (Graphics *) &(screen->graphics);
 }
 
+static uint32_t getCurrentTime(this_p(Screen)) {
+    return SDL_GetTicks();
+}
+
 static struct Screen_VTABLE _vtable = {
-        init, run, close, getGraphics
+        init, run, close, getGraphics, getCurrentTime
 };
 
 /* ********************************************************* */
