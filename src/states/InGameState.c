@@ -15,6 +15,7 @@
 
 /* *************************************************************** */
 /* Graphics Elements                                               */
+/* *************************************************************** */
 
 static void loadPalette(Graphics* graphics, SinglePlayerGame_Speed speed) {
     /* Load palette according to speed */
@@ -120,6 +121,7 @@ static void draw(this_p(GameState)) {
 
 /* *************************************************************** */
 /* Game Logic                                                      */
+/* *************************************************************** */
 
 static void update(this_p(GameState), double deltaTime) {
 
@@ -128,6 +130,7 @@ static void update(this_p(GameState), double deltaTime) {
 
 /* *************************************************************** */
 /* Initialization                                                  */
+/* *************************************************************** */
 
 static void load(this_p(GameState)) {
     InGameState *state = (InGameState *) this;
