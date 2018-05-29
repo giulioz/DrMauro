@@ -94,6 +94,12 @@ void riempi_campo(struct gioco *gioco, int difficolta) {
 
 	gioco->active_id = 0;
 
+	if (difficolta < 0)
+		difficolta = 0;
+
+	else if (difficolta > 15)
+		difficolta = 15;
+
 	for (row = 0; row < RIGHE; row++) {
 		for (col = 0; col < COLONNE; col++) {
 			curCell = &gioco->campo[row][col];
