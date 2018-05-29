@@ -135,6 +135,9 @@ static void update(this_p(GameState), double deltaTime) {
 static void load(this_p(GameState)) {
     InGameState *state = (InGameState *) this;
 
+    /* Game logic */
+    SinglePlayerGame_init(&state->logic);
+
     /* Sprites vector */
     HeapVector_init(&state->sprites, SPRITE_PREALLOC, sizeof(Sprite));
 

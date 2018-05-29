@@ -7,6 +7,8 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DrMauro_SOURCE_DIR}/cmake")
 find_package(SDL2 REQUIRED)
 
+add_subdirectory(deps/libsoundio)
+
 file(GLOB SOURCES src/*.c src/*/*.c)
 file(GLOB INCLUDE_DIRS include/*)
 file(GLOB INCLUDES include/*.h include/*/*.h)
@@ -18,13 +20,17 @@ include_directories(
         ${DrMauro_SOURCE_DIR}/include/SDL
         ${DrMauro_SOURCE_DIR}/include/states
         ${DrMauro_SOURCE_DIR}/include/gamelogic
+        ${DrMauro_SOURCE_DIR}/include/audio
         ${SDL2_INCLUDE_DIR}
+        ${libsoundio_SOURCE_DIR}
+        ${libsoundio_BINARY_DIR}
 )
 
 add_executable(DrMauro ${SOURCES} ${INCLUDES})
 target_link_libraries(
     DrMauro
     m
+    libsoundio_shared
     ${SDL2_LIBRARY}
 )
 

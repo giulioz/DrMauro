@@ -24,6 +24,7 @@ typedef enum {
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
+
 };
 
 typedef class SinglePlayerGame {

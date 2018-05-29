@@ -10,13 +10,16 @@
 #include "GameState.h"
 #include "Graphics.h"
 #include "Engine.h"
-#include "assets/Assets.h"
+#include "Assets.h"
 #include "InGameState.h"
+#include "AudioTestState.h"
 
 typedef class BootState {
     GameState base;
 
     InGameState inGameState;
+
+    AudioTestState audioTestState;
 } BootState;
 
 void BootState_init(this_p(BootState), Engine *engine);

@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "stb_image.h"
+#include "../../deps/stb_image.h"
 
 typedef struct {
     uint16_t width, height;
