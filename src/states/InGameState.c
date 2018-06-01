@@ -40,8 +40,8 @@ static void drawBaseElements(Graphics* graphics) {
 
 static void drawScorePanel(Graphics* graphics, int top, int score) {
     char top_c[8] = {0}, score_c[8] = {0};
-    sprintf(top_c, "%07d", top);
-    sprintf(score_c, "%07d", score);
+    sprintf_s(top_c, 8, "%07d", top);
+	sprintf_s(score_c, 8, "%07d", score);
 
     VT(Asset_PanelLarge)->draw(&Asset_PanelLarge, graphics, 8, 34, 59);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP", 0);
@@ -52,8 +52,8 @@ static void drawScorePanel(Graphics* graphics, int top, int score) {
 
 static void drawLevelPanel(Graphics* graphics, int level, SinglePlayerGame_Speed speed, int virus) {
     char level_c[3] = {0}, virus_c[3] = {0};
-    sprintf(level_c, "%02d", level);
-    sprintf(virus_c, "%02d", virus);
+	sprintf_s(level_c, 3, "%02d", level);
+	sprintf_s(virus_c, 3, "%02d", virus);
 
     VT(Asset_PanelSmall)->draw(&Asset_PanelSmall, graphics, 176, 122, 83);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL", 0);

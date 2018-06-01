@@ -7,7 +7,7 @@
 #define SDLSCREEN_H
 
 #include <stdlib.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "Object.h"
 #include "Bool.h"
