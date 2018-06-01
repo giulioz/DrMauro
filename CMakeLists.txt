@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 project(DrMauro)
 
+add_subdirectory(deps/libsoundio)
+add_subdirectory(deps/SDL-mirror)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu89 -pedantic -Wall -g")
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DrMauro_SOURCE_DIR}/cmake")
-find_package(SDL2 REQUIRED)
-
-add_subdirectory(deps/libsoundio)
+#find_package(SDL2 REQUIRED)
 
 file(GLOB SOURCES src/*.c src/*/*.c)
 file(GLOB INCLUDE_DIRS include/*)

@@ -15,8 +15,12 @@
       <config projectName="DrMauro" targetName="coverage" />
       <config projectName="DrMauro" targetName="latency" />
       <config projectName="DrMauro" targetName="sio_list_devices" />
+      <config projectName="DrMauro" targetName="uninstall" />
       <config projectName="DrMauro" targetName="imgtool" />
       <config projectName="DrMauro" targetName="sio_record" />
+      <config projectName="DrMauro" targetName="SDL2main" />
+      <config projectName="DrMauro" targetName="SDL2" />
+      <config projectName="DrMauro" targetName="SDL2-static" />
       <config projectName="DrMauro" targetName="sio_sine" />
       <config projectName="DrMauro" targetName="charmapgen" />
     </generated>
@@ -28,16 +32,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/InputDevice.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/audio/AudioManager.h" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/include/external/stb_image.h" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/giuliozausa.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/giuliozausa.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/deps/SDL-mirror" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitmodules" afterPath="$PROJECT_DIR$/.gitmodules" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" afterPath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/states/InGameState.h" afterPath="$PROJECT_DIR$/include/states/InGameState.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" afterPath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/BootState.c" afterPath="$PROJECT_DIR$/src/states/BootState.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/InGameState.c" afterPath="$PROJECT_DIR$/src/states/InGameState.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -59,14 +57,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InGameState.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InGameState.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/states/InGameState.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
-              <folding>
-                <element signature="e#122#141#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="195">
+              <caret line="13" column="17" lean-forward="false" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -75,7 +81,7 @@
         <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
-              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+              <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -85,7 +91,7 @@
         <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="365">
-              <caret line="28" column="60" lean-forward="true" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
+              <caret line="28" column="60" lean-forward="false" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
               <folding>
                 <element signature="e#137#156#0" expanded="true" />
               </folding>
@@ -97,7 +103,7 @@
         <entry file="file://$PROJECT_DIR$/include/InputDevice.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
-              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding>
                 <element signature="e#122#141#0" expanded="true" />
               </folding>
@@ -190,7 +196,6 @@
         <option value="$PROJECT_DIR$/tools/imgtool/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/deps/libsoundio/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/include/states/BootState.h" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/include/audio/AudioManager.h" />
         <option value="$PROJECT_DIR$/include/states/AudioTestState.h" />
         <option value="$PROJECT_DIR$/src/states/AudioTestState.c" />
@@ -201,6 +206,7 @@
         <option value="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
         <option value="$PROJECT_DIR$/src/states/InGameState.c" />
         <option value="$PROJECT_DIR$/include/states/InGameState.h" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
       </list>
     </option>
   </component>
@@ -386,6 +392,15 @@
     <configuration name="DrMauro" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="DrMauro" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DrMauro" RUN_TARGET_NAME="DrMauro">
       <envs />
     </configuration>
+    <configuration name="SDL2-static" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="SDL2-static" CONFIG_NAME="Debug">
+      <envs />
+    </configuration>
+    <configuration name="SDL2" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="SDL2" CONFIG_NAME="Debug">
+      <envs />
+    </configuration>
+    <configuration name="SDL2main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="SDL2main" CONFIG_NAME="Debug">
+      <envs />
+    </configuration>
     <configuration name="backend_disconnect_recover" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="backend_disconnect_recover" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DrMauro" RUN_TARGET_NAME="backend_disconnect_recover">
       <envs />
     </configuration>
@@ -431,10 +446,13 @@
     <configuration name="underflow" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="underflow" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DrMauro" RUN_TARGET_NAME="underflow">
       <envs />
     </configuration>
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+      <envs />
+    </configuration>
     <configuration name="unit_tests" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="unit_tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DrMauro" RUN_TARGET_NAME="unit_tests">
       <envs />
     </configuration>
-    <list size="18">
+    <list size="22">
       <item index="0" class="java.lang.String" itemvalue="Application.Build All" />
       <item index="1" class="java.lang.String" itemvalue="Application.DrMauro" />
       <item index="2" class="java.lang.String" itemvalue="Application.backend_disconnect_recover" />
@@ -450,9 +468,13 @@
       <item index="12" class="java.lang.String" itemvalue="Application.sio_sine" />
       <item index="13" class="java.lang.String" itemvalue="Application.underflow" />
       <item index="14" class="java.lang.String" itemvalue="Application.unit_tests" />
-      <item index="15" class="java.lang.String" itemvalue="Application.charmapgen" />
-      <item index="16" class="java.lang.String" itemvalue="Application.headerize" />
-      <item index="17" class="java.lang.String" itemvalue="Application.imgtool" />
+      <item index="15" class="java.lang.String" itemvalue="Application.SDL2" />
+      <item index="16" class="java.lang.String" itemvalue="Application.SDL2-static" />
+      <item index="17" class="java.lang.String" itemvalue="Application.SDL2main" />
+      <item index="18" class="java.lang.String" itemvalue="Application.uninstall" />
+      <item index="19" class="java.lang.String" itemvalue="Application.charmapgen" />
+      <item index="20" class="java.lang.String" itemvalue="Application.headerize" />
+      <item index="21" class="java.lang.String" itemvalue="Application.imgtool" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -467,12 +489,12 @@
       <updated>1526129318234</updated>
       <workItem from="1526129323360" duration="31064000" />
       <workItem from="1526292893152" duration="132600000" />
-      <workItem from="1527437785092" duration="40696000" />
+      <workItem from="1527437785092" duration="41678000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204360000" />
+    <option name="totallyTimeSpent" value="205342000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -818,14 +840,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="21" lean-forward="false" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/states/AudioTestState.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
@@ -909,7 +923,7 @@
     <entry file="file://$PROJECT_DIR$/include/InputDevice.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding>
             <element signature="e#122#141#0" expanded="true" />
           </folding>
@@ -919,7 +933,7 @@
     <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="365">
-          <caret line="28" column="60" lean-forward="true" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
+          <caret line="28" column="60" lean-forward="false" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
           <folding>
             <element signature="e#137#156#0" expanded="true" />
           </folding>
@@ -929,7 +943,7 @@
     <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
-          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -944,11 +958,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/states/InGameState.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
-          <folding>
-            <element signature="e#122#141#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="195">
+          <caret line="13" column="17" lean-forward="false" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
