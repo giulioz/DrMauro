@@ -13,7 +13,7 @@ static void unload(this_p(GameState)) {
 
 }
 
-static void update(this_p(GameState), double deltaTime) {
+static void update(this_p(GameState)) {
 
 }
 
@@ -26,8 +26,8 @@ static void draw(this_p(GameState)) {
     /* Load next state */
     InGameState_init(&((BootState*)this)->inGameState, this->engine);
     VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->inGameState);
-    //AudioTestState_init(&((BootState*)this)->audioTestState, this->engine);
-    //VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->audioTestState);
+    /*AudioTestState_init(&((BootState*)this)->audioTestState, this->engine);
+    VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->audioTestState);*/
 }
 
 static struct GameState_VTABLE _vtable = {

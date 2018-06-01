@@ -15,7 +15,7 @@ class Screen;
 class ScreenCallbacks;
 
 struct ScreenCallbacks_VTABLE {
-    void (*update)(this_p(ScreenCallbacks), double deltaTime);
+    void (*update)(this_p(ScreenCallbacks));
     void (*draw)(this_p(ScreenCallbacks));
 };
 
@@ -37,7 +37,6 @@ typedef class Screen {
 
     uint16_t width, height;
     bool running;
-    uint32_t lastTime;
 } Screen;
 
 #endif

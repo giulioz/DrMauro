@@ -1,6 +1,7 @@
 /*
  *  InGameState.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *  View part of a Single Player Game
  */
 
 #ifndef INGAMESTATE_H
@@ -19,13 +20,18 @@
 typedef class InGameState {
     GameState base;
 
+	/* Timeline */
+
+
     /* Game logic */
     SinglePlayerGame logic;
+	SinglePlayerGame_State lastLogicState;
 
     /* Sprites */
     Vector sprites;
     Sprite *marioSprite;
     Sprite *virusLargeBlueSprite, *virusLargeYellowSprite, *virusLargeRedSprite;
+
 } InGameState;
 
 void InGameState_init(this_p(InGameState), Engine *engine);

@@ -11,6 +11,7 @@
 #include "IntTypes.h"
 #include "Graphics.h"
 #include "Engine.h"
+#include "Bool.h"
 
 typedef class SpriteAnimation {
     size_t startFrame, endFrame;  /* frames must be linear */
@@ -39,6 +40,7 @@ typedef class Sprite {
     uint32_t lastTime;
     size_t lastFrame;
     char direction;
+	bool visible;
 } Sprite;
 
 void Sprite_init(this_p(Sprite), Screen *screen, SpriteClass *sclass, uint32_t x, uint32_t y, size_t currentAnimation);

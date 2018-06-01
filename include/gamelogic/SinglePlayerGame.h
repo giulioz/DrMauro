@@ -25,7 +25,6 @@ typedef enum {
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
-    void (*newGame)(this_p(SinglePlayerGame));
     void (*update)(this_p(SinglePlayerGame), uint32_t time);
 };
 
@@ -38,6 +37,6 @@ typedef class SinglePlayerGame {
     SinglePlayerGame_Speed speed;
 } SinglePlayerGame;
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame));
+void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed);
 
 #endif

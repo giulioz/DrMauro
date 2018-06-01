@@ -53,7 +53,7 @@ static void draw(this_p(GameState)) {
 
 }
 
-static void update(this_p(GameState), double deltaTime) {
+static void update(this_p(GameState)) {
     AudioTestState *state = (AudioTestState *) this;
     soundio_wait_events(state->soundio);
 }

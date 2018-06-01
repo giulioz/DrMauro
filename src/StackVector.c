@@ -71,8 +71,15 @@ static void _insert(Vector* vector, const size_t index, const void* element) {
 }
 
 static void _delete(Vector* vector, const size_t index) {
-    // TODO
-    ThrowWarning("Unimplemented: delete vector element");
+	int i;
+	if (index == vector->count - 1) {
+		vector->count--;
+	}
+	else {
+		for (i = vector->count - 1; i >= index; i--) {
+			_set(vector, i - 1, _get(vector, i));
+		}
+	}
 }
 
 static void _clear(Vector* vector) {

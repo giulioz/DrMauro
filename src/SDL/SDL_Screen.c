@@ -25,12 +25,9 @@ static void init(this_p(Screen)) {
 
 static void run(this_p(Screen)) {
     this->running = true;
-    this->lastTime = SDL_GetTicks();
 
     /* event loop */
     while (this->running) {
-        Uint32 currentTime = SDL_GetTicks();
-        double deltaTime = (currentTime - this->lastTime) / (double)1000;
 
         /* pool Events */
         SDL_Event event;
@@ -49,13 +46,12 @@ static void run(this_p(Screen)) {
         }
 
         /* callbacks */
-        VTP(this->callbacks)->update(this->callbacks, deltaTime);
+        VTP(this->callbacks)->update(this->callbacks);
         VTP(this->callbacks)->draw(this->callbacks);
         SDL_UpdateWindowSurface(((SDL_Screen*)this)->window);
 
-        /* HACK: lowers battery usage */
+        /* HACK: frame limiter */
         SDL_Delay(10);
-        this->lastTime = SDL_GetTicks();
     }
 }
 
@@ -89,7 +85,6 @@ void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* 
 
     this->base.width = width;
     this->base.height = height;
-    this->base.lastTime = 0;
     this->base.running = false;
     this->windowTitle = windowTitle;
     SDL_Graphics_init(&this->graphics, this);

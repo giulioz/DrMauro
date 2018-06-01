@@ -32,7 +32,8 @@ static void draw(this_p(Sprite), Screen* screen, Graphics *graphics) {
 
     /* draw the sprite */
     size_t sx = this->lastFrame * sclass->spriteWidth;
-    VTP(graphics)->drawTexture(graphics, sclass->texture,
+    if (this->visible)
+		VTP(graphics)->drawTexture(graphics, sclass->texture,
             this->x, this->y, this->x + sclass->spriteWidth, this->y + sclass->spriteHeight,
             sx, 0, sx + sclass->spriteWidth, sclass->spriteHeight);
 }
@@ -59,4 +60,5 @@ void Sprite_init(this_p(Sprite), Screen *screen, SpriteClass *sclass, uint32_t x
     this->lastTime = VTP(screen)->getCurrentTime(screen);
     this->lastFrame = ((SpriteAnimation*)VTP(sclass->animations)->get(sclass->animations, currentAnimation))->startFrame;
     this->direction = 1;
+	this->visible = true;
 }

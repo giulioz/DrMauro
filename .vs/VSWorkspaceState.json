@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\include",
+    "\\include\\gamelogic",
+    "\\include\\states",
+    "\\src",
+    "\\src\\gamelogic",
+    "\\src\\states"
+  ],
+  "SelectedNode": "\\include\\states\\InGameState.h",
+  "PreviewInSolutionExplorer": false
+}

@@ -9,8 +9,4 @@
 #include <stdlib.h>
 #include "../../deps/stb_image.h"
 
-typedef struct {
-    uint16_t width, height;
-} Texture;
-
 #endif //DRMAURO_IMGTOOL_C_H

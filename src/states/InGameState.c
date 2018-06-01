@@ -1,9 +1,12 @@
 /*
  *  InGameState.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *  View part of a Single Player Game
  */
 
 #include "InGameState.h"
+
+/* hack includes */
 #include <stdio.h>
 #ifndef WIN32
 #define sprintf_s(buffer, buffer_size, stringbuffer, ...) (sprintf(buffer, stringbuffer, __VA_ARGS__))
@@ -127,8 +130,49 @@ static void draw(this_p(GameState)) {
 /* Game Logic                                                      */
 /* *************************************************************** */
 
-static void update(this_p(GameState), double deltaTime) {
+static void updateAnimations(this_p(InGameState)) {
+	if (this->logic.state != this->lastLogicState) {
+		switch (this->logic.state) {
+			case PLAYING:
+				break;
+			case END_WON:
+				break;
+			case END_LOOSE:
+				VTP(this->virusLargeBlueSprite)->setAnimation(this->virusLargeBlueSprite, this->base.engine->screen, 1);
+				VTP(this->virusLargeRedSprite)->setAnimation(this->virusLargeRedSprite, this->base.engine->screen, 1);
+				VTP(this->virusLargeYellowSprite)->setAnimation(this->virusLargeYellowSprite, this->base.engine->screen, 1);
+				VTP(this->marioSprite)->setAnimation(this->marioSprite, this->base.engine->screen, 2);
+				break;
+			default:
+				break;
+		}
+		this->lastLogicState = this->logic.state;
+	}
+}
 
+static void rotateVirusLarge(this_p(InGameState)) {
+	float centerX = 31.78f;
+	float centerY = 155.13f;
+	float radius = 18.13f;
+	float angle = -VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen) * 0.0004f;
+
+	this->virusLargeBlueSprite->x = (uint32_t)(centerX + 0.9f * radius * cosf(angle - 1.57f));
+	this->virusLargeBlueSprite->y = (uint32_t)(centerY + 1.1f * radius * sinf(angle - 1.57f));
+	this->virusLargeYellowSprite->x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 2.353f));
+	this->virusLargeYellowSprite->y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 2.353f));
+	this->virusLargeRedSprite->x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 0.575f));
+	this->virusLargeRedSprite->y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 0.575f));
+}
+
+static void update(this_p(GameState)) {
+	InGameState *state = (InGameState *)this;
+
+	/* Update controller */
+	VT(state->logic)->update(&state->logic, VTP(this->engine->screen)->getCurrentTime(this->engine->screen));
+
+	/* Change view */
+	updateAnimations(state);
+	rotateVirusLarge(state);
 }
 
 
@@ -140,8 +184,8 @@ static void load(this_p(GameState)) {
     InGameState *state = (InGameState *) this;
 
     /* Game logic */
-    SinglePlayerGame_init(&state->logic);
-    VT(state->logic)->newGame(&state->logic);
+    SinglePlayerGame_init(&state->logic, 0, 0, 3, MED);
+	state->lastLogicState = 0xFF;
 
     /* Sprites vector */
     HeapVector_init(&state->sprites, SPRITE_PREALLOC, sizeof(Sprite));
@@ -156,7 +200,7 @@ static void load(this_p(GameState)) {
     state->virusLargeRedSprite = VT(state->sprites)->addEmpty(&state->sprites);
     Sprite_init(state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
     Sprite_init(state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
-    Sprite_init(state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
+	Sprite_init(state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
 }
 
 static void unload(this_p(GameState)) {
