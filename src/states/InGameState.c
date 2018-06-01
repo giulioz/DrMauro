@@ -137,6 +137,7 @@ static void load(this_p(GameState)) {
 
     /* Game logic */
     SinglePlayerGame_init(&state->logic);
+    VT(state->logic)->newGame(&state->logic);
 
     /* Sprites vector */
     HeapVector_init(&state->sprites, SPRITE_PREALLOC, sizeof(Sprite));

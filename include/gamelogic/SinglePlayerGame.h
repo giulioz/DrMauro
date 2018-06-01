@@ -8,6 +8,7 @@
 
 #include "Object.h"
 #include "Bool.h"
+#include "IntTypes.h"
 
 typedef enum {
     PLAYING,
@@ -24,7 +25,8 @@ typedef enum {
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
-
+    void (*newGame)(this_p(SinglePlayerGame));
+    void (*update)(this_p(SinglePlayerGame), uint32_t time);
 };
 
 typedef class SinglePlayerGame {

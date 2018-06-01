@@ -21,7 +21,6 @@ typedef class InGameState {
     /* Game logic */
     SinglePlayerGame logic;
 
-
     /* Sprites */
     Vector sprites;
     Sprite *marioSprite;
