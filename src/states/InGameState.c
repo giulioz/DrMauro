@@ -3,8 +3,12 @@
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  */
 
-#include "SDL_Screen.h"
 #include "InGameState.h"
+#include <stdio.h>
+#ifndef WIN32
+#define sprintf_s(buffer, buffer_size, stringbuffer, ...) (sprintf(buffer, stringbuffer, __VA_ARGS__))
+#endif
+#include "SDL_Screen.h"
 
 /* Sprite prealloc */
 #define SPRITE_PREALLOC 50

@@ -13,9 +13,8 @@
 #include "Assets.h"
 #include "Bool.h"
 #include "Sprite.h"
-#include "SinglePlayerGame.h"ù
-
-#include <stdio.h>
+#include "SinglePlayerGame.h"
+#include "Vector.h"
 
 typedef class InGameState {
     GameState base;
