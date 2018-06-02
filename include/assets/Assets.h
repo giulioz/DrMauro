@@ -21,8 +21,9 @@ extern FragmentedPanel Asset_PanelSmall, Asset_PanelLarge, Asset_PanelBottle;
 extern Box Asset_MarioBox, Asset_EndBox;
 extern Texture Asset_MagVirus, Asset_Logo;
 extern SpriteClass Asset_Mario, Asset_VirusLargeBlue, Asset_VirusLargeYellow, Asset_VirusLargeRed;
+
 extern SpriteClass Asset_VirusBlue, Asset_VirusRed, Asset_VirusYellow;
-extern Texture Asset_Pills;
+extern Texture Asset_PillBlue, Asset_PillRed, Asset_PillYellow;
 
 extern Palette Asset_MedPalette;
 

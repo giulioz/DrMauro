@@ -14,7 +14,7 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
     uint32_t x, y;
 
     for (x = 0; x < this->board.width; x++) {
-        for (y = 0; y < this->board.height - 4; y++) {
+        for (y = 0; y < this->board.height; y++) {
             GameBoardElement *element = VT(this->board)->get2D(&this->board, y, x);
             element->type = rand() % 3;
             element->color = rand() % 3;

@@ -121,6 +121,32 @@ static void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardEleme
     VT(virusSprite)->drawFrame(&virusSprite, screen, graphics, frame);
 }
 
+static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color) {
+    Graphics *graphics = VTP(screen)->getGraphics(screen);
+    uint32_t x, y;
+
+    x = (uint32_t) (96 + col * (Asset_PillRed.width + 1));
+    y = (uint32_t) (200 - row * (Asset_PillRed.height + 1));
+
+    switch (color) {
+        case GameBoardElement_Red:
+            VTP(graphics)->drawTexture(graphics, &Asset_PillRed,
+                                       x, y, x + Asset_PillRed.width, y + Asset_PillRed.height,
+                                       0, 0, Asset_PillRed.width, Asset_PillRed.height);
+            break;
+        case GameBoardElement_Blue:
+            VTP(graphics)->drawTexture(graphics, &Asset_PillBlue,
+                                       x, y, x + Asset_PillBlue.width, y + Asset_PillBlue.height,
+                                       0, 0, Asset_PillBlue.width, Asset_PillBlue.height);
+            break;
+        case GameBoardElement_Yellow:
+            VTP(graphics)->drawTexture(graphics, &Asset_PillYellow,
+                                       x, y, x + Asset_PillYellow.width, y + Asset_PillYellow.height,
+                                       0, 0, Asset_PillYellow.width, Asset_PillYellow.height);
+            break;
+    };
+}
+
 static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
     uint32_t x, y;
 
@@ -129,6 +155,8 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
             GameBoardElement *element = VT(this->logic.board)->get2D(&this->logic.board, y, x);
             if (element->type == GameBoardElement_Virus) {
                 drawVirus(screen, y, x, element->color);
+            } else if (element->type == GameBoardElement_Pill) {
+                drawPill(screen, y, x, element->color);
             }
         }
     }
