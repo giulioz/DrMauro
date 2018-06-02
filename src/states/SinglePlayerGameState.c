@@ -196,7 +196,7 @@ static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
 	float centerX = 31.78f;
 	float centerY = 155.13f;
 	float radius = 18.13f;
-	float angle = -time * 0.0004f;
+	float angle = -time * 0.0002f;
 
 	this->virusLargeBlueSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle - 1.57f));
 	this->virusLargeBlueSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle - 1.57f));
