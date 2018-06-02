@@ -24,6 +24,8 @@ extern SpriteClass Asset_Mario, Asset_VirusLargeBlue, Asset_VirusLargeYellow, As
 
 extern SpriteClass Asset_VirusBlue, Asset_VirusRed, Asset_VirusYellow;
 extern Texture Asset_PillBlue, Asset_PillRed, Asset_PillYellow;
+extern Texture Asset_PillBlue_A, Asset_PillRed_A, Asset_PillYellow_A;
+extern Texture Asset_PillBlue_B, Asset_PillRed_B, Asset_PillYellow_B;
 
 extern Palette Asset_MedPalette;
 

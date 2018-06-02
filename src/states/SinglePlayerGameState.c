@@ -124,27 +124,28 @@ static void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardEleme
 static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color) {
     Graphics *graphics = VTP(screen)->getGraphics(screen);
     uint32_t x, y;
+    Texture *pillTexture;
 
     x = (uint32_t) (96 + col * (Asset_PillRed.width + 1));
     y = (uint32_t) (200 - row * (Asset_PillRed.height + 1));
 
     switch (color) {
         case GameBoardElement_Red:
-            VTP(graphics)->drawTexture(graphics, &Asset_PillRed,
-                                       x, y, x + Asset_PillRed.width, y + Asset_PillRed.height,
-                                       0, 0, Asset_PillRed.width, Asset_PillRed.height);
+            pillTexture = &Asset_PillRed_A;
             break;
         case GameBoardElement_Blue:
-            VTP(graphics)->drawTexture(graphics, &Asset_PillBlue,
-                                       x, y, x + Asset_PillBlue.width, y + Asset_PillBlue.height,
-                                       0, 0, Asset_PillBlue.width, Asset_PillBlue.height);
+            pillTexture = &Asset_PillBlue_A;
             break;
         case GameBoardElement_Yellow:
-            VTP(graphics)->drawTexture(graphics, &Asset_PillYellow,
-                                       x, y, x + Asset_PillYellow.width, y + Asset_PillYellow.height,
-                                       0, 0, Asset_PillYellow.width, Asset_PillYellow.height);
+            pillTexture = &Asset_PillYellow_A;
             break;
+        default:
+            return;
     };
+
+    VTP(graphics)->drawTexture(graphics, pillTexture,
+                               x, y, x + pillTexture->width, y + pillTexture->height,
+                               0, 0, pillTexture->width, pillTexture->height);
 }
 
 static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
