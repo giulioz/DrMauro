@@ -31,9 +31,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" afterPath="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" />
-    </list>
+    <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,11 +42,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SinglePlayerGameState.c" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SinglePlayerGameState.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="185" column="81" lean-forward="false" selection-start-line="185" selection-start-column="81" selection-end-line="185" selection-end-column="81" />
+            <state relative-caret-position="45">
+              <caret line="179" column="42" lean-forward="true" selection-start-line="179" selection-start-column="42" selection-end-line="179" selection-end-column="42" />
               <folding>
                 <element signature="e#125#159#0" expanded="true" />
                 <element signature="e#7128#7224#0" expanded="true" />
@@ -69,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SinglePlayerGame.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SinglePlayerGame.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="29" column="115" lean-forward="false" selection-start-line="29" selection-start-column="115" selection-end-line="29" selection-end-column="115" />
+            <state relative-caret-position="305">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
                 <element signature="e#82#111#0" expanded="true" />
               </folding>
@@ -486,12 +484,12 @@
       <updated>1526129318234</updated>
       <workItem from="1526129323360" duration="31064000" />
       <workItem from="1526292893152" duration="132600000" />
-      <workItem from="1527437785092" duration="60777000" />
+      <workItem from="1527437785092" duration="60925000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="224441000" />
+    <option name="totallyTimeSpent" value="224589000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -940,16 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="29" column="115" lean-forward="false" selection-start-line="29" selection-start-column="115" selection-end-line="29" selection-end-column="115" />
-          <folding>
-            <element signature="e#82#111#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/states/BootState.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -970,11 +958,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="185" column="81" lean-forward="false" selection-start-line="185" selection-start-column="81" selection-end-line="185" selection-end-column="81" />
+        <state relative-caret-position="45">
+          <caret line="179" column="42" lean-forward="true" selection-start-line="179" selection-start-column="42" selection-end-line="179" selection-end-column="42" />
           <folding>
             <element signature="e#125#159#0" expanded="true" />
             <element signature="e#7128#7224#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#82#111#0" expanded="true" />
           </folding>
         </state>
       </provider>
