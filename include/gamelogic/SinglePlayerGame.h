@@ -9,17 +9,23 @@
 #include "Object.h"
 #include "Bool.h"
 #include "IntTypes.h"
+#include "GameBoard.h"
+#include "Vector.h"
+
+#define SPBoardWidth 8
+#define SPBoardHeight 16
 
 typedef enum {
-    PLAYING,
-    END_WON,
-    END_LOOSE,
+    SinglePlayerState_Playing,
+    SinglePlayerState_EndWon,
+    SinglePlayerState_EndLost,
+    SinglePlayerState_Nothing
 } SinglePlayerGame_State;
 
 typedef enum {
-    LOW,
-    MED,
-    HI
+    SinglePlayerSpeed_Low,
+    SinglePlayerSpeed_Med,
+    SinglePlayerSpeed_Hi
 } SinglePlayerGame_Speed;
 
 class SinglePlayerGame;
@@ -35,6 +41,9 @@ typedef class SinglePlayerGame {
     int top, score;
     int level, virus;
     SinglePlayerGame_Speed speed;
+
+    GameBoardElement boardAlloc[SPBoardWidth*SPBoardHeight];
+    Vector2D board;
 } SinglePlayerGame;
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed);

@@ -11,13 +11,13 @@
 #include "Graphics.h"
 #include "Engine.h"
 #include "Assets.h"
-#include "InGameState.h"
+#include "SinglePlayerGameState.h"
 #include "AudioTestState.h"
 
 typedef class BootState {
     GameState base;
 
-    InGameState inGameState;
+    SinglePlayerGameState inGameState;
 
     AudioTestState audioTestState;
 } BootState;

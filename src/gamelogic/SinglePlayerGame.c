@@ -4,9 +4,22 @@
  */
 
 #include "SinglePlayerGame.h"
+#include <string.h>
 
 static void update(this_p(SinglePlayerGame), uint32_t time) {
 	this->score++;
+}
+
+static void initBoard(this_p(SinglePlayerGame), int virus) {
+    uint32_t x, y;
+
+    for (x = 0; x < this->board.width; x++) {
+        for (y = 0; y < this->board.height - 4; y++) {
+            GameBoardElement *element = VT(this->board)->get2D(&this->board, y, x);
+            element->type = rand() % 3;
+            element->color = rand() % 3;
+        }
+    }
 }
 
 
@@ -16,10 +29,15 @@ static struct SinglePlayerGame_VTABLE _vtable = {
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed) {
     VTP(this) = &_vtable;
-    this->state = PLAYING;
+    this->state = SinglePlayerState_Playing;
     this->top = top;
     this->score = 0;
     this->level = level;
     this->virus = virus;
     this->speed = speed;
+
+    /* Board */
+    StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);
+    memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
+    initBoard(this, virus);
 }

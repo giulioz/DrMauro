@@ -5,6 +5,16 @@
 
 #include "Sprite.h"
 
+static void drawFrame(this_p(Sprite), Screen* screen, Graphics *graphics, size_t frame) {
+    SpriteClass *sclass = this->spriteClass;
+    size_t sx;
+    sx = frame * sclass->spriteWidth;
+    if (this->visible)
+        VTP(graphics)->drawTexture(graphics, sclass->texture,
+                                   this->x, this->y, this->x + sclass->spriteWidth, this->y + sclass->spriteHeight,
+                                   sx, 0, sx + sclass->spriteWidth, sclass->spriteHeight);
+}
+
 static void draw(this_p(Sprite), Screen* screen, Graphics *graphics) {
     SpriteClass *sclass = this->spriteClass;
     SpriteAnimation *anim = ((SpriteAnimation*)VTP(this->spriteClass->animations)
@@ -31,11 +41,7 @@ static void draw(this_p(Sprite), Screen* screen, Graphics *graphics) {
     }
 
     /* draw the sprite */
-    size_t sx = this->lastFrame * sclass->spriteWidth;
-    if (this->visible)
-		VTP(graphics)->drawTexture(graphics, sclass->texture,
-            this->x, this->y, this->x + sclass->spriteWidth, this->y + sclass->spriteHeight,
-            sx, 0, sx + sclass->spriteWidth, sclass->spriteHeight);
+    drawFrame(this, screen, graphics, this->lastFrame);
 }
 
 static void setAnimation(this_p(Sprite), Screen* screen, size_t animation) {
@@ -48,7 +54,7 @@ static void setAnimation(this_p(Sprite), Screen* screen, size_t animation) {
 
 
 static struct Sprite_VTABLE _vtable = {
-        draw, setAnimation
+        draw, drawFrame, setAnimation
 };
 
 void Sprite_init(this_p(Sprite), Screen *screen, SpriteClass *sclass, uint32_t x, uint32_t y, size_t currentAnimation) {

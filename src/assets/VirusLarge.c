@@ -1,5 +1,5 @@
 /*
- *  Mario.c
+ *  VirusLarge.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  */
 

@@ -11,7 +11,7 @@
 class GameState;
 
 struct GameState_VTABLE {
-    void (*update)(this_p(GameState), double deltaTime);
+    void (*update)(this_p(GameState));
     void (*draw)(this_p(GameState));
     void (*load)(this_p(GameState));
     void (*unload)(this_p(GameState));

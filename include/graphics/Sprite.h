@@ -29,6 +29,7 @@ class Sprite;
 
 struct Sprite_VTABLE {
     void (*draw)(this_p(Sprite), Screen* screen, Graphics *graphics);
+	void (*drawFrame)(this_p(Sprite), Screen* screen, Graphics *graphics, size_t frame);
     void (*setAnimation)(this_p(Sprite), Screen* screen, size_t animation);
 };
 

@@ -57,6 +57,25 @@ static void* _get(const Vector* vector, const size_t index) {
     }
 }
 
+static void _set2D(Vector2D* vector, const size_t row, const size_t col, const void* element) {
+    size_t index = col + row * vector->width;
+    if (index < vector->count) {
+        setUnchecked((Vector *) vector, index, element);
+    } else {
+        ThrowError("Set array out of bounds"); /* cannot set outside, use add instead */
+    }
+}
+
+static void* _get2D(const Vector2D* vector, const size_t row, const size_t col) {
+    size_t index = col + row * vector->width;
+    if (index < vector->count) {
+        return (char*)vector->data + getDataIndex((const Vector *) vector, index);
+    } else {
+        ThrowError("Get array out of bounds");
+        return NULL;
+    }
+}
+
 static void* _addEmpty(Vector* vector) {
     if (vector->allocatedCount < vector->count)
         grow(vector, vector->count + 1);
@@ -71,7 +90,7 @@ static void _insert(Vector* vector, const size_t index, const void* element) {
 }
 
 static void _delete(Vector* vector, const size_t index) {
-	int i;
+	size_t i;
 	if (index == vector->count - 1) {
 		vector->count--;
 	}
@@ -116,6 +135,22 @@ struct Vector_VTABLE StaticVector_VTABLE_DEFAULT = {
         _shrink
 };
 
+static struct Vector2D_VTABLE StaticVector2D_VTABLE_DEFAULT = {
+        _count,
+        _add,
+        _addEmpty,
+        _set,
+        _get,
+        _insert,
+        _delete,
+        _clear,
+        _dispose,
+        _realloc,
+        _shrink,
+        _set2D,
+        _get2D
+};
+
 /* ------------------------------------------------------------------ */
 /* Vector creation                                                    */
 
@@ -124,6 +159,14 @@ void StackVector_init(this_p(Vector), const size_t allocatedSize, const size_t e
     this->allocatedCount = allocatedSize;
     this->count = 0;
     this->data = stackArray;
-    if (!this->data) ThrowError("Void pointer!");
+    if (!this->data) ThrowError("Void pointer in stack vector initialization");
     VTP(this) = &StaticVector_VTABLE_DEFAULT;
+}
+
+void StackVector2D_init(this_p(Vector2D), size_t width, size_t height, size_t elementSize, void* stackArray) {
+    StackVector_init((struct Vector *) this, width * height, elementSize, stackArray);
+    VTP(this) = &StaticVector2D_VTABLE_DEFAULT;
+    this->count = width*height;
+    this->width = width;
+    this->height = height;
 }

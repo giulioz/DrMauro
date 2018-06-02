@@ -1,6 +1,6 @@
 /*
 *  Timeline.h
-*  Copyright © 2018 Giulio Zausa, Alessio Marotta
+*  Copyright ï¿½ 2018 Giulio Zausa, Alessio Marotta
 */
 
 #ifndef TIMELINE_H
@@ -20,9 +20,9 @@ typedef struct TimelineEvent {
 class Timeline;
 
 struct Timeline_VTABLE {
-	void (*update)(Timeline *this, uint32_t time);
-	void (*addEvent)(Timeline *this, void(*invoke)(void *this), uint32_t time, void *context);
-	void (*dispose)(Timeline *this);
+	void (*update)(class Timeline *this, uint32_t time);
+	void (*addEvent)(class Timeline *this, void(*invoke)(void *this), uint32_t time, void *context);
+	void (*dispose)(class Timeline *this);
 };
 
 typedef class Timeline {

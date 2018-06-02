@@ -178,5 +178,5 @@ static struct Graphics_VTABLE _vtable = {
 void SDL_Graphics_init(this_p(SDL_Graphics), SDL_Screen* screen) {
     VT(this->base) = &_vtable;
     this->screen = screen;
-    this->base.currentPalette = &Asset_DefaultPalette;
+    this->base.currentPalette = &Asset_MedPalette;
 }

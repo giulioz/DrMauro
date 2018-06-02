@@ -12,6 +12,7 @@
 #include "Object.h"
 
 struct Vector_VTABLE;
+struct Vector2D_VTABLE;
 
 typedef class Vector {
     struct Vector_VTABLE *VTABLE;
@@ -21,6 +22,16 @@ typedef class Vector {
     size_t count;           /* in elements */
     size_t allocatedCount;  /* free space (elements, not bytes) */
 } Vector;
+
+typedef class Vector2D {
+    struct Vector2D_VTABLE *VTABLE;
+
+    void* data;
+    size_t elementSize;     /* bytes per element */
+    size_t count;           /* in elements */
+    size_t allocatedCount;  /* free space (elements, not bytes) */
+    size_t width, height;
+} Vector2D;
 
 struct Vector_VTABLE {
     /* Returns element in the vector */
@@ -57,8 +68,16 @@ struct Vector_VTABLE {
     void (*shrink)(this_p(Vector));
 };
 
+struct Vector2D_VTABLE {
+    struct Vector_VTABLE base;
+
+    void (*set2D)(this_p(Vector2D), const size_t row, const size_t col, const void* element);
+    void* (*get2D)(const this_p(Vector2D), const size_t row, const size_t col);
+};
+
 void HeapVector_init(this_p(Vector), size_t initialSize, size_t elementSize);
 void StackVector_init(this_p(Vector), size_t allocatedSize, size_t elementSize, void* stackArray);
+void StackVector2D_init(this_p(Vector2D), size_t width, size_t height, size_t elementSize, void* stackArray);
 
 extern struct Vector_VTABLE StaticVector_VTABLE_DEFAULT;
 
