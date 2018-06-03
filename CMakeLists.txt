@@ -55,5 +55,3 @@ else()
 endif()
 
 add_subdirectory(tools)
-
-MESSAGE(${SDL2_INCLUDE_DIR})
