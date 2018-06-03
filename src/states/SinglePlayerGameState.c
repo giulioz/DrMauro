@@ -125,80 +125,50 @@ static void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardEleme
             Sprite_init(&virusSprite, screen, &Asset_VirusYellow, x, y, 0);
             frame += 2;
             break;
+        default: break;
     }
 
     VT(virusSprite)->drawFrame(&virusSprite, screen, graphics, frame);
 }
 
-static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type) {
-    Graphics *graphics = VTP(screen)->getGraphics(screen);
-    uint32_t x, y;
-    Texture *pillTexture;
-
-    x = (uint32_t) (96 + col * (Asset_PillRed.width + 1));
-    y = (uint32_t) (200 - row * (Asset_PillRed.height + 1));
-
+static Texture* getPillTexture(GameBoardElementColor color, PillType type) {
     switch (color) {
         case GameBoardElement_Red:
             switch (type) {
-                case Left:
-                    pillTexture = &Asset_PillRed_A;
-                    break;
-                case Right:
-                    pillTexture = &Asset_PillRed_B;
-                    break;
-                case Top:
-                    pillTexture = &Asset_PillRed_AR;
-                    break;
-                case Bottom:
-                    pillTexture = &Asset_PillRed_BR;
-                    break;
-                default:
-                    pillTexture = &Asset_PillRed;
-                    break;
+                case Left: return &Asset_PillRed_A;
+                case Right: return &Asset_PillRed_B;
+                case Top: return &Asset_PillRed_AR;
+                case Bottom: return &Asset_PillRed_BR;
+                default: return &Asset_PillRed;
             }
-            break;
         case GameBoardElement_Blue:
             switch (type) {
-                case Left:
-                    pillTexture = &Asset_PillBlue_A;
-                    break;
-                case Right:
-                    pillTexture = &Asset_PillBlue_B;
-                    break;
-                case Top:
-                    pillTexture = &Asset_PillBlue_AR;
-                    break;
-                case Bottom:
-                    pillTexture = &Asset_PillBlue_BR;
-                    break;
-                default:
-                    pillTexture = &Asset_PillBlue;
-                    break;
+                case Left: return &Asset_PillBlue_A;
+                case Right: return &Asset_PillBlue_B;
+                case Top: return &Asset_PillBlue_AR;
+                case Bottom: return &Asset_PillBlue_BR;
+                default: return &Asset_PillBlue;
             }
-            break;
         case GameBoardElement_Yellow:
             switch (type) {
-                case Left:
-                    pillTexture = &Asset_PillYellow_A;
-                    break;
-                case Right:
-                    pillTexture = &Asset_PillYellow_B;
-                    break;
-                case Top:
-                    pillTexture = &Asset_PillYellow_AR;
-                    break;
-                case Bottom:
-                    pillTexture = &Asset_PillYellow_BR;
-                    break;
-                default:
-                    pillTexture = &Asset_PillYellow;
-                    break;
+                case Left: return &Asset_PillYellow_A;
+                case Right: return &Asset_PillYellow_B;
+                case Top: return &Asset_PillYellow_AR;
+                case Bottom: return &Asset_PillYellow_BR;
+                default: return &Asset_PillYellow;
             }
-            break;
         default:
-            return;
+            return Asset_Mario.texture; /* lol wtf */
     };
+}
+
+static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type) {
+    Graphics *graphics = VTP(screen)->getGraphics(screen);
+    uint32_t x, y;
+    Texture *pillTexture = getPillTexture(color, type);
+
+    x = (uint32_t) (96 + col * (Asset_PillRed.width + 1));
+    y = (uint32_t) (200 - row * (Asset_PillRed.height + 1));
 
     VTP(graphics)->drawTexture(graphics, pillTexture,
                                x, y, x + pillTexture->width, y + pillTexture->height,
@@ -231,9 +201,9 @@ static PillType checkPillNeighborhoods(Vector2D *board, uint32_t x, uint32_t y) 
         return Bottom;
     } else if (belem && celem->id == belem->id && belem->type == celem->type) {
         return Top;
+    } else {
+        return Normal;
     }
-
-    return Normal;
 }
 
 static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
@@ -256,6 +226,8 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
 static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
     SinglePlayerGameState *state = (SinglePlayerGameState *) this;
+    Texture *pillTextureL, *pillTextureR;
+    uint32_t nextPillLX, nextPillLY, nextPillRX, nextPillRY;
 
     /* Background */
     loadPalette(graphics, state->logic.speed);
@@ -277,6 +249,22 @@ static void draw(this_p(GameState)) {
     VT(state->virusLargeRedSprite)->draw(&state->virusLargeRedSprite, this->engine->screen, graphics);
     VT(state->virusLargeYellowSprite)->draw(&state->virusLargeYellowSprite, this->engine->screen, graphics);
     VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
+
+    /* Current Pill */
+    pillTextureL = getPillTexture(state->logic.nextPillColorL, Left);
+    pillTextureR = getPillTexture(state->logic.nextPillColorR, Right);
+
+    nextPillLX = 0;
+    nextPillLY = 0;
+    nextPillRX = 0;
+    nextPillRY = 0;
+
+    VTP(graphics)->drawTexture(graphics, pillTextureL,
+                               nextPillLX, nextPillLY, nextPillLX + pillTextureL->width, nextPillLY + pillTextureL->height,
+                               0, 0, pillTextureL->width, pillTextureL->height);
+    VTP(graphics)->drawTexture(graphics, pillTextureR,
+                               nextPillRX, nextPillRY, nextPillRX + pillTextureR->width, nextPillRY + pillTextureR->height,
+                               0, 0, pillTextureR->width, pillTextureR->height);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");

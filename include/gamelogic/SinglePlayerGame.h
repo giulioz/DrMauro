@@ -18,6 +18,7 @@
 
 typedef enum {
     SinglePlayerState_Playing,
+    /* TODO: other states for pill throwing */
     SinglePlayerState_EndWon,
     SinglePlayerState_EndLost,
     SinglePlayerState_Nothing
@@ -38,13 +39,20 @@ struct SinglePlayerGame_VTABLE {
 typedef class SinglePlayerGame {
     struct SinglePlayerGame_VTABLE *VTABLE;
 
+    /* Current game state */
     SinglePlayerGame_State state;
+
+    /* Stats */
     int top, score;
     int level, virus;
     SinglePlayerGame_Speed speed;
 
+    /* Board */
     GameBoardElement boardAlloc[SPBoardWidth*SPBoardHeight];
     Vector2D board;
+
+    /* Next pill in Mario hands */
+    GameBoardElementColor nextPillColorL, nextPillColorR;
 } SinglePlayerGame;
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed);

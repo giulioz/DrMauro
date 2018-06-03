@@ -8,78 +8,78 @@
 #include <time.h>
 #include <stdio.h>
 
-int randInt(int min, int max) {
-	return (rand() % (max - min)) + min;
+static uint32_t randInt(size_t min, size_t max) {
+	return (uint32_t) ((rand() % (max - min)) + min);
 }
 
-int getColor(Vector2D board, int row, int col) {
-	GameBoardElement *element = VT(board)->get2D(&board, row, col);
-	return element->color;
+static GameBoardElement* getElement(Vector2D *board, size_t row, size_t col) {
+	return VTP(board)->get2D(board, row, col);
 }
 
-int isLegal(Vector2D board, int row, int col, GameBoardElementColor target) {
-	int curCell, aboveCell1, aboveCell2, belowCell1, belowCell2, leftCell1, leftCell2, rightCell1, rightCell2;
-	int hor, ver;
+static bool isLegal(Vector2D *board, size_t row, size_t col, GameBoardElementColor target) {
+	GameBoardElementColor curCell;
+    GameBoardElementColor aboveCell1, aboveCell2, belowCell1, belowCell2;
+    GameBoardElementColor leftCell1, leftCell2, rightCell1, rightCell2;
+	bool hor, ver;
 
-	curCell = getColor(board, row, col);
-	aboveCell1 = getColor(board, row+1, col);
-	aboveCell2 = getColor(board, row+2, col);
-	belowCell1 = -1;
-	belowCell2 = -1;
-	leftCell1 = -1;
-	leftCell2 = -1;
-	rightCell1 = -1;
-	rightCell2 = -1;
+	curCell = getElement(board, row, col)->color;
+	aboveCell1 = getElement(board, row + 1, col)->color;
+	aboveCell2 = getElement(board, row + 2, col)->color;
+	belowCell1 = belowCell2 = GameBoardElement_NoColor;
+    leftCell1 = leftCell2 = GameBoardElement_NoColor;
+    rightCell1 = rightCell2 = GameBoardElement_NoColor;
 
-	if (curCell != -1)
-		return 0;
+	if (curCell != GameBoardElement_NoColor) {
+        return false;
+    } else {
+        if (row > 0)
+            belowCell1 = getElement(board, row - 1, col)->color;
 
-	if (row > 0)
-		belowCell1 = getColor(board, row-1, col);
+        if (row > 1)
+            belowCell2 = getElement(board, row - 2, col)->color;
 
-	if (row > 1)
-		belowCell2 = getColor(board, row-2, col);
+        if (col > 0)
+            leftCell1 = getElement(board, row, col - 1)->color;
 
-	if (col > 0)
-		leftCell1 = getColor(board, row, col-1);
+        if (col > 1)
+            leftCell2 = getElement(board, row, col - 2)->color;
 
-	if (col > 1)
-		leftCell2 = getColor(board, row, col-2);
+        if (col < board->width - 1)
+            rightCell1 = getElement(board, row, col + 1)->color;
 
-	if (col < board.width-1)
-		rightCell1 = getColor(board, row, col+1);
+        if (col < board->width - 2)
+            rightCell2 = getElement(board, row, col + 2)->color;
 
-	if (col < board.width-2)
-		rightCell2 = getColor(board, row, col+2);
+        hor = (bool) ((leftCell1 == target && leftCell2 == target) ||
+                      (rightCell1 == target && rightCell2 == target) ||
+                      (leftCell1 == target && rightCell1 == target));
 
-	hor = (leftCell1 == target && leftCell2 == target)   ||
-		  (rightCell1 == target && rightCell2 == target) ||
-		  (leftCell1 == target && rightCell1 == target);
+        ver = (bool) ((aboveCell1 == target && aboveCell2 == target) ||
+                      (belowCell1 == target && belowCell2 == target) ||
+                      (aboveCell1 == target && belowCell1 == target));
 
-	ver = (aboveCell1 == target && aboveCell2 == target) ||
-		  (belowCell1 == target && belowCell2 == target) ||
-		  (aboveCell1 == target && belowCell1 == target);
-
-	return hor + ver == 0;
+        return (bool) !(hor || ver);
+    }
 }
 
-int generateVirus(Vector2D board, int virusIndex) {
+static uint32_t generateVirus(Vector2D *board, uint32_t virusIndex) {
 	GameBoardElement *element;
-    uint32_t row, col, color;
+    uint32_t row, col;
+    GameBoardElementColor color;
 
-	row = randInt(0, board.height-5);
-	col = randInt(0, board.width);
-	color = virusIndex % 3;
+	row = randInt(0, board->height - 5);
+	col = randInt(0, board->width);
+	color = (GameBoardElementColor) (virusIndex % 3);
 
 	if (isLegal(board, row, col, color)) {
-		element = VT(board)->get2D(&board, row, col);
+		element = getElement(board, row, col);
 		element->type = GameBoardElement_Virus;
 		element->color = color;
 
 		return virusIndex + 1;
-	}
-
-	return virusIndex;
+	} else {
+        return virusIndex;
+    }
 }
 
 static void update(this_p(SinglePlayerGame), Engine* engine) {
@@ -93,19 +93,19 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
 static void initBoard(this_p(SinglePlayerGame), int virus) {
 	GameBoardElement *element;
 	uint32_t i = 0;
-
     uint32_t x, y;
 
     for (x = 0; x < this->board.width; x++) {
         for (y = 0; y < this->board.height - 4; y++) {
-            element = VT(this->board)->get2D(&this->board, y, x);
+            element = getElement(&this->board, y, x);
             element->type = GameBoardElement_Empty;
-            element->color = -1;
+            element->color = GameBoardElement_NoColor;
         }
     }
 
-	while (i < virus)
-		i = generateVirus(this->board, i);
+	while (i < virus) {
+        i = generateVirus(&this->board, i);
+    }
 }
 
 
@@ -114,7 +114,7 @@ static struct SinglePlayerGame_VTABLE _vtable = {
 };
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed) {
-	uint32_t randSeed = time(NULL);
+	uint32_t randSeed = (uint32_t) time(NULL);
 
 	srand(randSeed);
 	printf("Seed: %d\n", randSeed); /* debug */
@@ -124,11 +124,15 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
     this->top = top;
     this->score = 0;
     this->level = level;
-    this->virus = 4 * (15 + 1);
+    this->virus = 4 * (15 + 1); /* TODO */
     this->speed = speed;
 
     /* Board */
     StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);
     memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
     initBoard(this, this->virus);
+
+    /* Next pill */
+    this->nextPillColorL = GameBoardElement_Red;
+    this->nextPillColorR = GameBoardElement_Blue;
 }

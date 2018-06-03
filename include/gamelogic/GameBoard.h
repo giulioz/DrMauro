@@ -19,7 +19,8 @@ typedef enum {
 typedef enum {
     GameBoardElement_Red,
     GameBoardElement_Blue,
-    GameBoardElement_Yellow
+    GameBoardElement_Yellow,
+    GameBoardElement_NoColor
 } GameBoardElementColor;
 
 typedef class GameBoardElement {
