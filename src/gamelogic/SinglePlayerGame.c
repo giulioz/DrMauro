@@ -92,7 +92,6 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
 
 static void initBoard(this_p(SinglePlayerGame), int virus) {
 	GameBoardElement *element;
-	//uint32_t virusNumber = 4 * (20 + 1);
 	uint32_t i = 0;
 
     uint32_t x, y;
