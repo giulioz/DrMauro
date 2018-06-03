@@ -16,7 +16,6 @@ static void drawFrame(this_p(Sprite), Screen* screen, Graphics *graphics, size_t
 }
 
 static void draw(this_p(Sprite), Screen* screen, Graphics *graphics) {
-    SpriteClass *sclass = this->spriteClass;
     SpriteAnimation *anim = ((SpriteAnimation*)VTP(this->spriteClass->animations)
             ->get(this->spriteClass->animations, this->currentAnimation));
     uint32_t currentTime = VTP(screen)->getCurrentTime(screen);

@@ -136,17 +136,19 @@ struct Vector_VTABLE StaticVector_VTABLE_DEFAULT = {
 };
 
 static struct Vector2D_VTABLE StaticVector2D_VTABLE_DEFAULT = {
-        _count,
-        _add,
-        _addEmpty,
-        _set,
-        _get,
-        _insert,
-        _delete,
-        _clear,
-        _dispose,
-        _realloc,
-        _shrink,
+        {
+                _count,
+                _add,
+                _addEmpty,
+                _set,
+                _get,
+                _insert,
+                _delete,
+                _clear,
+                _dispose,
+                _realloc,
+                _shrink
+        },
         _set2D,
         _get2D
 };

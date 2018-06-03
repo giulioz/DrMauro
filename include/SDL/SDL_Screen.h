@@ -21,7 +21,7 @@ typedef class SDL_Screen {
 
     char* windowTitle;
     SDL_Window *window;
-    SDL_Surface *screenSurface;
+    SDL_Surface *screenSurface, *tempSurface;
 
     SDL_Graphics graphics;
 } SDL_Screen;

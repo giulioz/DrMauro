@@ -9,7 +9,7 @@ add_subdirectory(deps/libsoundio)
 add_subdirectory(deps/SDL-mirror)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu89 -pedantic -Wall -g -O3")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu89 -pedantic -Wall -g")
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DrMauro_SOURCE_DIR}/cmake")
 
@@ -18,6 +18,7 @@ file(GLOB INCLUDE_DIRS include/*)
 file(GLOB INCLUDES include/*.h include/*/*.h)
 
 include_directories(
+		${DrMauro_SOURCE_DIR}/deps/debugbreak
         ${DrMauro_SOURCE_DIR}/include
         ${DrMauro_SOURCE_DIR}/include/assets
         ${DrMauro_SOURCE_DIR}/include/graphics

@@ -1,6 +1,7 @@
 /*
  *  SinglePlayerGameState.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
  *  View part of a Single Player Game
  */
 
@@ -9,7 +10,7 @@
 #include <stdio.h>
 #include <math.h>
 #ifndef WIN32
-#define sprintf_s(buffer, buffer_size, stringbuffer, ...) (sprintf(buffer, stringbuffer, __VA_ARGS__))
+#define sprintf_s(buffer, size, stringbuffer, ...) (snprintf(buffer, size, stringbuffer, __VA_ARGS__))
 #endif
 
 /* Prealloc */
@@ -23,6 +24,14 @@
 /* *************************************************************** */
 /* Graphics Elements                                               */
 /* *************************************************************** */
+
+typedef enum {
+    Normal,
+    Left,
+    Right,
+    Top,
+    Bottom
+} PillType;
 
 static void loadPalette(Graphics* graphics, SinglePlayerGame_Speed speed) {
     /* Load palette according to speed */
@@ -121,7 +130,7 @@ static void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardEleme
     VT(virusSprite)->drawFrame(&virusSprite, screen, graphics, frame);
 }
 
-static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color) {
+static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type) {
     Graphics *graphics = VTP(screen)->getGraphics(screen);
     uint32_t x, y;
     Texture *pillTexture;
@@ -131,13 +140,43 @@ static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElemen
 
     switch (color) {
         case GameBoardElement_Red:
-            pillTexture = &Asset_PillRed_A;
+            switch (type) {
+                case Left:
+                    pillTexture = &Asset_PillRed_A;
+                    break;
+                case Right:
+                    pillTexture = &Asset_PillRed_B;
+                    break;
+                default:
+                    pillTexture = &Asset_PillRed;
+                    break;
+            }
             break;
         case GameBoardElement_Blue:
-            pillTexture = &Asset_PillBlue_A;
+            switch (type) {
+                case Left:
+                    pillTexture = &Asset_PillBlue_A;
+                    break;
+                case Right:
+                    pillTexture = &Asset_PillBlue_B;
+                    break;
+                default:
+                    pillTexture = &Asset_PillBlue;
+                    break;
+            }
             break;
         case GameBoardElement_Yellow:
-            pillTexture = &Asset_PillYellow_A;
+            switch (type) {
+                case Left:
+                    pillTexture = &Asset_PillYellow_A;
+                    break;
+                case Right:
+                    pillTexture = &Asset_PillYellow_B;
+                    break;
+                default:
+                    pillTexture = &Asset_PillYellow;
+                    break;
+            }
             break;
         default:
             return;
@@ -146,6 +185,26 @@ static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElemen
     VTP(graphics)->drawTexture(graphics, pillTexture,
                                x, y, x + pillTexture->width, y + pillTexture->height,
                                0, 0, pillTexture->width, pillTexture->height);
+}
+
+static PillType checkPillNeighborhoods(Vector2D *board, uint32_t x, uint32_t y) {
+    GameBoardElement *celem = VTP(board)->get2D(board, y, x);
+    GameBoardElement *pelem = NULL, *nelem = NULL;
+
+    if (x > 0) {
+        pelem = VTP(board)->get2D(board, y, x - 1);
+    }
+    if (x < board->width - 1) {
+        nelem = VTP(board)->get2D(board, y, x + 1);
+    }
+
+    if (pelem && celem->id == pelem->id && pelem->type == celem->type) {
+        return Right;
+    } else if (nelem && celem->id == nelem->id && nelem->type == celem->type) {
+        return Left;
+    }
+
+    return Normal;
 }
 
 static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
@@ -157,7 +216,7 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
             if (element->type == GameBoardElement_Virus) {
                 drawVirus(screen, y, x, element->color);
             } else if (element->type == GameBoardElement_Pill) {
-                drawPill(screen, y, x, element->color);
+                drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board, x, y));
             }
         }
     }

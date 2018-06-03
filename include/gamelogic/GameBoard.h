@@ -25,7 +25,7 @@ typedef enum {
 typedef class GameBoardElement {
     GameBoardElementType type;
     GameBoardElementColor color;
-    unsigned long id;   /* same id means merged pill */
+    unsigned long id;   /* same id means merged pill, ignored for virus */
 } GameBoardElement;
 
 #endif
