@@ -8,7 +8,9 @@
 
 static void update(this_p(SinglePlayerGame), Engine* engine) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
-	this->score++;
+    InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
+
+    /* funzione step */
 }
 
 static void initBoard(this_p(SinglePlayerGame), int virus) {
@@ -22,6 +24,8 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
             element->id = rand() % 5;
         }
     }
+
+    /* funzione riempi campo */
 }
 
 
