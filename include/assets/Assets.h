@@ -26,6 +26,8 @@ extern SpriteClass Asset_VirusBlue, Asset_VirusRed, Asset_VirusYellow;
 extern Texture Asset_PillBlue, Asset_PillRed, Asset_PillYellow;
 extern Texture Asset_PillBlue_A, Asset_PillRed_A, Asset_PillYellow_A;
 extern Texture Asset_PillBlue_B, Asset_PillRed_B, Asset_PillYellow_B;
+extern Texture Asset_PillBlue_AR, Asset_PillRed_AR, Asset_PillYellow_AR;
+extern Texture Asset_PillBlue_BR, Asset_PillRed_BR, Asset_PillYellow_BR;
 
 extern Palette Asset_MedPalette;
 

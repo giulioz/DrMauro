@@ -147,6 +147,12 @@ static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElemen
                 case Right:
                     pillTexture = &Asset_PillRed_B;
                     break;
+                case Top:
+                    pillTexture = &Asset_PillRed_AR;
+                    break;
+                case Bottom:
+                    pillTexture = &Asset_PillRed_BR;
+                    break;
                 default:
                     pillTexture = &Asset_PillRed;
                     break;
@@ -160,6 +166,12 @@ static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElemen
                 case Right:
                     pillTexture = &Asset_PillBlue_B;
                     break;
+                case Top:
+                    pillTexture = &Asset_PillBlue_AR;
+                    break;
+                case Bottom:
+                    pillTexture = &Asset_PillBlue_BR;
+                    break;
                 default:
                     pillTexture = &Asset_PillBlue;
                     break;
@@ -172,6 +184,12 @@ static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElemen
                     break;
                 case Right:
                     pillTexture = &Asset_PillYellow_B;
+                    break;
+                case Top:
+                    pillTexture = &Asset_PillYellow_AR;
+                    break;
+                case Bottom:
+                    pillTexture = &Asset_PillYellow_BR;
                     break;
                 default:
                     pillTexture = &Asset_PillYellow;
@@ -190,6 +208,7 @@ static void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElemen
 static PillType checkPillNeighborhoods(Vector2D *board, uint32_t x, uint32_t y) {
     GameBoardElement *celem = VTP(board)->get2D(board, y, x);
     GameBoardElement *pelem = NULL, *nelem = NULL;
+    GameBoardElement *telem = NULL, *belem = NULL;
 
     if (x > 0) {
         pelem = VTP(board)->get2D(board, y, x - 1);
@@ -197,11 +216,21 @@ static PillType checkPillNeighborhoods(Vector2D *board, uint32_t x, uint32_t y) 
     if (x < board->width - 1) {
         nelem = VTP(board)->get2D(board, y, x + 1);
     }
+    if (y > 0) {
+        belem = VTP(board)->get2D(board, y - 1, x);
+    }
+    if (y < board->height - 1) {
+        telem = VTP(board)->get2D(board, y + 1, x);
+    }
 
     if (pelem && celem->id == pelem->id && pelem->type == celem->type) {
         return Right;
     } else if (nelem && celem->id == nelem->id && nelem->type == celem->type) {
         return Left;
+    } else if (telem && celem->id == telem->id && telem->type == celem->type) {
+        return Bottom;
+    } else if (belem && celem->id == belem->id && belem->type == celem->type) {
+        return Top;
     }
 
     return Normal;
