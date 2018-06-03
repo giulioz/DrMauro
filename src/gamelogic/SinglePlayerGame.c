@@ -9,6 +9,7 @@
 static void update(this_p(SinglePlayerGame), Engine* engine) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
     InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
+    this->score = inputState->downButton;
 
     /* funzione step */
 }

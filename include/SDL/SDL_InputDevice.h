@@ -9,7 +9,6 @@
 #include "Object.h"
 #include "Bool.h"
 #include "InputDevice.h"
-#include "SDL_Screen.h"
 
 typedef class SDL_InputDevice {
     InputDevice base;
