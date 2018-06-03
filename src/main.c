@@ -11,14 +11,29 @@
 static Engine engine;
 static SDL_Screen screen;
 static BootState bootState;
+static SDL_InputDevice inputDevice;
+
+/* Usage pring */
+void usage() {
+    printf( "DR.MAURO - dr.Mario Clone                        \n"
+            "Usage: drmauro [-f FILE | -d DIFFICULTY] [-s SPEED] [-h] \n"
+            "                                                         \n"
+            "OPTIONS:                                                 \n"
+            "  -f FILE         Load board from FILE                   \n"
+            "  -d DIFFICULTY   Generate random board (default 5)      \n"
+            "  -s SPEED        Game speed (default 0.3 sec)           \n"
+            "  -h              Show this help message                 \n"
+    );
+}
 
 int _main(int argc, char **argv) {
     /* Init components */
     BootState_init(&bootState, &engine);
-    SDL_Screen_init(&screen, 256, 240, "DR. MAURO", NULL);
+    SDL_InputDevice_init(&inputDevice);
+    SDL_Screen_init(&screen, 256, 240, "DR. MAURO", NULL, &inputDevice);
 
     /* Init and startup engine */
-    Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState);
+    Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState, &inputDevice);
     VT(engine)->startup(&engine);
     
     return 0;

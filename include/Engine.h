@@ -9,6 +9,7 @@
 #include "Object.h"
 #include "Screen.h"
 #include "GameState.h"
+#include "InputDevice.h"
 
 class Engine;
 
@@ -26,8 +27,9 @@ typedef class Engine {
     /* pointers to allow polymorphism */
     Screen *screen;
     GameState *currentState;
+    InputDevice* inputDevice;
 } Engine;
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState);
+Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice *inputDevice);
 
 #endif

@@ -44,10 +44,11 @@ static struct Engine_VTABLE _vtable = {
         startup, shutdown, loadState, forkState
 };
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState) {
+Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice* inputDevice) {
     VTP(this) = &_vtable;
 
     this->screen = screen;
     this->currentState = bootState;
+    this->inputDevice = inputDevice;
     return this;
 }

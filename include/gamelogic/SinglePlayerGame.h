@@ -11,6 +11,7 @@
 #include "IntTypes.h"
 #include "GameBoard.h"
 #include "Vector.h"
+#include "Engine.h"
 
 #define SPBoardWidth 8
 #define SPBoardHeight 16
@@ -31,7 +32,7 @@ typedef enum {
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
-    void (*update)(this_p(SinglePlayerGame), uint32_t time);
+    void (*update)(this_p(SinglePlayerGame), Engine* engine);
 };
 
 typedef class SinglePlayerGame {

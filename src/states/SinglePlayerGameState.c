@@ -327,7 +327,7 @@ static void update(this_p(GameState)) {
 	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
 
 	/* Update controller */
-	VT(state->logic)->update(&state->logic, VTP(this->engine->screen)->getCurrentTime(this->engine->screen));
+	VT(state->logic)->update(&state->logic, this->engine);
 
     /* Timeline */
     VT(state->timeline)->update(&state->timeline, VTP(this->engine->screen)->getCurrentTime(this->engine->screen));

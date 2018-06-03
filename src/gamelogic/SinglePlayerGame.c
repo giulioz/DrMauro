@@ -6,7 +6,8 @@
 #include "SinglePlayerGame.h"
 #include <string.h>
 
-static void update(this_p(SinglePlayerGame), uint32_t time) {
+static void update(this_p(SinglePlayerGame), Engine* engine) {
+    uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
 	this->score++;
 }
 

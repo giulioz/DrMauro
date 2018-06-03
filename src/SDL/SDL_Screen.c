@@ -26,10 +26,40 @@ static void init(this_p(Screen)) {
     screen->screenSurface = SDL_CreateRGBSurface(0, this->width, this->height, 32, 0, 0, 0, 0);
 }
 
+static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
+    switch (e->key.keysym.sym) {
+        case SDLK_LEFT:
+            this->inputDevice->currentState.leftButton = value;
+            break;
+        case SDLK_RIGHT:
+            this->inputDevice->currentState.rightButton = value;
+            break;
+        case SDLK_UP:
+            this->inputDevice->currentState.upButton = value;
+            break;
+        case SDLK_DOWN:
+            this->inputDevice->currentState.downButton = value;
+            break;
+        case SDLK_x:
+            this->inputDevice->currentState.rotateRightButton = value;
+            break;
+        case SDLK_z:
+            this->inputDevice->currentState.rotateLeftButton = value;
+            break;
+        case SDLK_RETURN:
+            this->inputDevice->currentState.enterButton = value;
+            break;
+        default:
+            break;
+    }
+}
+
 static void run(this_p(Screen)) {
+    SDL_Screen *screen = (SDL_Screen *) this;
+
     SDL_Rect dstRect = { 0, 0, 0, 0 };
-    dstRect.w = ((SDL_Screen*)this)->tempSurface->w;
-    dstRect.h = ((SDL_Screen*)this)->tempSurface->h;
+    dstRect.w = screen->tempSurface->w;
+    dstRect.h = screen->tempSurface->h;
     this->running = true;
 
     /* event loop */
@@ -43,8 +73,10 @@ static void run(this_p(Screen)) {
                     this->running = false;
                     break;
                 case SDL_KEYUP:
+                    setKey(screen, &event, false);
                     break;
                 case SDL_KEYDOWN:
+                    setKey(screen, &event, true);
                     break;
                 default:
                     break;
@@ -54,8 +86,8 @@ static void run(this_p(Screen)) {
         /* callbacks */
         VTP(this->callbacks)->update(this->callbacks);
         VTP(this->callbacks)->draw(this->callbacks);
-        SDL_BlitScaled(((SDL_Screen*)this)->screenSurface, NULL, ((SDL_Screen*)this)->tempSurface, &dstRect);
-        SDL_UpdateWindowSurface(((SDL_Screen*)this)->window);
+        SDL_BlitScaled(screen->screenSurface, NULL, screen->tempSurface, &dstRect);
+        SDL_UpdateWindowSurface(screen->window);
 
         /* HACK: frame limiter */
         SDL_Delay(10);
@@ -87,7 +119,7 @@ static struct Screen_VTABLE _vtable = {
 
 /* ********************************************************* */
 /* Constructor                                               */
-void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, ScreenCallbacks* callbacks) {
+void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, ScreenCallbacks* callbacks, SDL_InputDevice *inputDevice) {
     VT(this->base) = &_vtable;
     this->base.callbacks = callbacks;
 
@@ -95,5 +127,6 @@ void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* 
     this->base.height = height;
     this->base.running = false;
     this->windowTitle = windowTitle;
+    this->inputDevice = inputDevice;
     SDL_Graphics_init(&this->graphics, this);
 }
