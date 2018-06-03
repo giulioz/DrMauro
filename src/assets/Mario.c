@@ -16,10 +16,11 @@ static Texture Mario_Texture = {
 static SpriteAnimation Mario_Animations[] = {
         { 2, 2, -1, true, false },     /* Still  */
         { 0, 2, 100, true, false },    /* Launch */
-        { 3, 5, 100, true, false }     /* Loose  */
+        { 3, 5, 100, true, false },    /* Loose  */
+        { 3, 4, 250, false, false }    /* Menu   */
 };
 
-StackVector_Static(Mario_AnimVector, sizeof(SpriteAnimation), 3, 3, Mario_Animations);
+StackVector_Static(Mario_AnimVector, sizeof(SpriteAnimation), 4, 4, Mario_Animations);
 
 SpriteClass Asset_Mario = {
         &Mario_Texture,

@@ -24,8 +24,9 @@ static void draw(this_p(GameState)) {
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 10, 10, "Loading", 1);
 
     /* Load next state */
-    SinglePlayerGameState_init(&((BootState*)this)->inGameState, this->engine, 0, 0, 3, SinglePlayerSpeed_Med);
-    VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->inGameState);
+    MainMenuGameState_init(&((BootState*)this)->mainMenuGameState, this->engine);
+    VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->mainMenuGameState);
+
     /*AudioTestState_init(&((BootState*)this)->audioTestState, this->engine);
     VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->audioTestState);*/
 }
