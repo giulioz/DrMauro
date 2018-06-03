@@ -26,7 +26,7 @@ include_directories(
         ${DrMauro_SOURCE_DIR}/include/states
         ${DrMauro_SOURCE_DIR}/include/gamelogic
         ${DrMauro_SOURCE_DIR}/include/audio
-        ${SDL2_INCLUDE_DIR}
+        ${DrMauro_SOURCE_DIR}/deps/SDL-mirror/include
         ${libsoundio_SOURCE_DIR}
         ${libsoundio_BINARY_DIR}
 )
@@ -55,3 +55,5 @@ else()
 endif()
 
 add_subdirectory(tools)
+
+MESSAGE(${SDL2_INCLUDE_DIR})
