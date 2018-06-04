@@ -17,8 +17,9 @@
 #define SPBoardHeight 16
 
 typedef enum {
-    SinglePlayerState_Playing,
-    /* TODO: other states for pill throwing */
+    SinglePlayerState_Begin,
+    SinglePlayerState_Moving,   /* pill moving */
+    SinglePlayerState_Still,    /* pill still -> launch another one */
     SinglePlayerState_EndWon,
     SinglePlayerState_EndLost,
     SinglePlayerState_Nothing

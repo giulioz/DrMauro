@@ -120,7 +120,7 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
 	printf("Seed: %d\n", randSeed); /* debug */
 
     VTP(this) = &_vtable;
-    this->state = SinglePlayerState_Playing;
+    this->state = SinglePlayerState_Begin;
     this->top = top;
     this->score = 0;
     this->level = level;

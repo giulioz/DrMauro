@@ -254,10 +254,10 @@ static void draw(this_p(GameState)) {
     pillTextureL = getPillTexture(state->logic.nextPillColorL, Left);
     pillTextureR = getPillTexture(state->logic.nextPillColorR, Right);
 
-    nextPillLX = 0;
-    nextPillLY = 0;
-    nextPillRX = 0;
-    nextPillRY = 0;
+    nextPillLX = 190;
+    nextPillLY = 70;
+    nextPillRX = 198;
+    nextPillRY = 70;
 
     VTP(graphics)->drawTexture(graphics, pillTextureL,
                                nextPillLX, nextPillLY, nextPillLX + pillTextureL->width, nextPillLY + pillTextureL->height,
@@ -280,8 +280,12 @@ static void draw(this_p(GameState)) {
 static void updateAnimations(this_p(SinglePlayerGameState)) {
 	if (this->logic.state != this->lastLogicState) {
 		switch (this->logic.state) {
-			case SinglePlayerState_Playing:
+			case SinglePlayerState_Begin:
 				break;
+            case SinglePlayerState_Moving:
+                break;
+            case SinglePlayerState_Still:
+                break;
 			case SinglePlayerState_EndWon:
 				break;
 			case SinglePlayerState_EndLost:
@@ -336,7 +340,7 @@ static void load(this_p(GameState)) {
     Timeline_init(&state->timeline, TIMELINE_PREALLOC);
 
     /* Sprites */
-    Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 0);
+    Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 4);
     Sprite_init(&state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
     Sprite_init(&state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
 	Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
