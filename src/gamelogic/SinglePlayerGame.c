@@ -50,13 +50,12 @@ static bool isColorLegalInBoard(Vector2D *board, size_t row, size_t col, GameBoa
         if (col < board->width - 2)
             rightCell2 = getBoardElement(board, row, col + 2)->color;
 
-        horizontalInvalid = (bool) ((leftCell1 == target && leftCell2 == target) ||
+        horizontalInvalid = (bool) ((leftCell1 == target &&  leftCell2 == target) ||
                                    (rightCell1 == target && rightCell2 == target) ||
                                     (leftCell1 == target && rightCell1 == target));
-
-        verticalInvalid = (bool) ((aboveCell1 == target && aboveCell2 == target) ||
-                                  (belowCell1 == target && belowCell2 == target) ||
-                                  (aboveCell1 == target && belowCell1 == target));
+        verticalInvalid =  (bool) ((aboveCell1 == target && aboveCell2 == target) ||
+                                   (belowCell1 == target && belowCell2 == target) ||
+                                   (aboveCell1 == target && belowCell1 == target));
 
         return (bool) !(horizontalInvalid || verticalInvalid);
     }
@@ -68,12 +67,10 @@ static bool tryAddVirus(Vector2D *board, uint32_t virusIndex) {
     uint32_t row, col;
     GameBoardElementColor color;
 
-    /* Random position and color */
 	row = randomBetween(0, board->height - SPBoardVirusUpperLimit);
 	col = randomBetween(0, board->width);
 	color = (GameBoardElementColor) (virusIndex % 3);
 
-    /* Check if legal */
 	if (isColorLegalInBoard(board, row, col, color)) {
 		element = getBoardElement(board, row, col);
 		element->type = GameBoardElement_Virus;
@@ -88,9 +85,10 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
 	GameBoardElement *element;
 	uint32_t i = 0;
     uint32_t x, y;
-    uint32_t randSeed = (uint32_t) time(NULL);
+    uint32_t randSeed;
 
     /* Random Seed */
+    randSeed = (uint32_t) time(NULL);
     srand(randSeed);
     printf("Seed: %d\n", randSeed); /* debug */
 
@@ -103,9 +101,10 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
         }
     }
 
-    /* Adds a virus until reached virus number */
 	while (i < virus) {
-        if (tryAddVirus(&this->board, i)) i++;
+        if (tryAddVirus(&this->board, i)) {
+            i++;
+        }
     }
 }
 

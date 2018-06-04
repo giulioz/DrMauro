@@ -32,7 +32,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" afterPath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" afterPath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -48,8 +47,8 @@
       <file leaf-file-name="SinglePlayerGame.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-535">
-              <caret line="75" column="24" lean-forward="false" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
+            <state relative-caret-position="-25">
+              <caret line="108" column="1" lean-forward="true" selection-start-line="108" selection-start-column="1" selection-end-line="108" selection-end-column="1" />
               <folding>
                 <element signature="e#82#111#0" expanded="true" />
               </folding>
@@ -455,7 +454,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255894000" />
+    <option name="totallyTimeSpent" value="256209000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -900,8 +899,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-535">
-          <caret line="75" column="24" lean-forward="false" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
+        <state relative-caret-position="-25">
+          <caret line="108" column="1" lean-forward="true" selection-start-line="108" selection-start-column="1" selection-end-line="108" selection-end-column="1" />
           <folding>
             <element signature="e#82#111#0" expanded="true" />
           </folding>
