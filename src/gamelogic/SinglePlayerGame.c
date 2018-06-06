@@ -98,6 +98,7 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
             element = getBoardElement(&this->board, y, x);
             element->type = GameBoardElement_Empty;
             element->color = GameBoardElement_NoColor;
+            element->id = 0;
         }
     }
 
@@ -117,7 +118,29 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
     InputState *inputState = VTP(engine->inputDevice1)->getInputState(engine->inputDevice1);
     this->score = inputState->downButton;
 
-    /* funzione step */
+    GameBoardElement *leftPill, *rightPill;
+
+    /* create new pill */
+	if (this->state == SinglePlayerState_Still || this->state == SinglePlayerState_Begin) {
+        printf("R: %d; L: %d\n", this->nextPillColorR, this->nextPillColorL);
+
+		leftPill = getBoardElement(&this->board, this->board.height-1, 3);
+		leftPill->type = GameBoardElement_Pill;
+		leftPill->color = this->nextPillColorL;
+        this->nextPillColorL = rand() % 3;
+
+        rightPill = getBoardElement(&this->board, this->board.height-1, 4);
+		rightPill->type = GameBoardElement_Pill;
+		rightPill->color = this->nextPillColorR;
+        this->nextPillColorR = rand() % 3;
+
+        this->state = SinglePlayerState_Moving;
+        this->currentPillId++;
+	}
+
+	else {
+		/* handle keyboard input */
+	}
 }
 
 
@@ -138,12 +161,13 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
     this->virus = virus; /*4 * (15 + 1); /* TODO */
     this->speed = speed;
 
+    /* Next pill */
+    this->nextPillColorL = GameBoardElement_Red;
+    this->nextPillColorR = GameBoardElement_Blue;
+    this->currentPillId = 1;
+
     /* Board */
     StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);
     memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
     initBoard(this, this->virus);
-
-    /* Next pill */
-    this->nextPillColorL = GameBoardElement_Red;
-    this->nextPillColorR = GameBoardElement_Blue;
 }
