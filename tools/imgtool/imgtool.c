@@ -6,8 +6,8 @@
 #include "imgtool.h"
 #include "../../include/graphics/Color.h"
 
-static int colorsSize = 15;
-static unsigned char colors[15][4] = {
+static int colorsSize = 16;
+static unsigned char colors[16][4] = {
         {0, 0, 0, 0},
         {255, 255, 255, 255},
         {164, 0, 59, 0},
@@ -23,6 +23,7 @@ static unsigned char colors[15][4] = {
         {102, 102, 102, 255},
         {0, 0, 0, 255},
         {164, 0, 59, 255},
+        {214, 99, 24, 255}
 };
 static Color *palette = (Color *) &colors;
 

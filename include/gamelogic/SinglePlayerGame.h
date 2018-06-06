@@ -15,7 +15,7 @@
 
 #define SPBoardWidth 8
 #define SPBoardHeight 16
-#define SPBoardVirusUpperLimit (5)
+#define SPBoardVirusUpperLimit 5
 
 typedef enum {
     SinglePlayerState_Begin,

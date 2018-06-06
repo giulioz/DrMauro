@@ -6,20 +6,13 @@
 #include "MainMenuGameState.h"
 
 /* Save bmp screenshoot */
-/*#define SAVE_DEBUG
-#include "SDL_Screen.h"*/
+//#define SAVE_DEBUG
+#include "SDL_Screen.h"
 
 
 /* *************************************************************** */
 /* Graphics Elements                                               */
 /* *************************************************************** */
-
-
-static void drawBaseElements(Graphics* graphics) {
-    /* Background and Logo */
-    VTP(graphics)->drawCheckerboard(graphics, 8, 2, 0);
-}
-
 
 /* Drawing entry point */
 static void draw(this_p(GameState)) {
@@ -28,12 +21,14 @@ static void draw(this_p(GameState)) {
 
     /* Background */
     graphics->currentPalette = &Asset_MenuPalette;
-    drawBaseElements(graphics);
+    VTP(graphics)->drawCheckerboard(graphics, 8, 2, 0);
+    VT(Asset_MainMenuBox)->draw(&Asset_MainMenuBox, graphics, 33, 160, 126, 8);
+    VTP(graphics)->drawTexture(graphics, &Asset_BigPill, 16, 40, 16 + Asset_BigPill.width, 40 + Asset_BigPill.height, 0, 0, Asset_BigPill.width, Asset_BigPill.height);
 
     /* Strings */
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 167, "1 PLAYER GAME", 1);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 183, "2 PLAYER GAME", 1);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 199, "  2018", 1);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 199, "Q 2018 CT0304", 1);
 
     /* Sprites */
     VT(state->marioSprite)->draw(&state->marioSprite, this->engine->screen, graphics);
@@ -73,8 +68,8 @@ static void load(this_p(GameState)) {
     /* Sprites */
     Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 37, 168, 3);
     Sprite_init(&state->virusSprite, this->engine->screen, &Asset_VirusLargeBlue, 192, 177, 0);
-    Sprite_init(&state->titleSprite, this->engine->screen, &Asset_VirusLargeYellow, 0, 0, 0);
-    Sprite_init(&state->selectorSprite, this->engine->screen, &Asset_VirusLargeRed, 0, 0, 0);
+    Sprite_init(&state->titleSprite, this->engine->screen, &Asset_BigTitle, 34, 63, 0);
+    Sprite_init(&state->selectorSprite, this->engine->screen, &Asset_Heart, 69, 169, 0);
 }
 
 static void unload(this_p(GameState)) {

@@ -212,10 +212,16 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
     for (x = 0; x < this->logic.board.width; x++) {
         for (y = 0; y < this->logic.board.height; y++) {
             GameBoardElement *element = VT(this->logic.board)->get2D(&this->logic.board, y, x);
-            if (element->type == GameBoardElement_Virus) {
-                drawVirus(screen, y, x, element->color);
-            } else if (element->type == GameBoardElement_Pill) {
-                drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board, x, y));
+
+            switch (element->type) {
+                case GameBoardElement_Virus:
+                    drawVirus(screen, y, x, element->color);
+                    break;
+                case GameBoardElement_Pill:
+                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board, x, y));
+                    break;
+                default:
+                    break;
             }
         }
     }

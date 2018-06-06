@@ -45,6 +45,7 @@ static unsigned char menu_colors[][4] = {
         {102, 102, 102, 255},   /* grey */
         {0, 0, 0, 255},         /* black */
         {164, 0, 59, 255},      /* purple-blue */
+        {214, 99, 24, 255}      /* big pill blue */
 };
 
 Palette Asset_MenuPalette = {
