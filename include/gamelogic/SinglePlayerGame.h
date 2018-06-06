@@ -55,6 +55,7 @@ typedef class SinglePlayerGame {
 
     /* Next pill in Mario hands */
     GameBoardElementColor nextPillColorL, nextPillColorR;
+    unsigned int currentPillId;
 } SinglePlayerGame;
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed);
