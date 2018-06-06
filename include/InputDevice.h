@@ -20,6 +20,7 @@ class InputDevice;
 
 struct InputDevice_VTABLE {
     InputState* (*getInputState)(this_p(InputDevice));
+    void (*reset)(this_p(InputDevice));
 };
 
 typedef class InputDevice {

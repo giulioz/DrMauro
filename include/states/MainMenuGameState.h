@@ -16,15 +16,16 @@
 #include "Vector.h"
 #include "IntTypes.h"
 #include "Timeline.h"
-#include "SinglePlayerGameState.h"
+#include "DifficultySelectionGameState.h"
 
 typedef class MainMenuGameState {
     GameState base;
 
-    SinglePlayerGameState singlePlayerGameState;
+    /* Next state */
+    DifficultySelectionGameState difficultySelectionGameState;
 
-    /* Sprites */
     Sprite marioSprite, virusSprite, titleSprite, selectorSprite;
+    int selectedMenuEntry;
 
 } MainMenuGameState;
 

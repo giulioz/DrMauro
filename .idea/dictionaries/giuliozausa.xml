@@ -6,8 +6,10 @@
       <w>dest</w>
       <w>fbegin</w>
       <w>framebuffer</w>
+      <w>infos</w>
       <w>inputdevice</w>
       <w>marotta</w>
+      <w>multiplayer</w>
       <w>prealloc</w>
       <w>realloc</w>
       <w>rellocing</w>

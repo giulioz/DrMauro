@@ -17,8 +17,10 @@
 
 extern Font Asset_DefaultFont;
 
-extern FragmentedPanel Asset_PanelSmall, Asset_PanelLarge, Asset_PanelBottle;
+extern FragmentedPanel Asset_PanelSmall, Asset_PanelLarge, Asset_PanelBottle, Asset_DSPanel;
 extern Box Asset_MarioBox, Asset_EndBox, Asset_MainMenuBox;
+extern Box Asset_DSNumberBox, Asset_DSSubSel, Asset_DSSelected, Asset_DSUnselected;
+extern Texture Asset_DSSlider, Asset_DSSelectorDownSM, Asset_DSSelectorDownLG;
 extern Texture Asset_MagVirus, Asset_Logo, Asset_BigPill;
 extern SpriteClass Asset_Heart, Asset_BigTitle;
 extern SpriteClass Asset_Mario, Asset_VirusLargeBlue, Asset_VirusLargeYellow, Asset_VirusLargeRed;
@@ -30,6 +32,6 @@ extern Texture Asset_PillBlue_B, Asset_PillRed_B, Asset_PillYellow_B;
 extern Texture Asset_PillBlue_AR, Asset_PillRed_AR, Asset_PillYellow_AR;
 extern Texture Asset_PillBlue_BR, Asset_PillRed_BR, Asset_PillYellow_BR;
 
-extern Palette Asset_MedPalette, Asset_MenuPalette;
+extern Palette Asset_MedPalette, Asset_MenuPalette, Asset_DSMenuPalette;
 
 #endif

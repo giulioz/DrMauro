@@ -45,7 +45,7 @@ static void textureBlit(this_p(Graphics), Texture* texture, int *framebuffer,   
 static void textureBlitColor(this_p(Graphics), Texture* texture, int *framebuffer,/* Must be between begin and end draw */
                         size_t _dx, size_t _dy, size_t dxEnd, size_t dyEnd,       /* destination start and end */
                         size_t _sx, size_t _sy, size_t sxEnd, size_t syEnd,       /* source start and end */
-                        ColorIndex  color) {                                      /* color override */
+                        ColorIndex color, Palette *srcPalette) {                  /* color override */
     SDL_Graphics *graphics = (SDL_Graphics *) this;
     Screen *screen = (Screen *) graphics->screen;
     size_t sx, sy, dx, dy;
@@ -54,9 +54,10 @@ static void textureBlitColor(this_p(Graphics), Texture* texture, int *framebuffe
         for (sx = _sx, dx = _dx; dx < dxEnd && dx < screen->width; sx++, dx++) {
             int pixel;
             if (sx >= sxEnd) sx = _sx;
-            pixel = VTP(texture)->getXY(texture, this->currentPalette, sx, sy);
+            pixel = VTP(texture)->getXY(texture, srcPalette, sx, sy);
             if (((Color*)(&pixel))->a) {
-                framebuffer[dx + dy * graphics->screen->base.width] = this->currentPalette->colors[color];
+                int destColor = this->currentPalette->colors[color];
+                framebuffer[dx + dy * graphics->screen->base.width] = destColor;
             }
         }
     }
@@ -149,7 +150,7 @@ static void drawChar(this_p(Graphics), Font* font, size_t px, size_t py, char c,
     size_t sX = font->charMap[(int)c] * font->charWidth; /* x shift for character */
     textureBlitColor(this, font->texture, framebuffer,
                 px, py, px + font->charWidth, py + font->texture->height,
-                sX, 0, sX + font->charWidth, font->texture->height, color);
+                sX, 0, sX + font->charWidth, font->texture->height, color, &Asset_MedPalette);
     endDraw(this);
 }
 

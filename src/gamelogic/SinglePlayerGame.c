@@ -114,7 +114,7 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
 
 static void update(this_p(SinglePlayerGame), Engine* engine) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
-    InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
+    InputState *inputState = VTP(engine->inputDevice1)->getInputState(engine->inputDevice1);
     this->score = inputState->downButton;
 
     /* funzione step */
@@ -135,7 +135,7 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
     this->top = top;
     this->score = 0;
     this->level = level;
-    this->virus = 4 * (15 + 1); /* TODO */
+    this->virus = virus; /*4 * (15 + 1); /* TODO */
     this->speed = speed;
 
     /* Board */

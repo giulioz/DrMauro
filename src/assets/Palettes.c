@@ -51,3 +51,18 @@ static unsigned char menu_colors[][4] = {
 Palette Asset_MenuPalette = {
         (int *) &menu_colors
 };
+
+static unsigned char ds_colors[][4] = {
+        {123, 33, 181, 0},
+        {255, 255, 255, 255},
+        {33, 156, 231, 0},
+        {0, 0, 0, 255},
+        {123, 33, 181, 255},
+        {33, 156, 231, 255},
+        {0, 214, 140, 255},
+        {0, 74, 156, 255}
+};
+
+Palette Asset_DSMenuPalette = {
+        (int *) &ds_colors
+};

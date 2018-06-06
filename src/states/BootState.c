@@ -25,10 +25,10 @@ static void draw(this_p(GameState)) {
 
     /* Load next state */
     MainMenuGameState_init(&((BootState*)this)->mainMenuGameState, this->engine);
-    VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->mainMenuGameState);
+    VTP(this->engine)->loadState(this->engine, (GameState*)&((BootState*)this)->mainMenuGameState);
 
     /*AudioTestState_init(&((BootState*)this)->audioTestState, this->engine);
-    VTP(this->engine)->forkState(this->engine, (GameState*)&((BootState*)this)->audioTestState);*/
+    VTP(this->engine)->loadState(this->engine, (GameState*)&((BootState*)this)->audioTestState);*/
 }
 
 static struct GameState_VTABLE _vtable = {

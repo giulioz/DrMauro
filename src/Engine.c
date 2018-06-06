@@ -22,17 +22,12 @@ static void shutdown(this_p(Engine)) {
 /* Unload old state and load another one */
 static void loadState(this_p(Engine), GameState *state) {
     /* unload old state */
-    if (this->currentState)
+    if (this->currentState) {
         VTP(this->currentState)->unload(this->currentState);
+        VTP(this->inputDevice1)->reset(this->inputDevice1);
+        if (this->inputDevice2) VTP(this->inputDevice2)->reset(this->inputDevice2);
+    }
 
-    /* load new state */
-    this->currentState = state;
-    VTP(this->currentState)->load(this->currentState);
-    this->screen->callbacks = (ScreenCallbacks *) state;
-}
-
-/* Change to another state without unloading */
-static void forkState(this_p(Engine), GameState *state) {
     /* load new state */
     this->currentState = state;
     VTP(this->currentState)->load(this->currentState);
@@ -41,14 +36,15 @@ static void forkState(this_p(Engine), GameState *state) {
 
 
 static struct Engine_VTABLE _vtable = {
-        startup, shutdown, loadState, forkState
+        startup, shutdown, loadState
 };
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice* inputDevice) {
+Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice* inputDevice1, InputDevice *inputDevice2) {
     VTP(this) = &_vtable;
 
     this->screen = screen;
     this->currentState = bootState;
-    this->inputDevice = inputDevice;
+    this->inputDevice1 = inputDevice1;
+    this->inputDevice2 = inputDevice2;
     return this;
 }

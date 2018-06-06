@@ -17,7 +17,6 @@ struct Engine_VTABLE {
     void (*startup)(this_p(Engine));
     void (*shutdown)(this_p(Engine));
     void (*loadState)(this_p(Engine), GameState *state);
-    void (*forkState)(this_p(Engine), GameState *state);
 };
 
 typedef class Engine {
@@ -27,9 +26,9 @@ typedef class Engine {
     /* pointers to allow polymorphism */
     Screen *screen;
     GameState *currentState;
-    InputDevice* inputDevice;
+    InputDevice *inputDevice1, *inputDevice2;
 } Engine;
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice *inputDevice);
+Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice *inputDevice1, InputDevice *inputDevice2);
 
 #endif

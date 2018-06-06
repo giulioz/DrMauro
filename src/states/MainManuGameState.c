@@ -28,12 +28,14 @@ static void draw(this_p(GameState)) {
     /* Strings */
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 167, "1 PLAYER GAME", 1);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 183, "2 PLAYER GAME", 1);
-    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 199, "Q 2018 CT0304", 1);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 200, "Q", 1);
+    VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 199, "  2018 CT0304", 1);
 
     /* Sprites */
     VT(state->marioSprite)->draw(&state->marioSprite, this->engine->screen, graphics);
     VT(state->virusSprite)->draw(&state->virusSprite, this->engine->screen, graphics);
     VT(state->titleSprite)->draw(&state->titleSprite, this->engine->screen, graphics);
+    state->selectorSprite.y = (uint32_t) (169 + state->selectedMenuEntry * 16);
     VT(state->selectorSprite)->draw(&state->selectorSprite, this->engine->screen, graphics);
 
 #ifdef SAVE_DEBUG
@@ -49,11 +51,21 @@ static void draw(this_p(GameState)) {
 
 static void update(this_p(GameState)) {
     MainMenuGameState *state = (MainMenuGameState *)this;
-    InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
+    InputState *inputState = VTP(this->engine->inputDevice1)->getInputState(this->engine->inputDevice1);
+
+    if (inputState->downButton) {
+        state->selectedMenuEntry = 1;
+    } else if (inputState->upButton) {
+        state->selectedMenuEntry = 0;
+    }
 
     if (inputState->enterButton) {
-        SinglePlayerGameState_init(&state->singlePlayerGameState, this->engine, 0, 0, 3, SinglePlayerSpeed_Med);
-        VTP(this->engine)->forkState(this->engine, (GameState*)&state->singlePlayerGameState);
+        if (state->selectedMenuEntry == 0) {
+            DifficultySelectionGameState_init(&state->difficultySelectionGameState, this->engine, false);
+        } else if (state->selectedMenuEntry == 1) {
+            DifficultySelectionGameState_init(&state->difficultySelectionGameState, this->engine, true);
+        }
+        VTP(this->engine)->loadState(this->engine, (GameState *) &state->difficultySelectionGameState);
     }
 }
 
@@ -64,6 +76,7 @@ static void update(this_p(GameState)) {
 
 static void load(this_p(GameState)) {
     MainMenuGameState *state = (MainMenuGameState *) this;
+    state->selectedMenuEntry = 0;
 
     /* Sprites */
     Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 37, 168, 3);
@@ -73,7 +86,7 @@ static void load(this_p(GameState)) {
 }
 
 static void unload(this_p(GameState)) {
-    MainMenuGameState *state = (MainMenuGameState *) this;
+
 }
 
 static struct GameState_VTABLE _vtable = {

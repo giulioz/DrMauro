@@ -6,7 +6,7 @@
 #include "imgtool.h"
 #include "../../include/graphics/Color.h"
 
-static int colorsSize = 16;
+/*static int colorsSize = 16;
 static unsigned char colors[16][4] = {
         {0, 0, 0, 0},
         {255, 255, 255, 255},
@@ -24,6 +24,17 @@ static unsigned char colors[16][4] = {
         {0, 0, 0, 255},
         {164, 0, 59, 255},
         {214, 99, 24, 255}
+};*/
+static int colorsSize = 8;
+static unsigned char colors[8][4] = {
+        {123, 33, 181, 0},
+        {255, 255, 255, 255},
+        {33, 156, 231, 0},
+        {0, 0, 0, 255},
+        {123, 33, 181, 255},
+        {33, 156, 231, 255},
+        {0, 214, 140, 255},
+        {0, 74, 156, 255}
 };
 static Color *palette = (Color *) &colors;
 
@@ -47,6 +58,7 @@ unsigned char findPaletteEntry(Color value) {
         }
     }
     printf("color not found: %d %d %d %d\n", value.r, value.g, value.b, value.a);
+    return 0;
 }
 
 void printUsage() {
