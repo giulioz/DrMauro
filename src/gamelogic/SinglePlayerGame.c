@@ -122,14 +122,18 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
 
     /* create new pill */
 	if (this->state == SinglePlayerState_Still || this->state == SinglePlayerState_Begin) {
-        printf("R: %d; L: %d\n", this->nextPillColorR, this->nextPillColorL);
+        this->pillLX = 3;
+        this->pillLY = this->board.height - 1;
 
-		leftPill = getBoardElement(&this->board, this->board.height-1, 3);
+		leftPill = getBoardElement(&this->board, this->pillLY, this->pillLX);
 		leftPill->type = GameBoardElement_Pill;
 		leftPill->color = this->nextPillColorL;
         this->nextPillColorL = rand() % 3;
 
-        rightPill = getBoardElement(&this->board, this->board.height-1, 4);
+        this->pillRX = 4;
+        this->pillRY = this->board.height - 1;
+
+        rightPill = getBoardElement(&this->board, this->pillRY, this->pillRX);
 		rightPill->type = GameBoardElement_Pill;
 		rightPill->color = this->nextPillColorR;
         this->nextPillColorR = rand() % 3;
@@ -158,7 +162,7 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
     this->top = top;
     this->score = 0;
     this->level = level;
-    this->virus = virus; /*4 * (15 + 1); /* TODO */
+    this->virus = virus;
     this->speed = speed;
 
     /* Next pill */
