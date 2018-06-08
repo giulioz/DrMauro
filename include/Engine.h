@@ -26,9 +26,9 @@ typedef class Engine {
     /* pointers to allow polymorphism */
     Screen *screen;
     GameState *currentState;
-    InputDevice *inputDevice1, *inputDevice2;
+    InputDevice *inputDevice;
 } Engine;
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice *inputDevice1, InputDevice *inputDevice2);
+Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice *inputDevice);
 
 #endif

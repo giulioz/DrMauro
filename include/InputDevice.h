@@ -12,8 +12,10 @@
 
 typedef class InputState {
     bool rotateLeftButton, rotateRightButton;
+    bool rotateLeftButton2, rotateRightButton2;
     bool enterButton;
     bool upButton, downButton, leftButton, rightButton;
+    bool upButton2, downButton2, leftButton2, rightButton2;
 } InputState;
 
 class InputDevice;

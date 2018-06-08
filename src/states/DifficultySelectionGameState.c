@@ -156,44 +156,37 @@ static void decrement(this_p(DifficultySelectionGameState), int playerId) {
 }
 
 static void allKeysDown(this_p(GameState)) {
-    VTP(this->engine->inputDevice1)->reset(this->engine->inputDevice1);
-    if (this->engine->inputDevice2) VTP(this->engine->inputDevice2)->reset(this->engine->inputDevice2);
+    VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 }
 
 static void update(this_p(GameState)) {
     DifficultySelectionGameState *state = (DifficultySelectionGameState *)this;
-    InputState *inputState1 = VTP(this->engine->inputDevice1)->getInputState(this->engine->inputDevice1);
-    InputState inputState_empty = { false }; /* HACK for empty second controller */
-    InputState *inputState2 = &inputState_empty;
-    if (this->engine->inputDevice2) {
-        /* try if there is another player */
-        inputState2 = VTP(this->engine->inputDevice2)->getInputState(this->engine->inputDevice2);
-    }
+    InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
-    if (inputState1->downButton || inputState2->downButton) {
+    if (inputState->downButton) {
         state->selectedMenuEntry += state->selectedMenuEntry < DifficultySelectionGameState_MusicType ? 1 : 0;
         allKeysDown(this);
-    } else if (inputState1->upButton || inputState1->downButton) {
+    } else if (inputState->upButton) {
         state->selectedMenuEntry -= state->selectedMenuEntry > DifficultySelectionGameState_VirusLevel ? 1 : 0;
         allKeysDown(this);
     }
 
-    if (inputState1->rightButton) {
+    if (inputState->rightButton) {
         increment(state, 0);
         allKeysDown(this);
-    } else if (inputState1->leftButton) {
+    } else if (inputState->leftButton) {
         decrement(state, 0);
         allKeysDown(this);
     }
-    if (inputState2->rightButton) {
+    if (inputState->rightButton2) {
         increment(state, 1);
         allKeysDown(this);
-    } else if (inputState2->leftButton) {
+    } else if (inputState->leftButton2) {
         decrement(state, 1);
         allKeysDown(this);
     }
 
-    if (inputState1->enterButton || inputState2->enterButton) {
+    if (inputState->enterButton) {
         if (state->multiplayer) {
             /* TODO */
         } else {

@@ -51,7 +51,7 @@ static void draw(this_p(GameState)) {
 
 static void update(this_p(GameState)) {
     MainMenuGameState *state = (MainMenuGameState *)this;
-    InputState *inputState = VTP(this->engine->inputDevice1)->getInputState(this->engine->inputDevice1);
+    InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
     if (inputState->downButton) {
         state->selectedMenuEntry = 1;

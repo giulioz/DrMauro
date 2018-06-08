@@ -227,13 +227,31 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
     }
 }
 
+static void drawNextPill(this_p(SinglePlayerGameState), Graphics *graphics) {
+    Texture *pillTextureL, *pillTextureR;
+    uint32_t nextPillLX, nextPillLY, nextPillRX, nextPillRY;
+
+    pillTextureL = getPillTexture(this->logic.nextPillColorL, Left);
+    pillTextureR = getPillTexture(this->logic.nextPillColorR, Right);
+
+    nextPillLX = 190;
+    nextPillLY = 70;
+    nextPillRX = 198;
+    nextPillRY = 70;
+
+    VTP(graphics)->drawTexture(graphics, pillTextureL,
+                               nextPillLX, nextPillLY, nextPillLX + pillTextureL->width, nextPillLY + pillTextureL->height,
+                               0, 0, pillTextureL->width, pillTextureL->height);
+    VTP(graphics)->drawTexture(graphics, pillTextureR,
+                               nextPillRX, nextPillRY, nextPillRX + pillTextureR->width, nextPillRY + pillTextureR->height,
+                               0, 0, pillTextureR->width, pillTextureR->height);
+}
+
 
 /* Drawing entry point */
 static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
     SinglePlayerGameState *state = (SinglePlayerGameState *) this;
-    Texture *pillTextureL, *pillTextureR;
-    uint32_t nextPillLX, nextPillLY, nextPillRX, nextPillRY;
 
     /* Background */
     loadPalette(graphics, state->logic.speed);
@@ -241,7 +259,7 @@ static void draw(this_p(GameState)) {
 
     /* Panels */
     drawScorePanel(graphics, state->logic.top, state->logic.score);
-    drawLevelPanel(graphics, state->logic.level, state->logic.speed, state->logic.virus);
+    drawLevelPanel(graphics, state->logic.level, state->logic.speed, state->logic.virusCount);
 
     /* Board */
     drawGameBoard(state, this->engine->screen);
@@ -257,20 +275,7 @@ static void draw(this_p(GameState)) {
     VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
 
     /* Current Pill */
-    pillTextureL = getPillTexture(state->logic.nextPillColorL, Left);
-    pillTextureR = getPillTexture(state->logic.nextPillColorR, Right);
-
-    nextPillLX = 190;
-    nextPillLY = 70;
-    nextPillRX = 198;
-    nextPillRY = 70;
-
-    VTP(graphics)->drawTexture(graphics, pillTextureL,
-                               nextPillLX, nextPillLY, nextPillLX + pillTextureL->width, nextPillLY + pillTextureL->height,
-                               0, 0, pillTextureL->width, pillTextureL->height);
-    VTP(graphics)->drawTexture(graphics, pillTextureR,
-                               nextPillRX, nextPillRY, nextPillRX + pillTextureR->width, nextPillRY + pillTextureR->height,
-                               0, 0, pillTextureR->width, pillTextureR->height);
+    drawNextPill(state, graphics);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");

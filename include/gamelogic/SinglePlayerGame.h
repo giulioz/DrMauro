@@ -47,7 +47,7 @@ typedef class SinglePlayerGame {
 
     /* Stats */
     int top, score;
-    int level, virus;
+    int level, virusCount;
     SinglePlayerGame_Speed speed;
 
     /* Board */

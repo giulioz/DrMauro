@@ -8,16 +8,16 @@
 #include <time.h>
 #include <stdio.h>
 
+static GameBoardElement* getBoardElement(Vector2D *board, size_t row, size_t col) {
+    return VTP(board)->get2D(board, row, col);
+}
+
 /* *************************************************************** */
 /* Board generation                                                */
 /* *************************************************************** */
 
 static uint32_t randomBetween(size_t min, size_t max) {
 	return (uint32_t) ((rand() % (max - min)) + min);
-}
-
-static GameBoardElement* getBoardElement(Vector2D *board, size_t row, size_t col) {
-	return VTP(board)->get2D(board, row, col);
 }
 
 static bool isColorLegalInBoard(Vector2D *board, size_t row, size_t col, GameBoardElementColor target) {
@@ -81,7 +81,7 @@ static bool tryAddVirus(Vector2D *board, uint32_t virusIndex) {
     }
 }
 
-static void initBoard(this_p(SinglePlayerGame), int virus) {
+static void initBoard(this_p(SinglePlayerGame), int virusCount) {
 	GameBoardElement *element;
 	uint32_t i = 0;
     uint32_t x, y;
@@ -102,7 +102,7 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
         }
     }
 
-	while (i < virus) {
+	while (i < virusCount) {
         if (tryAddVirus(&this->board, i)) {
             i++;
         }
@@ -113,11 +113,26 @@ static void initBoard(this_p(SinglePlayerGame), int virus) {
 /* Update                                                          */
 /* *************************************************************** */
 
+static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBoardElement* src) {
+    GameBoardElement bak = *dest;
+    if (dest->type != GameBoardElement_Empty)
+        return false;
+    *dest = *src;
+    *src = bak;
+    return true;
+}
+
+static GameBoardElement* findElement(this_p(SinglePlayerGame), GameBoardElement toFind) {
+
+}
+
+static bool currentPillGravity(this_p(SinglePlayerGame)) {
+    GameBoardElement *currentPillA = VT(this->board)->get2D;
+}
+
 static void update(this_p(SinglePlayerGame), Engine* engine) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
-    InputState *inputState = VTP(engine->inputDevice1)->getInputState(engine->inputDevice1);
-    this->score = inputState->downButton;
-
+    InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
     GameBoardElement *leftPill, *rightPill;
 
     /* create new pill */
@@ -127,20 +142,21 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
 		leftPill = getBoardElement(&this->board, this->board.height-1, 3);
 		leftPill->type = GameBoardElement_Pill;
 		leftPill->color = this->nextPillColorL;
-        this->nextPillColorL = rand() % 3;
+        this->nextPillColorL = (GameBoardElementColor) (rand() % 3);
 
         rightPill = getBoardElement(&this->board, this->board.height-1, 4);
 		rightPill->type = GameBoardElement_Pill;
 		rightPill->color = this->nextPillColorR;
-        this->nextPillColorR = rand() % 3;
+        this->nextPillColorR = (GameBoardElementColor) (rand() % 3);
 
         this->state = SinglePlayerState_Moving;
         this->currentPillId++;
 	}
-
 	else {
 		/* handle keyboard input */
 	}
+
+
 }
 
 
@@ -158,7 +174,7 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
     this->top = top;
     this->score = 0;
     this->level = level;
-    this->virus = virus; /*4 * (15 + 1); /* TODO */
+    this->virusCount = 4 * (virus + 1); /*4 * (15 + 1); /* TODO */
     this->speed = speed;
 
     /* Next pill */
@@ -169,5 +185,5 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int vir
     /* Board */
     StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);
     memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
-    initBoard(this, this->virus);
+    initBoard(this, this->virusCount);
 }

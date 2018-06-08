@@ -24,8 +24,7 @@ static void loadState(this_p(Engine), GameState *state) {
     /* unload old state */
     if (this->currentState) {
         VTP(this->currentState)->unload(this->currentState);
-        VTP(this->inputDevice1)->reset(this->inputDevice1);
-        if (this->inputDevice2) VTP(this->inputDevice2)->reset(this->inputDevice2);
+        VTP(this->inputDevice)->reset(this->inputDevice);
     }
 
     /* load new state */
@@ -39,12 +38,11 @@ static struct Engine_VTABLE _vtable = {
         startup, shutdown, loadState
 };
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice* inputDevice1, InputDevice *inputDevice2) {
+Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice* inputDevice) {
     VTP(this) = &_vtable;
 
     this->screen = screen;
     this->currentState = bootState;
-    this->inputDevice1 = inputDevice1;
-    this->inputDevice2 = inputDevice2;
+    this->inputDevice = inputDevice;
     return this;
 }

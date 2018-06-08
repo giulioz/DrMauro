@@ -33,7 +33,7 @@ int _main(int argc, char **argv) {
     SDL_Screen_init(&screen, 256, 240, "DR. MAURO", NULL, &inputDevice);
 
     /* Init and startup engine */
-    Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState, &inputDevice, NULL);
+    Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState, (InputDevice *) &inputDevice);
     VT(engine)->startup(&engine);
     
     return 0;
