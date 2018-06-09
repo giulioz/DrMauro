@@ -254,7 +254,7 @@ static void update(this_p(GameState)) {
 				VTP(this->engine->screen)->getCurrentTime(this->engine->screen) + 1000, this);
 			state->logic.state = SinglePlayerState_Begin;
 		}
-		/* quanto figo sarebbe avere gli async-await in C porcamadonna */
+		/* quanto figo sarebbe avere gli async-await in C */
 	}
 
 	/* Update controller */
