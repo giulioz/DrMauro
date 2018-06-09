@@ -123,6 +123,11 @@ static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBo
 }
 
 static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
+    if (y == 0 || getBoardElement(&this->board, y-1, x)->type != GameBoardElement_Empty) {
+        this->state = SinglePlayerState_Still;
+        return false;
+    }
+
     return true;
 }
 
@@ -189,7 +194,9 @@ static bool addNextPill(this_p(SinglePlayerGame)) {
 
 
 static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
-    currentPillMove(this, direction);
+    if ((this->pillLX != 0 || direction != SinglePlayerDirection_Left) &&
+        (this->pillRX != this->board.width - 1 || direction != SinglePlayerDirection_Right))
+        currentPillMove(this, direction);
 }
 
 
