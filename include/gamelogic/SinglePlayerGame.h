@@ -33,9 +33,16 @@ typedef enum {
     SinglePlayerSpeed_Hi
 } SinglePlayerGame_Speed;
 
+typedef enum {
+    SinglePlayerDirection_Down,
+    SinglePlayerDirection_Left,
+    SinglePlayerDirection_Right
+} SinglePlayerGame_Direction;
+
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
+    void (*startGame)(this_p(SinglePlayerGame), Engine* engine);
     void (*update)(this_p(SinglePlayerGame), Engine* engine);
 };
 
@@ -56,9 +63,16 @@ typedef class SinglePlayerGame {
 
     /* Next pill in Mario hands */
     GameBoardElementColor nextPillColorL, nextPillColorR;
-    unsigned int currentPillId;
+
+    /* Current pill */
+    size_t pillLX, pillLY, pillRX, pillRY;
+    int currentPillId;
+
+    /* Gravity */
+    uint32_t lastGravity;
+
 } SinglePlayerGame;
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed);
+void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
 
 #endif

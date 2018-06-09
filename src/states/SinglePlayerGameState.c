@@ -345,8 +345,19 @@ static void update(this_p(GameState)) {
 /* Initialization                                                  */
 /* *************************************************************** */
 
+static void startGame_AfterAnim(this_p(SinglePlayerGameState)) {
+    VT(this->logic)->startGame(&this->logic, this->base.engine);
+}
+
+static void startGame(this_p(SinglePlayerGameState)) {
+    uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
+    VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
+    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) startGame_AfterAnim, startTime + 300, this);
+}
+
 static void load(this_p(GameState)) {
     SinglePlayerGameState *state = (SinglePlayerGameState *) this;
+    uint32_t startTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
 
     Timeline_init(&state->timeline, TIMELINE_PREALLOC);
 
@@ -355,6 +366,8 @@ static void load(this_p(GameState)) {
     Sprite_init(&state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
     Sprite_init(&state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
 	Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
+
+    VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) startGame, startTime + 1000, this);
 }
 
 static void unload(this_p(GameState)) {
@@ -370,6 +383,6 @@ void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, i
     this->base.engine = engine;
     VT(this->base) = &_vtable;
 
-    SinglePlayerGame_init(&this->logic, top, level, virus, speed);
+    SinglePlayerGame_init(&this->logic, engine, top, level, virus, speed);
     this->lastLogicState = SinglePlayerState_Nothing;
 }

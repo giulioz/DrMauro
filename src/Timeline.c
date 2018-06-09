@@ -1,6 +1,6 @@
 /*
 *  Timeline.c
-*  Copyright © 2018 Giulio Zausa, Alessio Marotta
+*  Copyright ï¿½ 2018 Giulio Zausa, Alessio Marotta
 */
 
 #include "Timeline.h"
@@ -9,7 +9,7 @@ static void update(Timeline *this, uint32_t time) {
 	size_t i;
 	Vector_foreach(this->events, i) {
 		TimelineEvent *event = VT(this->events)->get(&this->events, i);
-		if (event->time >= time) {
+		if (event->time < time) {
 			event->invoke(event->context);
 			VT(this->events)->delete(&this->events, i);
 			i--;

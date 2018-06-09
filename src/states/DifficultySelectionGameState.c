@@ -49,7 +49,7 @@ static void draw(this_p(GameState)) {
     VT(Asset_DSPanel)->draw(&Asset_DSPanel, graphics, 24, 24, 161);
     VTP(graphics)->drawTexture(graphics, &Asset_DSSlider, 89, 92, 89 + Asset_DSSlider.width, 92 + Asset_DSSlider.height, 0, 0, Asset_DSSlider.width, Asset_DSSlider.height);
 
-    /* Data */
+    /* Virus Level */
     drawVirusNumber(graphics, 179, 75, state->playerInfos[0].virusLevel);
     if (state->multiplayer)
         drawVirusNumber(graphics, 179, 99, state->playerInfos[1].virusLevel);
@@ -58,6 +58,15 @@ static void draw(this_p(GameState)) {
     VTP(graphics)->drawTexture(graphics, &Asset_DSSelectorDownSM, 87 + x, 85,
                                87 + x + Asset_DSSelectorDownSM.width, 85 + Asset_DSSelectorDownSM.height,
                                0, 0, Asset_DSSelectorDownSM.width, Asset_DSSelectorDownSM.height);
+    if (state->multiplayer) {
+        /* TODO */
+    }
+
+    /* Speed */
+    x = (uint32_t) (state->playerInfos[0].speed - 1) * 40;
+    VTP(graphics)->drawTexture(graphics, &Asset_DSSelectorDownLG, 129 + x, 137,
+                               129 + x + Asset_DSSelectorDownLG.width, 137 + Asset_DSSelectorDownLG.height,
+                               0, 0, Asset_DSSelectorDownLG.width, Asset_DSSelectorDownLG.height);
     if (state->multiplayer) {
         /* TODO */
     }
@@ -145,7 +154,7 @@ static void decrement(this_p(DifficultySelectionGameState), int playerId) {
             if (this->playerInfos[playerId].virusLevel > 0) this->playerInfos[playerId].virusLevel--;
             break;
         case DifficultySelectionGameState_Speed:
-            if (this->playerInfos[playerId].speed < SinglePlayerSpeed_Low) this->playerInfos[playerId].speed--;
+            if (this->playerInfos[playerId].speed > SinglePlayerSpeed_Low) this->playerInfos[playerId].speed--;
             break;
         case DifficultySelectionGameState_MusicType:
             if (this->music > Fever) this->music--;

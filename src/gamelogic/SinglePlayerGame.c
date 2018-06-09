@@ -122,41 +122,77 @@ static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBo
     return true;
 }
 
-static GameBoardElement* findElement(this_p(SinglePlayerGame), GameBoardElement toFind) {
-
+static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
+    return true;
 }
 
 static bool currentPillGravity(this_p(SinglePlayerGame)) {
-    GameBoardElement *currentPillA = VT(this->board)->get2D;
+    if (this->currentPillId >= 0 &&
+        canPillMove(this, this->pillLX, this->pillLY, SinglePlayerDirection_Down) &&
+        canPillMove(this, this->pillRX, this->pillRY, SinglePlayerDirection_Down)) {
+        moveElement(this, getBoardElement(&this->board, this->pillLY - 1, this->pillLX),
+                    getBoardElement(&this->board, this->pillLY, this->pillLX));
+        moveElement(this, getBoardElement(&this->board, this->pillRY - 1, this->pillRX),
+                    getBoardElement(&this->board, this->pillRY, this->pillRX));
+        this->pillLY--;
+        this->pillRY--;
+    }
 }
+
+static bool pillGravity(this_p(SinglePlayerGame)) {
+    return currentPillGravity(this);
+}
+
+static bool addNextPill(this_p(SinglePlayerGame)) {
+    GameBoardElement *r, *l;
+    r = getBoardElement(&this->board, this->board.height - 1, 3);
+    l = getBoardElement(&this->board, this->board.height - 1, 4);
+
+    if (r->type != GameBoardElement_Empty || l->type != GameBoardElement_Empty)
+        return false; /* occupied, lose */
+    else {
+        this->currentPillId++;
+        l->type = GameBoardElement_Pill;
+        r->type = GameBoardElement_Pill;
+        l->color = this->nextPillColorL;
+        r->color = this->nextPillColorR;
+        l->id = (unsigned long) this->currentPillId;
+        r->id = (unsigned long) this->currentPillId;
+        this->pillLX = 3;
+        this->pillRX = 4;
+        this->pillLY = this->board.height - 1;
+        this->pillRY = this->board.height - 1;
+    }
+}
+
+
 
 static void update(this_p(SinglePlayerGame), Engine* engine) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
     InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
-    GameBoardElement *leftPill, *rightPill;
+
+    if (time - this->lastGravity > 1000) {
+        pillGravity(this);
+        this->lastGravity = time;
+    }
 
     /* create new pill */
-	if (this->state == SinglePlayerState_Still || this->state == SinglePlayerState_Begin) {
-        printf("R: %d; L: %d\n", this->nextPillColorR, this->nextPillColorL);
-
-		leftPill = getBoardElement(&this->board, this->board.height-1, 3);
-		leftPill->type = GameBoardElement_Pill;
-		leftPill->color = this->nextPillColorL;
+	if (this->state == SinglePlayerState_Still) {
+        addNextPill(this);
         this->nextPillColorL = (GameBoardElementColor) (rand() % 3);
-
-        rightPill = getBoardElement(&this->board, this->board.height-1, 4);
-		rightPill->type = GameBoardElement_Pill;
-		rightPill->color = this->nextPillColorR;
         this->nextPillColorR = (GameBoardElementColor) (rand() % 3);
-
         this->state = SinglePlayerState_Moving;
-        this->currentPillId++;
 	}
 	else {
 		/* handle keyboard input */
 	}
+}
 
 
+static void startGame(this_p(SinglePlayerGame), Engine* engine) {
+    addNextPill(this);
+    this->state = SinglePlayerState_Moving;
+    this->lastGravity = VTP(engine->screen)->getCurrentTime(engine->screen);
 }
 
 
@@ -165,22 +201,22 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
 /* *************************************************************** */
 
 static struct SinglePlayerGame_VTABLE _vtable = {
-        update
+        startGame, update
 };
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), int top, int level, int virus, SinglePlayerGame_Speed speed) {
+void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
 	VTP(this) = &_vtable;
     this->state = SinglePlayerState_Begin;
     this->top = top;
     this->score = 0;
     this->level = level;
-    this->virusCount = 4 * (virus + 1); /*4 * (15 + 1); /* TODO */
+    this->virusCount = 4 * (virus + 1);
     this->speed = speed;
 
     /* Next pill */
-    this->nextPillColorL = GameBoardElement_Red;
-    this->nextPillColorR = GameBoardElement_Blue;
-    this->currentPillId = 1;
+    this->nextPillColorL = (GameBoardElementColor) (rand() % 3);
+    this->nextPillColorR = (GameBoardElementColor) (rand() % 3);
+    this->currentPillId = -1;
 
     /* Board */
     StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);

@@ -75,13 +75,14 @@ static void _insert(Vector* vector, const size_t index, const void* element) {
 }
 
 static void _delete(Vector* vector, const size_t index) {
-	int i;
+	size_t i;
 	if (index == vector->count - 1) {
 		vector->count--;
 	} else {
-		for (i = vector->count - 1; i >= index; i--) {
+		for (i = vector->count - 1; i >= index && i > 0; i--) {
 			_set(vector, i - 1, _get(vector, i));
 		}
+        vector->count--;
 	}
 }
 
