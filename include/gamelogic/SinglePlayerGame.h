@@ -36,14 +36,15 @@ typedef enum {
 typedef enum {
     SinglePlayerDirection_Down,
     SinglePlayerDirection_Left,
-    SinglePlayerDirection_Right
+    SinglePlayerDirection_Right,
+    SinglePlayerDirection_Nothing
 } SinglePlayerGame_Direction;
 
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
     void (*startGame)(this_p(SinglePlayerGame), Engine* engine);
-    void (*update)(this_p(SinglePlayerGame), Engine* engine);
+    void (*update)(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction);
 };
 
 typedef class SinglePlayerGame {

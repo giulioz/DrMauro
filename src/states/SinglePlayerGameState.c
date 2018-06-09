@@ -326,11 +326,20 @@ static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
 	this->virusLargeRedSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 0.575f));
 }
 
+static SinglePlayerGame_Direction getDirection(this_p(SinglePlayerGameState)) {
+    InputState *inputState = VTP(this->base.engine->inputDevice)->getInputState(this->base.engine->inputDevice);
+    if (inputState->leftButton) return SinglePlayerDirection_Left;
+    else if (inputState->rightButton) return SinglePlayerDirection_Right;
+    else if (inputState->downButton) return SinglePlayerDirection_Down;
+    else return SinglePlayerDirection_Nothing;
+}
+
 static void update(this_p(GameState)) {
 	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
 
 	/* Update controller */
-	VT(state->logic)->update(&state->logic, this->engine);
+	VT(state->logic)->update(&state->logic, this->engine, getDirection(state));
+    VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */
     VT(state->timeline)->update(&state->timeline, VTP(this->engine->screen)->getCurrentTime(this->engine->screen));

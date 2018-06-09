@@ -126,21 +126,43 @@ static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlay
     return true;
 }
 
-static bool currentPillGravity(this_p(SinglePlayerGame)) {
+static bool currentPillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
     if (this->currentPillId >= 0 &&
-        canPillMove(this, this->pillLX, this->pillLY, SinglePlayerDirection_Down) &&
-        canPillMove(this, this->pillRX, this->pillRY, SinglePlayerDirection_Down)) {
-        moveElement(this, getBoardElement(&this->board, this->pillLY - 1, this->pillLX),
-                    getBoardElement(&this->board, this->pillLY, this->pillLX));
-        moveElement(this, getBoardElement(&this->board, this->pillRY - 1, this->pillRX),
-                    getBoardElement(&this->board, this->pillRY, this->pillRX));
-        this->pillLY--;
-        this->pillRY--;
+        canPillMove(this, this->pillLX, this->pillLY, direction) &&
+        canPillMove(this, this->pillRX, this->pillRY, direction)) {
+        switch (direction) {
+            case SinglePlayerDirection_Down:
+                moveElement(this, getBoardElement(&this->board, this->pillLY - 1, this->pillLX),
+                            getBoardElement(&this->board, this->pillLY, this->pillLX));
+                moveElement(this, getBoardElement(&this->board, this->pillRY - 1, this->pillRX),
+                            getBoardElement(&this->board, this->pillRY, this->pillRX));
+                this->pillLY--;
+                this->pillRY--;
+                break;
+            case SinglePlayerDirection_Left:
+                moveElement(this, getBoardElement(&this->board, this->pillLY, this->pillLX - 1),
+                            getBoardElement(&this->board, this->pillLY, this->pillLX));
+                moveElement(this, getBoardElement(&this->board, this->pillRY, this->pillRX - 1),
+                            getBoardElement(&this->board, this->pillRY, this->pillRX));
+                this->pillLX--;
+                this->pillRX--;
+                break;
+            case SinglePlayerDirection_Right:
+                moveElement(this, getBoardElement(&this->board, this->pillRY, this->pillRX + 1),
+                            getBoardElement(&this->board, this->pillRY, this->pillRX));
+                moveElement(this, getBoardElement(&this->board, this->pillLY, this->pillLX + 1),
+                            getBoardElement(&this->board, this->pillLY, this->pillLX));
+                this->pillLX++;
+                this->pillRX++;
+                break;
+            default:
+                break;
+        }
     }
 }
 
 static bool pillGravity(this_p(SinglePlayerGame)) {
-    return currentPillGravity(this);
+    return currentPillMove(this, SinglePlayerDirection_Down);
 }
 
 static bool addNextPill(this_p(SinglePlayerGame)) {
@@ -166,10 +188,13 @@ static bool addNextPill(this_p(SinglePlayerGame)) {
 }
 
 
+static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
+    currentPillMove(this, direction);
+}
 
-static void update(this_p(SinglePlayerGame), Engine* engine) {
+
+static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
-    InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
 
     if (time - this->lastGravity > 1000) {
         pillGravity(this);
@@ -183,9 +208,8 @@ static void update(this_p(SinglePlayerGame), Engine* engine) {
         this->nextPillColorR = (GameBoardElementColor) (rand() % 3);
         this->state = SinglePlayerState_Moving;
 	}
-	else {
-		/* handle keyboard input */
-	}
+
+    handlePillMove(this, direction);
 }
 
 
