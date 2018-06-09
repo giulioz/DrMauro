@@ -19,7 +19,8 @@
 #define SPMaxVirus 20
 
 typedef enum {
-    SinglePlayerState_Begin,
+	SinglePlayerState_FillingBoard,
+    SinglePlayerState_Begin,	/* still to begin */
     SinglePlayerState_Moving,   /* pill moving */
 
     SinglePlayerState_Still,    /* pill still -> launch another one */
@@ -44,7 +45,7 @@ typedef enum {
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
-    bool (*addNextPill)(this_p(SinglePlayerGame));
+    bool (*addNextVirus)(this_p(SinglePlayerGame), uint32_t i);
     void (*startGame)(this_p(SinglePlayerGame), Engine* engine);
     void (*update)(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction);
 };

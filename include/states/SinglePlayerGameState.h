@@ -31,6 +31,7 @@ typedef class SinglePlayerGameState {
     /* Game logic */
     SinglePlayerGame logic;
 	SinglePlayerGame_State lastLogicState;
+	uint32_t i;
 
     /* Sprites */
     Sprite marioSprite;

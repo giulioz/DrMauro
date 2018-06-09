@@ -206,7 +206,7 @@ static void update(this_p(GameState)) {
             MultiPlayerGameState_init(&state->multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
             VTP(this->engine)->loadState(this->engine, (GameState *) &state->multiPlayerGameState);
         } else {
-            SinglePlayerGameState_init(&state->singlePlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
+            SinglePlayerGameState_init(&state->singlePlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, state->playerInfos[0].speed);
             VTP(this->engine)->loadState(this->engine, (GameState *) &state->singlePlayerGameState);
         }
     }

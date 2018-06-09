@@ -2,12 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\include",
+    "\\include\\audio",
     "\\include\\gamelogic",
+    "\\include\\graphics",
+    "\\include\\SDL",
     "\\include\\states",
     "\\src",
-    "\\src\\gamelogic",
-    "\\src\\states"
+    "\\src\\assets",
+    "\\src\\graphics"
   ],
-  "SelectedNode": "\\include\\states\\InGameState.h",
+  "SelectedNode": "\\CMakeLists.txt",
   "PreviewInSolutionExplorer": false
 }

@@ -12,13 +12,13 @@ static GameBoardElement* getBoardElement(Vector2D *board, size_t row, size_t col
     return VTP(board)->get2D(board, row, col);
 }
 
+static uint32_t randomBetween(size_t min, size_t max) {
+	return (uint32_t)((rand() % (max - min)) + min);
+}
+
 /* *************************************************************** */
 /* Board generation                                                */
 /* *************************************************************** */
-
-static uint32_t randomBetween(size_t min, size_t max) {
-	return (uint32_t) ((rand() % (max - min)) + min);
-}
 
 static bool isColorLegalInBoard(Vector2D *board, size_t row, size_t col, GameBoardElementColor target) {
 	GameBoardElementColor curCell;
@@ -81,12 +81,16 @@ static bool tryAddVirus(Vector2D *board, uint32_t virusIndex) {
     }
 }
 
-
-static bool addNextVirus(this_p(SinglePlayerGame), Engine* engine, uint32_t i) {
+/* For board init animation */
+static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
     if (i < this->virusCount) {
         while (!tryAddVirus(&this->board, i));
-    }
+		return true;
+	} else {
+		return false;
+	}
 }
+
 
 /* *************************************************************** */
 /* Update                                                          */
@@ -191,20 +195,25 @@ static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction 
 static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
 
-    if (time - this->lastGravity > 1000) {
+    if (time - this->lastGravity > 2000 / ((this->speed + 1) * 1.5)) {
         currentPillMove(this, SinglePlayerDirection_Down);
         this->lastGravity = time;
     }
 
     /* create new pill */
 	if (this->state == SinglePlayerState_Still) {
-        addNextPill(this);
-        this->nextPillColorL = (GameBoardElementColor) (rand() % 3);
-        this->nextPillColorR = (GameBoardElementColor) (rand() % 3);
-        this->state = SinglePlayerState_Moving;
+		if (addNextPill(this)) {
+			this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
+			this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
+			this->state = SinglePlayerState_Moving;
+		} else {
+			this->state = SinglePlayerState_EndLost;
+		}
 	}
 
-    handlePillMove(this, direction);
+	if (this->state == SinglePlayerState_Moving) {
+		handlePillMove(this, direction);
+	}
 }
 
 
@@ -242,7 +251,7 @@ static void initBoard(this_p(SinglePlayerGame)) {
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
 	VTP(this) = &_vtable;
-    this->state = SinglePlayerState_Begin;
+    this->state = SinglePlayerState_FillingBoard;
     this->top = top;
     this->score = 0;
     this->level = level;
@@ -250,8 +259,8 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     this->speed = speed;
 
     /* Next pill */
-    this->nextPillColorL = (GameBoardElementColor) (rand() % 3);
-    this->nextPillColorR = (GameBoardElementColor) (rand() % 3);
+	this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
+	this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
     this->currentPillId = -1;
 
     /* Board */

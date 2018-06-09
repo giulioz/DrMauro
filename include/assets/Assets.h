@@ -32,6 +32,6 @@ extern Texture Asset_PillBlue_B, Asset_PillRed_B, Asset_PillYellow_B;
 extern Texture Asset_PillBlue_AR, Asset_PillRed_AR, Asset_PillYellow_AR;
 extern Texture Asset_PillBlue_BR, Asset_PillRed_BR, Asset_PillYellow_BR;
 
-extern Palette Asset_MedPalette, Asset_MenuPalette, Asset_DSMenuPalette;
+extern Palette Asset_LowPalette, Asset_MedPalette, Asset_HiPalette, Asset_MenuPalette, Asset_DSMenuPalette;
 
 #endif

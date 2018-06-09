@@ -28,9 +28,9 @@
 static void loadPalette(Graphics* graphics, SinglePlayerGame_Speed speed) {
     /* Load palette according to speed */
     switch (speed) {
-        case SinglePlayerSpeed_Low: graphics->currentPalette = &Asset_MedPalette; break;
+        case SinglePlayerSpeed_Low: graphics->currentPalette = &Asset_LowPalette; break;
         case SinglePlayerSpeed_Med: graphics->currentPalette = &Asset_MedPalette; break;
-        case SinglePlayerSpeed_Hi: graphics->currentPalette = &Asset_MedPalette; break;
+        case SinglePlayerSpeed_Hi: graphics->currentPalette = &Asset_HiPalette; break;
         default: break;
     }
 }
@@ -149,7 +149,6 @@ static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
     SinglePlayerGameState *state = (SinglePlayerGameState *) this;
 
-    /* Background */
     loadPalette(graphics, state->logic.speed);
     drawBaseElements(graphics);
 
@@ -157,11 +156,9 @@ static void draw(this_p(GameState)) {
     drawScorePanel(graphics, state->logic.top, state->logic.score);
     drawLevelPanel(graphics, state->logic.level, state->logic.speed, state->logic.virusCount);
 
-    /* Board */
-    drawGameBoard(state, this->engine->screen);
-
-    /* End game */
-    if (state->logic.state == SinglePlayerState_EndLost || state->logic.state == SinglePlayerState_EndWon)
+	if (state->logic.state != SinglePlayerState_EndLost && state->logic.state != SinglePlayerState_EndWon)
+		drawGameBoard(state, this->engine->screen);
+	else
         drawEndMessage(this, graphics, state->logic.state);
 
     /* Sprites */
@@ -235,9 +232,30 @@ static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(SinglePlayerGa
     else return SinglePlayerDirection_Nothing;
 }
 
+static void startGame_AfterAnim(this_p(SinglePlayerGameState)) {
+	VT(this->logic)->startGame(&this->logic, this->base.engine);
+}
+
+static void startGame(this_p(SinglePlayerGameState)) {
+	uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
+	VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
+	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) startGame_AfterAnim, startTime + 300, this);
+}
+
 static void update(this_p(GameState)) {
 	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
     uint32_t currentTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
+
+	if (state->logic.state == SinglePlayerState_FillingBoard) {
+		if (VT(state->logic)->addNextVirus(&state->logic, state->i))
+			state->i++;
+		else {
+			VT(state->timeline)->addEvent(&state->timeline, (void(*)(void *)) startGame,
+				VTP(this->engine->screen)->getCurrentTime(this->engine->screen) + 1000, this);
+			state->logic.state = SinglePlayerState_Begin;
+		}
+		/* quanto figo sarebbe avere gli async-await in C porcamadonna */
+	}
 
 	/* Update controller */
 	VT(state->logic)->update(&state->logic, this->engine, getDirectionFromKeyboard(state));
@@ -258,16 +276,6 @@ static void update(this_p(GameState)) {
 /* Initialization                                                  */
 /* *************************************************************** */
 
-static void startGame_AfterAnim(this_p(SinglePlayerGameState)) {
-    VT(this->logic)->startGame(&this->logic, this->base.engine);
-}
-
-static void startGame(this_p(SinglePlayerGameState)) {
-    uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
-    VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
-    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) startGame_AfterAnim, startTime + 300, this);
-}
-
 static void load(this_p(GameState)) {
     SinglePlayerGameState *state = (SinglePlayerGameState *) this;
     uint32_t startTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
@@ -279,8 +287,6 @@ static void load(this_p(GameState)) {
     Sprite_init(&state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
     Sprite_init(&state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
 	Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
-
-    VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) startGame, startTime + 1000, this);
 
     /* Next pill */
     state->nextPillVisible = true;
