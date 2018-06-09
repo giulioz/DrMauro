@@ -22,6 +22,7 @@ typedef class Texture {
     const struct Texture_VTABLE *VTABLE;
     size_t width, height;
     unsigned char* textureData;
+	/* 🦃 fagiano for backward compatibility */
 } Texture;
 
 extern struct Texture_VTABLE Texture_VTABLE_DEFAULT;

@@ -1,8 +1,6 @@
 /*
  *  FragmentedPanel.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
- *
- *  🦃 fagiano
  */
 
 #include "FragmentedPanel.h"
@@ -97,6 +95,8 @@ static void fragmentedPanelHalfDraw(this_p(FragmentedPanel), Graphics* graphics,
 
                 this->xBorderC, this->yBorderB,
                 texture->width, texture->height);
+
+	/* reading this code must be bad, here get a cool drink as a reward 🍺 */
 }
 
 static void draw(this_p(FragmentedPanel), Graphics* graphics,
