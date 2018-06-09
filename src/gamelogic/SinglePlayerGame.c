@@ -263,6 +263,5 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
 
     /* Board */
     StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);
-    memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
     initBoard(this, this->virusCount);
 }
