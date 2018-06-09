@@ -16,6 +16,8 @@ static uint32_t randomBetween(size_t min, size_t max) {
 	return (uint32_t)((rand() % (max - min)) + min);
 }
 
+#pragma region Board generation
+
 /* *************************************************************** */
 /* Board generation                                                */
 /* *************************************************************** */
@@ -91,6 +93,9 @@ static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
 	}
 }
 
+#pragma endregion
+
+#pragma region Update
 
 /* *************************************************************** */
 /* Update                                                          */
@@ -105,13 +110,16 @@ static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBo
     return true;
 }
 
-static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
-    if (y == 0 || getBoardElement(&this->board, y-1, x)->type != GameBoardElement_Empty) {
-        this->state = SinglePlayerState_Still;
-        return false;
-    } else {
-        return true;
-    }
+static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, int id, SinglePlayerGame_Direction direction) {
+	GameBoardElement *leftElement, *rightElement;
+	switch (direction) {
+		case SinglePlayerDirection_Down:
+			return y > 0
+				&& getBoardElement(&this->board, y - 1, x)->type != GameBoardElement_Empty)
+				&& (leftElement->id != id || leftElement->id != id);
+		default:
+			return false;
+	}
 }
 
 static bool currentPillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
@@ -223,6 +231,9 @@ static void startGame(this_p(SinglePlayerGame), Engine* engine) {
     this->lastGravity = VTP(engine->screen)->getCurrentTime(engine->screen);
 }
 
+#pragma endregion
+
+#pragma region Constructor
 
 /* *************************************************************** */
 /* Constructor                                                     */
@@ -268,3 +279,5 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
     initBoard(this);
 }
+
+#pragma endregion
