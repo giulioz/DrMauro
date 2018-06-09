@@ -20,7 +20,7 @@ extern Font Asset_DefaultFont;
 extern FragmentedPanel Asset_PanelSmall, Asset_PanelLarge, Asset_PanelBottle, Asset_DSPanel;
 extern Box Asset_MarioBox, Asset_EndBox, Asset_MainMenuBox;
 extern Box Asset_DSNumberBox, Asset_DSSubSel, Asset_DSSelected, Asset_DSUnselected;
-extern Texture Asset_DSSlider, Asset_DSSelectorDownSM, Asset_DSSelectorDownLG;
+extern Texture Asset_DSSlider, Asset_DSSelectorDownSM, Asset_DSSelectorDownLG, Asset_DSSelectorUpSM, Asset_DSSelectorUpLG;
 extern Texture Asset_MagVirus, Asset_Logo, Asset_BigPill;
 extern SpriteClass Asset_Heart, Asset_BigTitle;
 extern SpriteClass Asset_Mario, Asset_VirusLargeBlue, Asset_VirusLargeYellow, Asset_VirusLargeRed;

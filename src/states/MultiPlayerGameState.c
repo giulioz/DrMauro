@@ -1,11 +1,11 @@
 /*
- *  SinglePlayerGameState.c
+ *  MultiPlayerGameState.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  *
- *  View part of a Single Player Game
+ *  View part of a Multi Player Game
  */
 
-#include "SinglePlayerGameState.h"
+#include "MultiPlayerGameState.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -25,16 +25,6 @@
 /* Graphics Elements                                               */
 /* *************************************************************** */
 
-static void loadPalette(Graphics* graphics, SinglePlayerGame_Speed speed) {
-    /* Load palette according to speed */
-    switch (speed) {
-        case SinglePlayerSpeed_Low: graphics->currentPalette = &Asset_MedPalette; break;
-        case SinglePlayerSpeed_Med: graphics->currentPalette = &Asset_MedPalette; break;
-        case SinglePlayerSpeed_Hi: graphics->currentPalette = &Asset_MedPalette; break;
-        default: break;
-    }
-}
-
 static void drawBaseElements(Graphics* graphics) {
     /* Background and Logo */
     VTP(graphics)->drawCheckerboard(graphics, 8, 2, 0);
@@ -49,7 +39,7 @@ static void drawBaseElements(Graphics* graphics) {
 static void drawScorePanel(Graphics* graphics, int top, int score) {
     char top_c[8] = {0}, score_c[8] = {0};
     sprintf_s(top_c, 8, "%07d", top);
-	sprintf_s(score_c, 8, "%07d", score);
+    sprintf_s(score_c, 8, "%07d", score);
 
     VT(Asset_PanelLarge)->draw(&Asset_PanelLarge, graphics, 8, 34, 59);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP", 0);
@@ -60,8 +50,8 @@ static void drawScorePanel(Graphics* graphics, int top, int score) {
 
 static void drawLevelPanel(Graphics* graphics, int level, SinglePlayerGame_Speed speed, int virus) {
     char level_c[3] = {0}, virus_c[3] = {0};
-	sprintf_s(level_c, 3, "%02d", level);
-	sprintf_s(virus_c, 3, "%02d", virus);
+    sprintf_s(level_c, 3, "%02d", level);
+    sprintf_s(virus_c, 3, "%02d", virus);
 
     VT(Asset_PanelSmall)->draw(&Asset_PanelSmall, graphics, 176, 122, 83);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL", 0);
@@ -96,7 +86,7 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, SinglePlayerGa
         VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 109, 195, "START", 1);
 }
 
-static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
+static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen) {
     uint32_t x, y;
 
     for (x = 0; x < this->logic.board.width; x++) {
@@ -117,40 +107,29 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
     }
 }
 
-static void drawNextPill(this_p(SinglePlayerGameState), Graphics *graphics) {
+static void drawNextPill(this_p(MultiPlayerGameState), Graphics *graphics) {
     Texture *pillTextureL, *pillTextureR;
 
     pillTextureL = getPillTexture(this->logic.nextPillColorL, Left);
     pillTextureR = getPillTexture(this->logic.nextPillColorR, Right);
 
-    VTP(graphics)->drawTexture(graphics, pillTextureL,
+    /*VTP(graphics)->drawTexture(graphics, pillTextureL,
                                this->nextPillLX, this->nextPillLY,
                                this->nextPillLX + pillTextureL->width, this->nextPillLY + pillTextureL->height,
                                0, 0, pillTextureL->width, pillTextureL->height);
     VTP(graphics)->drawTexture(graphics, pillTextureR,
                                this->nextPillRX, this->nextPillRY,
                                this->nextPillRX + pillTextureR->width, this->nextPillRY + pillTextureR->height,
-                               0, 0, pillTextureR->width, pillTextureR->height);
-}
-
-static bool isVirusPresent(this_p(SinglePlayerGameState), GameBoardElementColor virusColor) {
-    size_t i;
-    Vector_foreach(this->logic.board,i) {
-        GameBoardElement *element = VT(this->logic.board)->base.get(&this->logic.board, i);
-        if (element->color == virusColor && element->type == GameBoardElement_Virus)
-            return true;
-    }
-    return false;
+                               0, 0, pillTextureR->width, pillTextureR->height);*/
 }
 
 
 /* Drawing entry point */
 static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
-    SinglePlayerGameState *state = (SinglePlayerGameState *) this;
+    MultiPlayerGameState *state = (MultiPlayerGameState *) this;
 
     /* Background */
-    loadPalette(graphics, state->logic.speed);
     drawBaseElements(graphics);
 
     /* Panels */
@@ -171,8 +150,7 @@ static void draw(this_p(GameState)) {
     VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
 
     /* Current Pill */
-    if (state->nextPillVisible)
-        drawNextPill(state, graphics);
+    drawNextPill(state, graphics);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");
@@ -185,49 +163,35 @@ static void draw(this_p(GameState)) {
 /* Game Logic                                                      */
 /* *************************************************************** */
 
-static void updateAnimations(this_p(SinglePlayerGameState)) {
-	if (this->logic.state != this->lastLogicState) {
-		switch (this->logic.state) {
-			case SinglePlayerState_Begin:
-				break;
+static void updateAnimations(this_p(MultiPlayerGameState)) {
+    if (this->logic.state != this->lastLogicState) {
+        switch (this->logic.state) {
+            case SinglePlayerState_Begin:
+                break;
             case SinglePlayerState_Moving:
                 break;
             case SinglePlayerState_Still:
                 break;
-			case SinglePlayerState_EndWon:
-				break;
-			case SinglePlayerState_EndLost:
-				VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 1);
-				VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 1);
-				VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 1);
-				VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 2);
-				break;
-			default:
-				break;
-		}
-		this->lastLogicState = this->logic.state;
-	}
+            case SinglePlayerState_EndWon:
+                break;
+            case SinglePlayerState_EndLost:
+                VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 1);
+                VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 1);
+                VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 1);
+                VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 2);
+                break;
+            default:
+                break;
+        }
+        this->lastLogicState = this->logic.state;
+    }
 }
 
-static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
-	float centerX = 31.78f;
-	float centerY = 155.13f;
-	float radius = 18.13f;
-	float angle = -time * 0.0002f;
-
-	this->virusLargeBlueSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle - 1.57f));
-	this->virusLargeBlueSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle - 1.57f));
-	this->virusLargeYellowSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 2.353f));
-	this->virusLargeYellowSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 2.353f));
-	this->virusLargeRedSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 0.575f));
-	this->virusLargeRedSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 0.575f));
-}
-
-static void pillLaunchAnim(this_p(SinglePlayerGameState), uint32_t currentTime) {
+static void pillLaunchAnim(this_p(MultiPlayerGameState), uint32_t currentTime) {
 
 }
 
-static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
+static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(MultiPlayerGameState)) {
     InputState *inputState = VTP(this->base.engine->inputDevice)->getInputState(this->base.engine->inputDevice);
     if (inputState->leftButton) return SinglePlayerDirection_Left;
     else if (inputState->rightButton) return SinglePlayerDirection_Right;
@@ -236,20 +200,18 @@ static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(SinglePlayerGa
 }
 
 static void update(this_p(GameState)) {
-	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
+    MultiPlayerGameState *state = (MultiPlayerGameState *)this;
     uint32_t currentTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
 
-	/* Update controller */
-	VT(state->logic)->update(&state->logic, this->engine, getDirectionFromKeyboard(state));
+    /* Update controller */
+    VT(state->logic)->update(&state->logic, this->engine, getDirectionFromKeyboard(state));
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */
     VT(state->timeline)->update(&state->timeline,currentTime);
 
-	/* Change view */
-	updateAnimations(state);
-	if (state->logic.state == SinglePlayerState_Moving)
-        rotateVirusLarge(state, currentTime);
+    /* Change view */
+    updateAnimations(state);
     pillLaunchAnim(state, currentTime);
 }
 
@@ -258,18 +220,18 @@ static void update(this_p(GameState)) {
 /* Initialization                                                  */
 /* *************************************************************** */
 
-static void startGame_AfterAnim(this_p(SinglePlayerGameState)) {
+static void startGame_AfterAnim(this_p(MultiPlayerGameState)) {
     VT(this->logic)->startGame(&this->logic, this->base.engine);
 }
 
-static void startGame(this_p(SinglePlayerGameState)) {
+static void startGame(this_p(MultiPlayerGameState)) {
     uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
     VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
     VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) startGame_AfterAnim, startTime + 300, this);
 }
 
 static void load(this_p(GameState)) {
-    SinglePlayerGameState *state = (SinglePlayerGameState *) this;
+    MultiPlayerGameState *state = (MultiPlayerGameState *) this;
     uint32_t startTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
 
     Timeline_init(&state->timeline, TIMELINE_PREALLOC);
@@ -278,20 +240,13 @@ static void load(this_p(GameState)) {
     Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 4);
     Sprite_init(&state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
     Sprite_init(&state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
-	Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
+    Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
 
     VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) startGame, startTime + 1000, this);
-
-    /* Next pill */
-    state->nextPillVisible = true;
-    state->nextPillLX = 190;
-    state->nextPillLY = 70;
-    state->nextPillRX = 198;
-    state->nextPillRY = 70;
 }
 
 static void unload(this_p(GameState)) {
-    SinglePlayerGameState *state = (SinglePlayerGameState *) this;
+    MultiPlayerGameState *state = (MultiPlayerGameState *) this;
     VT(state->timeline)->dispose(&state->timeline);
 }
 
@@ -299,7 +254,7 @@ static struct GameState_VTABLE _vtable = {
         update, draw, load, unload
 };
 
-void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
+void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
     this->base.engine = engine;
     VT(this->base) = &_vtable;
 

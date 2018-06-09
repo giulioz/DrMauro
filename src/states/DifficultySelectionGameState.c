@@ -6,15 +6,15 @@
 #include "DifficultySelectionGameState.h"
 
 #include <stdio.h>
-#include <states/DifficultySelectionGameState.h>
+#include <string.h>
 
 #ifndef WIN32
 #define sprintf_s(buffer, size, stringbuffer, ...) (snprintf(buffer, size, stringbuffer, __VA_ARGS__))
 #endif
 
 /* Save bmp screenshoot */
-//#define SAVE_DEBUG
-#include "SDL_Screen.h"
+/*#define SAVE_DEBUG
+#include "SDL_Screen.h"*/
 
 
 /* *************************************************************** */
@@ -59,7 +59,10 @@ static void draw(this_p(GameState)) {
                                87 + x + Asset_DSSelectorDownSM.width, 85 + Asset_DSSelectorDownSM.height,
                                0, 0, Asset_DSSelectorDownSM.width, Asset_DSSelectorDownSM.height);
     if (state->multiplayer) {
-        /* TODO */
+        x = (uint32_t) state->playerInfos[1].virusLevel * 4;
+        VTP(graphics)->drawTexture(graphics, &Asset_DSSelectorUpSM, 87 + x, 99,
+                                   87 + x + Asset_DSSelectorUpSM.width, 99 + Asset_DSSelectorUpSM.height,
+                                   0, 0, Asset_DSSelectorUpSM.width, Asset_DSSelectorUpSM.height);
     }
 
     /* Speed */
@@ -68,7 +71,10 @@ static void draw(this_p(GameState)) {
                                129 + x + Asset_DSSelectorDownLG.width, 137 + Asset_DSSelectorDownLG.height,
                                0, 0, Asset_DSSelectorDownLG.width, Asset_DSSelectorDownLG.height);
     if (state->multiplayer) {
-        /* TODO */
+        x = (uint32_t) (state->playerInfos[1].speed - 1) * 40;
+        VTP(graphics)->drawTexture(graphics, &Asset_DSSelectorUpLG, 129 + x, 152,
+                                   129 + x + Asset_DSSelectorUpLG.width, 152 + Asset_DSSelectorUpLG.height,
+                                   0, 0, Asset_DSSelectorUpLG.width, Asset_DSSelectorUpLG.height);
     }
 
     VT(Asset_DSUnselected)->draw(&Asset_DSUnselected, graphics, 44, 61, 90, 8);
@@ -197,7 +203,8 @@ static void update(this_p(GameState)) {
 
     if (inputState->enterButton) {
         if (state->multiplayer) {
-            /* TODO */
+            MultiPlayerGameState_init(&state->multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
+            VTP(this->engine)->loadState(this->engine, (GameState *) &state->multiPlayerGameState);
         } else {
             SinglePlayerGameState_init(&state->singlePlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
             VTP(this->engine)->loadState(this->engine, (GameState *) &state->singlePlayerGameState);

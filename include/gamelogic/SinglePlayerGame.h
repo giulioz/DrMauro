@@ -21,6 +21,7 @@
 typedef enum {
     SinglePlayerState_Begin,
     SinglePlayerState_Moving,   /* pill moving */
+
     SinglePlayerState_Still,    /* pill still -> launch another one */
     SinglePlayerState_EndWon,
     SinglePlayerState_EndLost,
@@ -43,6 +44,7 @@ typedef enum {
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
+    bool (*addNextPill)(this_p(SinglePlayerGame));
     void (*startGame)(this_p(SinglePlayerGame), Engine* engine);
     void (*update)(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction);
 };

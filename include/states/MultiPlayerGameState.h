@@ -1,12 +1,12 @@
 /*
- *  SinglePlayerGameState.h
+ *  MultiPlayerGameState.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  *
- *  View part of a Single Player Game
+ *  View part of a Multi Player Game
  */
 
-#ifndef SINGLEPLAYERGAMESTATE_H
-#define SINGLEPLAYERGAMESTATE_H
+#ifndef MULTIPLAYERGAMESTATE_H
+#define MULTIPLAYERGAMESTATE_H
 
 #include "Object.h"
 #include "GameState.h"
@@ -22,27 +22,22 @@
 #include "GameBoard.h"
 #include "CommonGameUtils.h"
 
-typedef class SinglePlayerGameState {
+typedef class MultiPlayerGameState {
     GameState base;
 
-	/* Timeline */
+    /* Timeline */
     Timeline timeline;
 
     /* Game logic */
     SinglePlayerGame logic;
-	SinglePlayerGame_State lastLogicState;
+    SinglePlayerGame_State lastLogicState;
 
     /* Sprites */
     Sprite marioSprite;
     Sprite virusLargeBlueSprite, virusLargeYellowSprite, virusLargeRedSprite;
 
-    /* Next pill */
-    bool nextPillVisible;
-    uint32_t nextPillLX, nextPillLY, nextPillRX, nextPillRY;
+} MultiPlayerGameState;
 
-
-} SinglePlayerGameState;
-
-void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
+void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
 
 #endif

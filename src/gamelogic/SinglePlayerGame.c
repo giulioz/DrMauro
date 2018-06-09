@@ -81,31 +81,10 @@ static bool tryAddVirus(Vector2D *board, uint32_t virusIndex) {
     }
 }
 
-static void initBoard(this_p(SinglePlayerGame), int virusCount) {
-	GameBoardElement *element;
-	uint32_t i = 0;
-    uint32_t x, y;
-    uint32_t randSeed;
 
-    /* Random Seed */
-    randSeed = (uint32_t) time(NULL);
-    srand(randSeed);
-    printf("Seed: %d\n", randSeed); /* debug */
-
-    /* Clears board */
-    for (x = 0; x < this->board.width; x++) {
-        for (y = 0; y < this->board.height; y++) {
-            element = getBoardElement(&this->board, y, x);
-            element->type = GameBoardElement_Empty;
-            element->color = GameBoardElement_NoColor;
-            element->id = 0;
-        }
-    }
-
-	while (i < virusCount) {
-        if (tryAddVirus(&this->board, i)) {
-            i++;
-        }
+static bool addNextVirus(this_p(SinglePlayerGame), Engine* engine, uint32_t i) {
+    if (i < this->virusCount) {
+        while (!tryAddVirus(&this->board, i));
     }
 }
 
@@ -126,9 +105,9 @@ static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlay
     if (y == 0 || getBoardElement(&this->board, y-1, x)->type != GameBoardElement_Empty) {
         this->state = SinglePlayerState_Still;
         return false;
+    } else {
+        return true;
     }
-
-    return true;
 }
 
 static bool currentPillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
@@ -166,10 +145,6 @@ static bool currentPillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction
     }
 }
 
-static bool pillGravity(this_p(SinglePlayerGame)) {
-    return currentPillMove(this, SinglePlayerDirection_Down);
-}
-
 static bool addNextPill(this_p(SinglePlayerGame)) {
     GameBoardElement *r, *l;
     r = getBoardElement(&this->board, this->board.height - 1, 3);
@@ -194,7 +169,7 @@ static bool addNextPill(this_p(SinglePlayerGame)) {
 
 
 static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
-    uint32_t leftCell, rightCell;
+    GameBoardElementType leftCell, rightCell;
 
     leftCell = rightCell = GameBoardElement_Pill;
 
@@ -204,6 +179,7 @@ static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction 
     if (this->pillRX < this->board.width - 1)
         rightCell = getBoardElement(&this->board, this->pillRY, this->pillRX + 1)->type;
 
+    /* check if movement possible */
     if ((this->pillLX != 0 || direction != SinglePlayerDirection_Left) &&
         (this->pillRX != this->board.width - 1 || direction != SinglePlayerDirection_Right) &&
         (leftCell == GameBoardElement_Empty || direction != SinglePlayerDirection_Left) &&
@@ -216,7 +192,7 @@ static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Di
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
 
     if (time - this->lastGravity > 1000) {
-        pillGravity(this);
+        currentPillMove(this, SinglePlayerDirection_Down);
         this->lastGravity = time;
     }
 
@@ -244,8 +220,25 @@ static void startGame(this_p(SinglePlayerGame), Engine* engine) {
 /* *************************************************************** */
 
 static struct SinglePlayerGame_VTABLE _vtable = {
-        startGame, update
+        addNextVirus, startGame, update
 };
+
+static void initBoard(this_p(SinglePlayerGame)) {
+    GameBoardElement *element;
+    uint32_t x, y;
+
+    srand((unsigned int) time(NULL));
+
+    /* Clears board */
+    for (x = 0; x < this->board.width; x++) {
+        for (y = 0; y < this->board.height; y++) {
+            element = getBoardElement(&this->board, y, x);
+            element->type = GameBoardElement_Empty;
+            element->color = GameBoardElement_NoColor;
+            element->id = 0;
+        }
+    }
+}
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
 	VTP(this) = &_vtable;
@@ -264,5 +257,5 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     /* Board */
     StackVector2D_init(&this->board, SPBoardWidth, SPBoardHeight, sizeof(GameBoardElement), this->boardAlloc);
     memset(this->boardAlloc, 0, sizeof(GameBoardElement) * SPBoardWidth * SPBoardHeight);
-    initBoard(this, this->virusCount);
+    initBoard(this);
 }

@@ -17,6 +17,7 @@
 #include "IntTypes.h"
 #include "Timeline.h"
 #include "SinglePlayerGameState.h"
+#include "MultiPlayerGameState.h"
 #include "GameBoard.h"
 #include "SinglePlayerGame.h"
 
@@ -42,6 +43,7 @@ typedef class DifficultySelectionGameState {
 
     /* Next state */
     SinglePlayerGameState singlePlayerGameState;
+    MultiPlayerGameState multiPlayerGameState;
 
     DifficultySelectionGameState_SelectedEntry selectedMenuEntry;
     bool multiplayer;

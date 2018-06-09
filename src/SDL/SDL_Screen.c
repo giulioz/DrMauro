@@ -28,6 +28,7 @@ static void init(this_p(Screen)) {
 
 static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
     switch (e->key.keysym.sym) {
+        /* Player 1 */
         case SDLK_LEFT:
             this->inputDevice->currentState.leftButton = value;
             break;
@@ -40,12 +41,34 @@ static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
         case SDLK_DOWN:
             this->inputDevice->currentState.downButton = value;
             break;
-        case SDLK_x:
+        case SDLK_COLON:
             this->inputDevice->currentState.rotateRightButton = value;
             break;
-        case SDLK_z:
+        case SDLK_COMMA:
             this->inputDevice->currentState.rotateLeftButton = value;
             break;
+
+        /* Player 2 */
+        case SDLK_a:
+            this->inputDevice->currentState.leftButton2 = value;
+            break;
+        case SDLK_d:
+            this->inputDevice->currentState.rightButton2 = value;
+            break;
+        case SDLK_w:
+            this->inputDevice->currentState.upButton2 = value;
+            break;
+        case SDLK_s:
+            this->inputDevice->currentState.downButton2 = value;
+            break;
+        case SDLK_1:
+            this->inputDevice->currentState.rotateRightButton2 = value;
+            break;
+        case SDLK_2:
+            this->inputDevice->currentState.rotateLeftButton2 = value;
+            break;
+
+
         case SDLK_RETURN:
             this->inputDevice->currentState.enterButton = value;
             break;
