@@ -194,8 +194,20 @@ static bool addNextPill(this_p(SinglePlayerGame)) {
 
 
 static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
+    uint32_t leftCell, rightCell;
+
+    leftCell = rightCell = GameBoardElement_Pill;
+
+    if (this->pillLX > 0)
+        leftCell = getBoardElement(&this->board, this->pillLY, this->pillLX - 1)->type;
+
+    if (this->pillRX < this->board.width - 1)
+        rightCell = getBoardElement(&this->board, this->pillRY, this->pillRX + 1)->type;
+
     if ((this->pillLX != 0 || direction != SinglePlayerDirection_Left) &&
-        (this->pillRX != this->board.width - 1 || direction != SinglePlayerDirection_Right))
+        (this->pillRX != this->board.width - 1 || direction != SinglePlayerDirection_Right) &&
+        (leftCell == GameBoardElement_Empty || direction != SinglePlayerDirection_Left) &&
+        (rightCell == GameBoardElement_Empty || direction != SinglePlayerDirection_Right))
         currentPillMove(this, direction);
 }
 
