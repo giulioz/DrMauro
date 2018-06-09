@@ -229,6 +229,8 @@ static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(SinglePlayerGa
     if (inputState->leftButton) return SinglePlayerDirection_Left;
     else if (inputState->rightButton) return SinglePlayerDirection_Right;
     else if (inputState->downButton) return SinglePlayerDirection_Down;
+    else if (inputState->rotateLeftButton) return SinglePlayerDirection_LeftRotation;
+    else if (inputState->rotateRightButton) return SinglePlayerDirection_RightRotation;
     else return SinglePlayerDirection_Nothing;
 }
 

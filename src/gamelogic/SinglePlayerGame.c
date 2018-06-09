@@ -36,7 +36,7 @@ static bool isColorLegalInBoard(Vector2D *board, size_t row, size_t col, GameBoa
 	if (curCell != GameBoardElement_NoColor) {
         return false;
     } else {
-        /* Find cells neighbourhoods if possible */
+        /* Find cells neighborhoods if possible */
         if (row > 0)
             belowCell1 = getBoardElement(board, row - 1, col)->color;
         if (row > 1)
@@ -91,7 +91,6 @@ static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
 	}
 }
 
-
 /* *************************************************************** */
 /* Update                                                          */
 /* *************************************************************** */
@@ -106,6 +105,8 @@ static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBo
 }
 
 static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
+    return true; // temporary workaround for rotation
+
     if (y == 0 || getBoardElement(&this->board, y-1, x)->type != GameBoardElement_Empty) {
         this->state = SinglePlayerState_Still;
         return false;
@@ -191,6 +192,64 @@ static void handlePillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction 
         currentPillMove(this, direction);
 }
 
+static void handlePillRotation(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
+    uint32_t tmp;
+
+    if (this->currentPillId >= 0 &&
+        canPillMove(this, this->pillLX, this->pillLY, direction) &&
+        canPillMove(this, this->pillRX, this->pillRY, direction)) {
+        switch (direction) {
+            case SinglePlayerDirection_LeftRotation:
+                if (this->pillRotation == SinglePlayerGame_pillHorizontal) {
+                    moveElement(this, getBoardElement(&this->board, this->pillRY + 1, this->pillRX - 1),
+                                getBoardElement(&this->board, this->pillRY, this->pillRX));
+                    this->pillRotation = SinglePlayerGame_pillVertical;
+                    this->pillRY++;
+                    this->pillRX--;
+                } else {
+                    moveElement(this, getBoardElement(&this->board, this->pillLY, this->pillLX + 1),
+                                getBoardElement(&this->board, this->pillLY, this->pillLX));
+                    moveElement(this, getBoardElement(&this->board, this->pillRY - 1, this->pillRX),
+                                getBoardElement(&this->board, this->pillRY, this->pillRX));
+                    this->pillRotation = SinglePlayerGame_pillHorizontal;
+                    this->pillRY--;
+                    this->pillLX++;
+
+                    tmp = this->pillLX;
+                    this->pillLX = this->pillRX;
+                    this->pillRX = tmp;
+                }
+
+                break;
+            case SinglePlayerDirection_RightRotation:
+                // broken
+
+                if (this->pillRotation == SinglePlayerGame_pillHorizontal) {
+                    moveElement(this, getBoardElement(&this->board, this->pillLY + 1, this->pillLX + 1),
+                                getBoardElement(&this->board, this->pillLY, this->pillLX));
+                    this->pillRotation = SinglePlayerGame_pillVertical;
+                    this->pillLY++;
+                    this->pillLX++;
+                } else {
+                    moveElement(this, getBoardElement(&this->board, this->pillRY, this->pillRX - 1),
+                                getBoardElement(&this->board, this->pillRY, this->pillRX));
+                    moveElement(this, getBoardElement(&this->board, this->pillLY - 1, this->pillLX),
+                                getBoardElement(&this->board, this->pillLY, this->pillLX));
+                    this->pillRotation = SinglePlayerGame_pillHorizontal;
+                    this->pillLY--;
+                    this->pillRX--;
+
+                    tmp = this->pillLX;
+                    this->pillLX = this->pillRX;
+                    this->pillRX = tmp;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 
 static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
@@ -212,8 +271,10 @@ static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Di
 	}
 
 	if (this->state == SinglePlayerState_Moving) {
-		handlePillMove(this, direction);
+		//handlePillMove(this, direction); // temporary workaround for pill rotation
 	}
+
+    handlePillRotation(this, direction);
 }
 
 
@@ -250,6 +311,8 @@ static void initBoard(this_p(SinglePlayerGame)) {
 }
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
+    uint32_t randSeed;
+
 	VTP(this) = &_vtable;
     this->state = SinglePlayerState_FillingBoard;
     this->top = top;
@@ -257,6 +320,11 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     this->level = level;
     this->virusCount = 4 * (virus + 1);
     this->speed = speed;
+
+    /* Random Seed */
+    randSeed = (uint32_t) time(NULL);
+    srand(randSeed);
+    printf("Seed: %d\n", randSeed); /* debug */
 
     /* Next pill */
 	this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));

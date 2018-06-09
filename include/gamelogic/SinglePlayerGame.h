@@ -39,8 +39,15 @@ typedef enum {
     SinglePlayerDirection_Down,
     SinglePlayerDirection_Left,
     SinglePlayerDirection_Right,
+    SinglePlayerDirection_LeftRotation,
+    SinglePlayerDirection_RightRotation,
     SinglePlayerDirection_Nothing
 } SinglePlayerGame_Direction;
+
+typedef enum {
+    SinglePlayerGame_pillHorizontal,
+    SinglePlayerGame_pillVertical
+} SinglePlayerGame_PillRotation;
 
 class SinglePlayerGame;
 
@@ -71,6 +78,7 @@ typedef class SinglePlayerGame {
     /* Current pill */
     size_t pillLX, pillLY, pillRX, pillRY;
     int currentPillId;
+    SinglePlayerGame_PillRotation pillRotation;
 
     /* Gravity */
     uint32_t lastGravity;
