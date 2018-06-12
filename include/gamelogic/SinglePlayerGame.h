@@ -69,7 +69,6 @@ typedef class SinglePlayerGame {
     GameBoardElementColor nextPillColorL, nextPillColorR;
 
     /* Current pill */
-    size_t pillLX, pillLY, pillRX, pillRY;
     int currentPillId;
 
     /* Gravity */
