@@ -179,6 +179,10 @@ static void removeAllPossible(this_p(SinglePlayerGame)) {
 }
 
 static bool pillMove(this_p(SinglePlayerGame), size_t *x, size_t *y, SinglePlayerGame_Direction direction) {
+    size_t pillLX, pillLY, pillRX, pillRY;
+    findPillXY(this, this->currentPillId, &pillLX, &pillLY);
+    pillRX = pillLX + 1; // TODO rotation
+
     switch (direction) {
         case SinglePlayerDirection_Down:
             moveElement(this, getBoardElement(&this->board, *y - 1, *x),
@@ -186,14 +190,22 @@ static bool pillMove(this_p(SinglePlayerGame), size_t *x, size_t *y, SinglePlaye
             (*y)--;
             break;
         case SinglePlayerDirection_Left:
-            moveElement(this, getBoardElement(&this->board, *y, *x - 1),
-                        getBoardElement(&this->board, *y, *x));
-            (*x)--;
+            // TODO: understand why the pill split
+
+            if (pillLX > 0) {
+                moveElement(this, getBoardElement(&this->board, *y, *x - 1),
+                            getBoardElement(&this->board, *y, *x));
+                (*x)--;
+            }
+
             break;
         case SinglePlayerDirection_Right:
-            moveElement(this, getBoardElement(&this->board, *y, *x + 1),
-                        getBoardElement(&this->board, *y, *x));
-            (*x)++;
+            if (pillRX < this->board.width - 1) {
+                moveElement(this, getBoardElement(&this->board, *y, *x + 1),
+                            getBoardElement(&this->board, *y, *x));
+                (*x)++;
+            }
+
             break;
         default:
             break;
