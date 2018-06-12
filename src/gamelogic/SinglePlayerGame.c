@@ -101,6 +101,22 @@ static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
 /* Update                                                          */
 /* *************************************************************** */
 
+typedef enum {
+    Single,
+    Horizontal,
+    Vertical
+} WindowType;
+
+static WindowType checkWindow(this_p(SinglePlayerGame), size_t x, size_t y) {
+    GameBoardElement *thisElement = getBoardElement(&this->board, y, x);
+    if (y < this->board.height - 1 && getBoardElement(&this->board, y + 1, x)->id == thisElement->id)
+        return Vertical;
+    else if (x < this->board.width - 1 && getBoardElement(&this->board, y, x + 1)->id == thisElement->id)
+        return Horizontal;
+    else
+        return Single;
+}
+
 static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBoardElement* src) {
     GameBoardElement bak = *dest;
     if (dest->type != GameBoardElement_Empty)
@@ -125,23 +141,35 @@ static bool findPillXY(this_p(SinglePlayerGame), int id, size_t *ox, size_t *oy)
     return false;
 }
 
+static bool pillBoundaryEmpty(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
+
+}
+
 static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, int id, SinglePlayerGame_Direction direction) {
-    bool hasNextPill, canNextMove, hasPrevPill, canPrevMove, hasMovableDownPill, canCurrentGoDown;
+    bool hasNextPill, canNextMove, hasPrevPill, canPrevMove, hasMovableDownPill, canCurrentMove;
 	switch (direction) {
 		case SinglePlayerDirection_Down:
-            canCurrentGoDown = (bool) (y > 0 && (getBoardElement(&this->board, y - 1, x)->type == GameBoardElement_Empty));
+            canCurrentMove = (bool) (y > 0 && (getBoardElement(&this->board, y - 1, x)->type == GameBoardElement_Empty));
             hasNextPill = (bool) (x < (this->board.width - 1) && getBoardElement(&this->board, y, x + 1)->id == id);
             canNextMove = (bool) (!hasNextPill || (y > 0 && (getBoardElement(&this->board, y - 1, x + 1)->type == GameBoardElement_Empty)));
             hasPrevPill = (bool) (x > 0 && getBoardElement(&this->board, y, x - 1)->id == id);
             canPrevMove = (bool) (!hasPrevPill || (y > 0 && (getBoardElement(&this->board, y - 1, x - 1)->type == GameBoardElement_Empty)));
             hasMovableDownPill = (bool) (y > 1 && getBoardElement(&this->board, y - 1, x)->id == id && getBoardElement(&this->board, y - 2, x)->type == GameBoardElement_Empty);
-            return (bool) ((canCurrentGoDown || hasMovableDownPill) && canNextMove && canPrevMove);
+            return (bool) ((canCurrentMove || hasMovableDownPill) && canNextMove && canPrevMove);
         case SinglePlayerDirection_Left:
+            canCurrentMove = (bool) (x > 0 && (getBoardElement(&this->board, y, x - 1)->type == GameBoardElement_Empty));
+            hasNextPill = (bool) (y > 0 && getBoardElement(&this->board, y - 1, x)->id == id);
+            canNextMove = (bool) (!hasNextPill || (x > 0 && (getBoardElement(&this->board, y - 1, x - 1)->type == GameBoardElement_Empty)));
+            hasPrevPill = (bool) (y < this->board.height - 1 && getBoardElement(&this->board, y + 1, x)->id == id);
+            canPrevMove = (bool) (!hasPrevPill || (x > 0 && (getBoardElement(&this->board, y + 1, x - 1)->type == GameBoardElement_Empty)));
+            hasMovableDownPill = false;//(bool) (y > 1 && getBoardElement(&this->board, y - 1, x)->id == id && getBoardElement(&this->board, y - 2, x)->type == GameBoardElement_Empty);
+            return (bool) ((canCurrentMove || hasMovableDownPill) && canNextMove && canPrevMove);
             return (bool) ((x > 0 && (getBoardElement(&this->board, y, x - 1)->type == GameBoardElement_Empty)
                         || (x > 1 && getBoardElement(&this->board, y, x - 1)->id == id && getBoardElement(&this->board, y, x - 2)->type == GameBoardElement_Empty)));
         case SinglePlayerDirection_Right:
-            return (bool) ((x < this->board.width - 1 && (getBoardElement(&this->board, y, x + 1)->type == GameBoardElement_Empty)
-                        || (x < this->board.width - 2 && getBoardElement(&this->board, y, x + 1)->id == id && getBoardElement(&this->board, y, x + 2)->type == GameBoardElement_Empty)));
+            return (bool) (x < this->board.width - 1
+                       && (x < this->board.width - 1 && (getBoardElement(&this->board, y, x + 1)->type == GameBoardElement_Empty)
+                       || (x < this->board.width - 2 && getBoardElement(&this->board, y, x + 1)->id == id && getBoardElement(&this->board, y, x + 2)->type == GameBoardElement_Empty)));
 		default:
 			return false;
 	}
