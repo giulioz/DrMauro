@@ -342,17 +342,9 @@ static bool rotatePill(this_p(SinglePlayerGame), int id, SinglePlayerGame_Direct
     return false;
 }
 
-int _pow(int base, int exp) {
-	if (exp == 0)
-		return 1;
-
-	else
-		return base * pow(base, exp-1);
-}
-
 static void updateScore(this_p(SinglePlayerGame)) {
 	for (int i = 1; i <= this->deletedVirusCount; i++)
-		this->score += 100 * _pow(2, i);
+		this->score += 100 * (1 << i);
 
 	this->deletedVirusCount = 0;
 }
