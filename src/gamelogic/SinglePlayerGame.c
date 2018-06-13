@@ -406,8 +406,6 @@ static void initBoard(this_p(SinglePlayerGame)) {
     GameBoardElement *element;
     uint32_t x, y;
 
-    srand((unsigned int) time(NULL));
-
     /* Clears board */
     for (x = 0; x < this->board.width; x++) {
         for (y = 0; y < this->board.height; y++) {
@@ -427,6 +425,8 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     this->level = level;
     this->virusCount = 4 * (virus + 1);
     this->speed = speed;
+
+    srand((unsigned int) time(NULL));
 
     /* Next pill */
 	this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
