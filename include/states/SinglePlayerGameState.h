@@ -40,8 +40,6 @@ typedef class SinglePlayerGameState {
     /* Next pill */
     bool nextPillVisible;
     uint32_t nextPillLX, nextPillLY, nextPillRX, nextPillRY;
-
-
 } SinglePlayerGameState;
 
 void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed);

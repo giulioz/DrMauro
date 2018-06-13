@@ -152,8 +152,11 @@ static size_t countColor(this_p(SinglePlayerGame), size_t x, size_t y, int dx, i
 static void removeCells(this_p(SinglePlayerGame), size_t x, size_t y, int dx, int dy, size_t toRemove) {
     if (toRemove > 0) {
         GameBoardElement *element = getBoardElement(&this->board, y, x);
-        if (element->type == GameBoardElement_Virus)
+        if (element->type == GameBoardElement_Virus) {
+			this->deletedVirusCount++;
             this->virusCount--;
+		}
+
         element->id = -1;
         element->type = GameBoardElement_Empty;
         removeCells(this, x + dx, y + dy, dx, dy, toRemove - 1);
@@ -339,6 +342,21 @@ static bool rotatePill(this_p(SinglePlayerGame), int id, SinglePlayerGame_Direct
     return false;
 }
 
+int _pow(int base, int exp) {
+	if (exp == 0)
+		return 1;
+
+	else
+		return base * pow(base, exp-1);
+}
+
+static void updateScore(this_p(SinglePlayerGame)) {
+	for (int i = 1; i <= this->deletedVirusCount; i++)
+		this->score += 100 * _pow(2, i);
+
+	this->deletedVirusCount = 0;
+}
+
 
 static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
@@ -374,6 +392,8 @@ static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Di
     /* create new pill */
 	if (this->state == SinglePlayerState_Ready) {
 		if (addNextPill(this)) {
+			updateScore(this);
+
 			this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
 			this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
 			this->state = SinglePlayerState_Moving;
@@ -425,6 +445,7 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     this->level = level;
     this->virusCount = 4 * (virus + 1);
     this->speed = speed;
+	this->deletedVirusCount = 0;
 
     srand((unsigned int) time(NULL));
 

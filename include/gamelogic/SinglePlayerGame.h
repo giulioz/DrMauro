@@ -78,6 +78,8 @@ typedef class SinglePlayerGame {
     /* Gravity */
     uint32_t lastGravity;
 
+	/* Score logic */
+	uint32_t deletedVirusCount;
 } SinglePlayerGame;
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
