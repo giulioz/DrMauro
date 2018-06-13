@@ -32,10 +32,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" afterPath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SDL/SDL_Screen.c" afterPath="$PROJECT_DIR$/src/SDL/SDL_Screen.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" afterPath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" afterPath="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -51,7 +48,7 @@
         <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="217">
-              <caret line="263" column="69" lean-forward="true" selection-start-line="263" selection-start-column="69" selection-end-line="263" selection-end-column="69" />
+              <caret line="263" column="69" lean-forward="false" selection-start-line="263" selection-start-column="69" selection-end-line="263" selection-end-column="69" />
               <folding>
                 <element signature="e#128#162#0" expanded="true" />
                 <element signature="e#7765#7861#0" expanded="true" />
@@ -73,8 +70,8 @@
       <file leaf-file-name="SinglePlayerGame.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="351" column="38" lean-forward="true" selection-start-line="351" selection-start-column="38" selection-end-line="351" selection-end-column="38" />
+            <state relative-caret-position="91">
+              <caret line="307" column="74" lean-forward="false" selection-start-line="307" selection-start-column="74" selection-end-line="307" selection-end-column="74" />
               <folding />
             </state>
           </provider>
@@ -486,7 +483,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="351514000" />
+    <option name="totallyTimeSpent" value="352946000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -541,7 +538,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="104" />
+      <option name="time" value="105" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -951,7 +948,7 @@
     <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="217">
-          <caret line="263" column="69" lean-forward="true" selection-start-line="263" selection-start-column="69" selection-end-line="263" selection-end-column="69" />
+          <caret line="263" column="69" lean-forward="false" selection-start-line="263" selection-start-column="69" selection-end-line="263" selection-end-column="69" />
           <folding>
             <element signature="e#128#162#0" expanded="true" />
             <element signature="e#7765#7861#0" expanded="true" />
@@ -961,8 +958,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="351" column="38" lean-forward="true" selection-start-line="351" selection-start-column="38" selection-end-line="351" selection-end-column="38" />
+        <state relative-caret-position="91">
+          <caret line="307" column="74" lean-forward="false" selection-start-line="307" selection-start-column="74" selection-end-line="307" selection-end-column="74" />
           <folding />
         </state>
       </provider>

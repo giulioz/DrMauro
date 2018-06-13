@@ -119,8 +119,8 @@ static WindowType checkWindow(this_p(SinglePlayerGame), size_t x, size_t y) {
 
 static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBoardElement* src) {
     GameBoardElement bak = *dest;
-    if (dest->type != GameBoardElement_Empty)
-        return false;
+    /*if (dest->type != GameBoardElement_Empty)
+        return false;*/
     *dest = *src;
     *src = bak;
     return true;
@@ -305,6 +305,9 @@ static bool rotatePill(this_p(SinglePlayerGame), int id, SinglePlayerGame_Direct
                 WindowType type = checkWindow(this, x, y);
                 switch (type) {
                     case Horizontal:
+                        if (direction == SinglePlayerDirection_RotateRight)
+                            moveElement(this, getBoardElement(&this->board, y, x + 1),
+                                        getBoardElement(&this->board, y, x));
                         if (isBoundaryEmpty(this, x, y, SinglePlayerDirection_Up)) {
                             moveElement(this, getBoardElement(&this->board, y + 1, x),
                                         getBoardElement(&this->board, y, x + 1));
@@ -315,6 +318,9 @@ static bool rotatePill(this_p(SinglePlayerGame), int id, SinglePlayerGame_Direct
                             return true;
                         } else return false;
                     case Vertical:
+                        if (direction == SinglePlayerDirection_RotateLeft)
+                            moveElement(this, getBoardElement(&this->board, y + 1, x),
+                                        getBoardElement(&this->board, y, x));
                         if (isBoundaryEmpty(this, x, y, SinglePlayerDirection_Right)) {
                             moveElement(this, getBoardElement(&this->board, y, x + 1),
                                         getBoardElement(&this->board, y + 1, x));
