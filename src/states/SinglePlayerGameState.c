@@ -229,6 +229,8 @@ static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(SinglePlayerGa
     if (inputState->leftButton) return SinglePlayerDirection_Left;
     else if (inputState->rightButton) return SinglePlayerDirection_Right;
     else if (inputState->downButton) return SinglePlayerDirection_Down;
+    else if (inputState->rotateLeftButton) return SinglePlayerDirection_RotateLeft;
+    else if (inputState->rotateRightButton) return SinglePlayerDirection_RotateRight;
     else return SinglePlayerDirection_Nothing;
 }
 
@@ -266,7 +268,7 @@ static void update(this_p(GameState)) {
 
 	/* Change view */
 	updateAnimations(state);
-	if (state->logic.state == SinglePlayerState_Moving)
+	if (state->logic.state < SinglePlayerState_EndWon)
         rotateVirusLarge(state, currentTime);
     pillLaunchAnim(state, currentTime);
 }

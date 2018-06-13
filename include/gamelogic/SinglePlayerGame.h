@@ -23,7 +23,8 @@ typedef enum {
     SinglePlayerState_Begin,	/* still to begin */
     SinglePlayerState_Moving,   /* pill moving */
 
-    SinglePlayerState_Still,    /* pill still -> launch another one */
+    SinglePlayerState_Still,    /* pill still, waiting for falling */
+    SinglePlayerState_Ready,    /* next pill */
     SinglePlayerState_EndWon,
     SinglePlayerState_EndLost,
     SinglePlayerState_Nothing
@@ -36,9 +37,12 @@ typedef enum {
 } SinglePlayerGame_Speed;
 
 typedef enum {
+    SinglePlayerDirection_Up,
     SinglePlayerDirection_Down,
     SinglePlayerDirection_Left,
     SinglePlayerDirection_Right,
+    SinglePlayerDirection_RotateLeft,
+    SinglePlayerDirection_RotateRight,
     SinglePlayerDirection_Nothing
 } SinglePlayerGame_Direction;
 

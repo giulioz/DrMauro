@@ -41,10 +41,10 @@ static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
         case SDLK_DOWN:
             this->inputDevice->currentState.downButton = value;
             break;
-        case SDLK_COLON:
+        case SDLK_m:
             this->inputDevice->currentState.rotateRightButton = value;
             break;
-        case SDLK_COMMA:
+        case SDLK_n:
             this->inputDevice->currentState.rotateLeftButton = value;
             break;
 

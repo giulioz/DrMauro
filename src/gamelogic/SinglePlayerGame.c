@@ -126,14 +126,52 @@ static bool moveElement(this_p(SinglePlayerGame), GameBoardElement* dest, GameBo
     return true;
 }
 
-static bool findPillXY(this_p(SinglePlayerGame), int id, size_t *ox, size_t *oy) {
-    size_t x, y;
+static bool moveElementDirection(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
+    GameBoardElement *currentElement = getBoardElement(&this->board, y, x);
+    switch (direction) {
+        case SinglePlayerDirection_Down:
+            return moveElement(this, getBoardElement(&this->board, y - 1, x), currentElement);
+        case SinglePlayerDirection_Left:
+            return moveElement(this, getBoardElement(&this->board, y, x - 1), currentElement);
+        case SinglePlayerDirection_Right:
+            return moveElement(this, getBoardElement(&this->board, y, x + 1), currentElement);
+        default:
+            return false;
+    }
+}
+
+static size_t countColor(this_p(SinglePlayerGame), size_t x, size_t y, int dx, int dy, GameBoardElementColor color) {
+    if (x >= this->board.width || y >= this->board.height
+        || getBoardElement(&this->board, y, x)->color != color
+        || getBoardElement(&this->board, y, x)->type == GameBoardElement_Empty)
+        return 0;
+    else
+        return 1 + countColor(this, x + dx, y + dy, dx, dy, color);
+}
+
+static void removeCells(this_p(SinglePlayerGame), size_t x, size_t y, int dx, int dy, size_t toRemove) {
+    if (toRemove > 0) {
+        GameBoardElement *element = getBoardElement(&this->board, y, x);
+        if (element->type == GameBoardElement_Virus)
+            this->virusCount--;
+        element->id = -1;
+        element->type = GameBoardElement_Empty;
+        removeCells(this, x + dx, y + dy, dx, dy, toRemove - 1);
+    }
+}
+
+static bool removePossible(this_p(SinglePlayerGame)) {
+    size_t x, y, toRemoveVert, toRemoveHor;
     for (x = 0; x < this->board.width; x++) {
         for (y = 0; y < this->board.height; y++) {
-            GameBoardElement *element = getBoardElement(&this->board, y, x);
-            if (element->type == GameBoardElement_Pill && element->id == id) {
-                *ox = x;
-                *oy = y;
+            toRemoveVert = countColor(this, x, y, 0, 1, getBoardElement(&this->board, y, x)->color);
+            if (toRemoveVert >= 4) {
+                removeCells(this, x, y, 0, 1, toRemoveVert);
+                return true;
+            }
+            toRemoveHor = countColor(this, x, y, 1, 0, getBoardElement(&this->board, y, x)->color);
+            if (toRemoveHor >= 4) {
+                removeCells(this, x, y, 1, 0, toRemoveHor);
                 return true;
             }
         }
@@ -141,133 +179,91 @@ static bool findPillXY(this_p(SinglePlayerGame), int id, size_t *ox, size_t *oy)
     return false;
 }
 
-static bool pillBoundaryEmpty(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
-
-}
-
-static bool canPillMove(this_p(SinglePlayerGame), size_t x, size_t y, int id, SinglePlayerGame_Direction direction) {
-    bool hasNextPill, canNextMove, hasPrevPill, canPrevMove, hasMovableDownPill, canCurrentMove;
-	switch (direction) {
-		case SinglePlayerDirection_Down:
-            canCurrentMove = (bool) (y > 0 && (getBoardElement(&this->board, y - 1, x)->type == GameBoardElement_Empty));
-            hasNextPill = (bool) (x < (this->board.width - 1) && getBoardElement(&this->board, y, x + 1)->id == id);
-            canNextMove = (bool) (!hasNextPill || (y > 0 && (getBoardElement(&this->board, y - 1, x + 1)->type == GameBoardElement_Empty)));
-            hasPrevPill = (bool) (x > 0 && getBoardElement(&this->board, y, x - 1)->id == id);
-            canPrevMove = (bool) (!hasPrevPill || (y > 0 && (getBoardElement(&this->board, y - 1, x - 1)->type == GameBoardElement_Empty)));
-            hasMovableDownPill = (bool) (y > 1 && getBoardElement(&this->board, y - 1, x)->id == id && getBoardElement(&this->board, y - 2, x)->type == GameBoardElement_Empty);
-            return (bool) ((canCurrentMove || hasMovableDownPill) && canNextMove && canPrevMove);
+bool isBoundaryEmpty(this_p(SinglePlayerGame), size_t x, size_t y, SinglePlayerGame_Direction direction) {
+    switch (direction) {
+        case SinglePlayerDirection_Up:
+            return (bool) (y < this->board.height - 1
+                           && getBoardElement(&this->board, y + 1, x)->type == GameBoardElement_Empty);
+        case SinglePlayerDirection_Down:
+            return (bool) (y > 0 && getBoardElement(&this->board, y - 1, x)->type == GameBoardElement_Empty);
         case SinglePlayerDirection_Left:
-            canCurrentMove = (bool) (x > 0 && (getBoardElement(&this->board, y, x - 1)->type == GameBoardElement_Empty));
-            hasNextPill = (bool) (y > 0 && getBoardElement(&this->board, y - 1, x)->id == id);
-            canNextMove = (bool) (!hasNextPill || (x > 0 && (getBoardElement(&this->board, y - 1, x - 1)->type == GameBoardElement_Empty)));
-            hasPrevPill = (bool) (y < this->board.height - 1 && getBoardElement(&this->board, y + 1, x)->id == id);
-            canPrevMove = (bool) (!hasPrevPill || (x > 0 && (getBoardElement(&this->board, y + 1, x - 1)->type == GameBoardElement_Empty)));
-            hasMovableDownPill = false;//(bool) (y > 1 && getBoardElement(&this->board, y - 1, x)->id == id && getBoardElement(&this->board, y - 2, x)->type == GameBoardElement_Empty);
-            return (bool) ((canCurrentMove || hasMovableDownPill) && canNextMove && canPrevMove);
-            return (bool) ((x > 0 && (getBoardElement(&this->board, y, x - 1)->type == GameBoardElement_Empty)
-                        || (x > 1 && getBoardElement(&this->board, y, x - 1)->id == id && getBoardElement(&this->board, y, x - 2)->type == GameBoardElement_Empty)));
+            return (bool) (x > 0 && getBoardElement(&this->board, y, x - 1)->type == GameBoardElement_Empty);
         case SinglePlayerDirection_Right:
             return (bool) (x < this->board.width - 1
-                       && (x < this->board.width - 1 && (getBoardElement(&this->board, y, x + 1)->type == GameBoardElement_Empty)
-                       || (x < this->board.width - 2 && getBoardElement(&this->board, y, x + 1)->id == id && getBoardElement(&this->board, y, x + 2)->type == GameBoardElement_Empty)));
-		default:
-			return false;
-	}
-}
-
-static size_t columnCount(this_p(SinglePlayerGame), size_t x, size_t y, GameBoardElementColor color) {
-    if (getBoardElement(&this->board, y, x)->color != color)
-        return 0;
-    else {
-        if (y == 0)
-            return 1;
-        else
-            return 1 + columnCount(this, x, y - 1, color);
+                           && getBoardElement(&this->board, y, x + 1)->type == GameBoardElement_Empty);
+        default:
+            return false;
     }
 }
 
-static void removeColumns(this_p(SinglePlayerGame), size_t x, size_t y, size_t toRemove) {
-    if (toRemove > 0 && y >= 0) {
-        GameBoardElement *element = getBoardElement(&this->board, y, x);
-        element->id = -1;
-        element->type = GameBoardElement_Empty;
-        removeColumns(this, x, y - 1, toRemove - 1);
-    }
-}
-
-static void removeAllPossible(this_p(SinglePlayerGame)) {
+static bool pillMove(this_p(SinglePlayerGame), int id, SinglePlayerGame_Direction direction) {
     size_t x, y;
     for (x = 0; x < this->board.width; x++) {
         for (y = 0; y < this->board.height; y++) {
-            size_t toRemove = columnCount(this, x, y, getBoardElement(&this->board, y, x)->color);
-            if (toRemove >= 4)
-                removeColumns(this, x, y, toRemove);
+            GameBoardElement *elem = getBoardElement(&this->board, y, x);
+            if (elem->id == id) {
+                WindowType type = checkWindow(this, x, y);
+                switch (type) {
+                    case Single:
+                        if (isBoundaryEmpty(this, x, y, direction))
+                            return moveElementDirection(this, x, y, direction);
+                        else return false;
+                    case Horizontal:
+                        switch (direction) {
+                            case SinglePlayerDirection_Down:
+                                if (isBoundaryEmpty(this, x, y, direction)
+                                    && isBoundaryEmpty(this, x + 1, y, direction)) {
+                                    moveElementDirection(this, x, y, direction);
+                                    moveElementDirection(this, x + 1, y, direction);
+                                    return true;
+                                } else return false;
+                            case SinglePlayerDirection_Left:
+                                if (isBoundaryEmpty(this, x, y, direction)) {
+                                    moveElementDirection(this, x, y, direction);
+                                    moveElementDirection(this, x + 1, y, direction);
+                                    return true;
+                                } else return false;
+                            case SinglePlayerDirection_Right:
+                                if (isBoundaryEmpty(this, x + 1, y, direction)) {
+                                    moveElementDirection(this, x + 1, y, direction);
+                                    moveElementDirection(this, x, y, direction);
+                                    return true;
+                                } else return false;
+                            default:
+                                return false;
+                        }
+                    case Vertical:
+                        switch (direction) {
+                            case SinglePlayerDirection_Down:
+                                if (isBoundaryEmpty(this, x, y, direction)) {
+                                    moveElementDirection(this, x, y, direction);
+                                    moveElementDirection(this, x, y + 1, direction);
+                                    return true;
+                                } else return false;
+                            case SinglePlayerDirection_Left:
+                                if (isBoundaryEmpty(this, x, y, direction)
+                                    && isBoundaryEmpty(this, x, y + 1, direction)) {
+                                    moveElementDirection(this, x, y, direction);
+                                    moveElementDirection(this, x, y + 1, direction);
+                                    return true;
+                                } else return false;
+                            case SinglePlayerDirection_Right:
+                                if (isBoundaryEmpty(this, x, y, direction)
+                                    && isBoundaryEmpty(this, x, y + 1, direction)) {
+                                    moveElementDirection(this, x, y, direction);
+                                    moveElementDirection(this, x, y + 1, direction);
+                                    return true;
+                                } else return false;
+                            default:
+                                return false;
+                        }
+                    default:
+                        return false;
+                }
+            }
         }
     }
-}
-
-static bool pillMove(this_p(SinglePlayerGame), size_t *x, size_t *y, SinglePlayerGame_Direction direction) {
-    size_t pillLX, pillLY, pillRX, pillRY;
-    findPillXY(this, this->currentPillId, &pillLX, &pillLY);
-    pillRX = pillLX + 1; // TODO rotation
-
-    switch (direction) {
-        case SinglePlayerDirection_Down:
-            moveElement(this, getBoardElement(&this->board, *y - 1, *x),
-                        getBoardElement(&this->board, *y, *x));
-            (*y)--;
-            break;
-        case SinglePlayerDirection_Left:
-            // TODO: understand why the pill split
-
-            if (pillLX > 0) {
-                moveElement(this, getBoardElement(&this->board, *y, *x - 1),
-                            getBoardElement(&this->board, *y, *x));
-                (*x)--;
-            }
-
-            break;
-        case SinglePlayerDirection_Right:
-            if (pillRX < this->board.width - 1) {
-                moveElement(this, getBoardElement(&this->board, *y, *x + 1),
-                            getBoardElement(&this->board, *y, *x));
-                (*x)++;
-            }
-
-            break;
-        default:
-            break;
-    }
-}
-
-static bool currentPillMove(this_p(SinglePlayerGame), SinglePlayerGame_Direction direction) {
-    size_t pillLX, pillLY, pillRX, pillRY;
-    findPillXY(this, this->currentPillId, &pillLX, &pillLY);
-    pillRX = pillLX + 1; // TODO rotation
-    pillRY = pillLY;
-    if (this->currentPillId >= 0
-            && canPillMove(this, pillLX, pillLY, this->currentPillId, SinglePlayerDirection_Down)
-            && canPillMove(this, pillRX, pillRY, this->currentPillId, SinglePlayerDirection_Down)) {
-        switch (direction) {
-            case SinglePlayerDirection_Left:
-                pillMove(this, &pillLX, &pillLY, direction);
-                pillMove(this, &pillRX, &pillRY, direction);
-                break;
-            case SinglePlayerDirection_Right:
-                pillMove(this, &pillRX, &pillRY, direction);
-                pillMove(this, &pillLX, &pillLY, direction);
-                break;
-            case SinglePlayerDirection_Down:
-                pillMove(this, &pillLX, &pillLY, direction);
-                pillMove(this, &pillRX, &pillRY, direction);
-                break;
-            default:
-                break;
-        }
-        return true;
-    } else {
-        return false;
-    }
+    return false;
 }
 
 static bool addNextPill(this_p(SinglePlayerGame)) {
@@ -291,45 +287,86 @@ static bool addNextPill(this_p(SinglePlayerGame)) {
 
 /* true if something was moved */
 static bool applyGravity(this_p(SinglePlayerGame)) {
-    size_t x, y;
     int id;
     bool moved = false;
 
-    /* other pills */
     for (id = 0; id <= this->currentPillId; id++) {
-        for (x = 0; x < this->board.width; x++) {
-            for (y = 0; y < this->board.height; y++) {
-                GameBoardElement *element = getBoardElement(&this->board, y, x);
-                if (element->type == GameBoardElement_Pill && element->id == id
-                    && canPillMove(this, x, y, element->id, SinglePlayerDirection_Down)) {
-                    size_t tx = x, ty = y;
-                    pillMove(this, &tx, &ty, SinglePlayerDirection_Down);
-                    moved = true;
+        moved |= pillMove(this, id, SinglePlayerDirection_Down);
+    }
+    return moved;
+}
+
+static bool rotatePill(this_p(SinglePlayerGame), int id, SinglePlayerGame_Direction direction) {
+    size_t x, y;
+    for (x = 0; x < this->board.width; x++) {
+        for (y = 0; y < this->board.height; y++) {
+            GameBoardElement *elem = getBoardElement(&this->board, y, x);
+            if (elem->id == id) {
+                WindowType type = checkWindow(this, x, y);
+                switch (type) {
+                    case Horizontal:
+                        if (isBoundaryEmpty(this, x, y, SinglePlayerDirection_Up)) {
+                            moveElement(this, getBoardElement(&this->board, y + 1, x),
+                                        getBoardElement(&this->board, y, x + 1));
+                            return true;
+                        } else if (isBoundaryEmpty(this, x, y, SinglePlayerDirection_Down)) {
+                            moveElement(this, getBoardElement(&this->board, y - 1, x),
+                                        getBoardElement(&this->board, y, x + 1));
+                            return true;
+                        } else return false;
+                    case Vertical:
+                        if (isBoundaryEmpty(this, x, y, SinglePlayerDirection_Right)) {
+                            moveElement(this, getBoardElement(&this->board, y, x + 1),
+                                        getBoardElement(&this->board, y + 1, x));
+                            return true;
+                        } else if (isBoundaryEmpty(this, x, y, SinglePlayerDirection_Left)) {
+                            moveElement(this, getBoardElement(&this->board, y, x - 1),
+                                        getBoardElement(&this->board, y + 1, x));
+                            return true;
+                        } else return false;
+                    default:
+                        return false;
                 }
             }
         }
     }
-    return moved;
+    return false;
 }
 
 
 static void update(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
 
+    /* win condition */
+    if (this->virusCount <= 0) {
+        this->state = SinglePlayerState_EndWon;
+    }
+
     if (this->state == SinglePlayerState_Moving) {
-        currentPillMove(this, direction);
+        if (direction == SinglePlayerDirection_RotateRight || direction == SinglePlayerDirection_RotateLeft)
+            rotatePill(this, this->currentPillId, direction);
+        else
+            pillMove(this, this->currentPillId, direction);
+
         if (time - this->lastGravity > 2000 / ((this->speed + 1) * 1.5)) {
             if (!applyGravity(this)) {
                 this->state = SinglePlayerState_Still;
-                removeAllPossible(this);
-                while (applyGravity((this)));
+                removePossible(this);
+            }
+            this->lastGravity = time;
+        }
+    } else if (this->state == SinglePlayerState_Still) {
+        if (time - this->lastGravity > 300 / ((this->speed + 1) * 1.5)) {
+            if (!applyGravity(this)) {
+                if (!removePossible(this))
+                    this->state = SinglePlayerState_Ready;
             }
             this->lastGravity = time;
         }
     }
 
     /* create new pill */
-	if (this->state == SinglePlayerState_Still) {
+	if (this->state == SinglePlayerState_Ready) {
 		if (addNextPill(this)) {
 			this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
 			this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
