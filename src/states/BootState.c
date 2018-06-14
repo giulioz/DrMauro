@@ -5,16 +5,8 @@
 
 #include "BootState.h"
 
-static void load(this_p(GameState)) {
-
-}
-
-static void unload(this_p(GameState)) {
-
-}
-
-static void update(this_p(GameState)) {
-
+static bool update(this_p(GameState)) {
+    return true;
 }
 
 static void draw(this_p(GameState)) {
@@ -24,15 +16,13 @@ static void draw(this_p(GameState)) {
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 10, 10, "Loading", 1);
 
     /* Load next state */
-    MainMenuGameState_init(&((BootState*)this)->mainMenuGameState, this->engine);
-    VTP(this->engine)->loadState(this->engine, (GameState*)&((BootState*)this)->mainMenuGameState);
-
-    /*AudioTestState_init(&((BootState*)this)->audioTestState, this->engine);
-    VTP(this->engine)->loadState(this->engine, (GameState*)&((BootState*)this)->audioTestState);*/
+    MainMenuGameState nextState;
+    MainMenuGameState_init(&nextState, this->engine);
+    VTP(this->engine)->loadState(this->engine, (GameState*)&nextState);
 }
 
 static struct GameState_VTABLE _vtable = {
-        update, draw, load, unload
+        update, draw
 };
 
 void BootState_init(this_p(BootState), Engine *engine) {

@@ -6,8 +6,13 @@
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
 
+#define BoardWidth 8
+#define BoardHeight 16
+#define BoardVirusUpperLimit 5
+
 #include "Object.h"
 #include "Bool.h"
+#include "Vector.h"
 #include "IntTypes.h"
 
 typedef enum {
@@ -23,10 +28,45 @@ typedef enum {
     GameBoardElement_NoColor
 } GameBoardElementColor;
 
+typedef enum {
+    PillDirection_Up,
+    PillDirection_Down,
+    PillDirection_Left,
+    PillDirection_Right,
+    PillDirection_RotateLeft,
+    PillDirection_RotateRight,
+    PillDirection_Nothing
+} PillDirection;
+
+typedef enum {
+    Single,
+    Horizontal,
+    Vertical
+} PillWindowType;
+
 typedef class GameBoardElement {
     GameBoardElementType type;
     GameBoardElementColor color;
     int id;   /* same id means merged pill, ignored for virus */
 } GameBoardElement;
+
+class GameBoard;
+
+struct GameBoard_VTABLE {
+    GameBoardElement* (*getElement)(this_p(GameBoard), size_t x, size_t y);
+    bool (*addRandomVirus)(this_p(GameBoard), uint32_t index);
+    int (*removeFirst)(this_p(GameBoard));
+    bool (*pillMove)(this_p(GameBoard), int id, PillDirection direction);
+    bool (*applyGravity)(this_p(GameBoard), int endId);
+};
+
+typedef class GameBoard {
+    struct GameBoard_VTABLE *VTABLE;
+
+    GameBoardElement boardAlloc[BoardWidth*BoardHeight];
+    Vector2D board;
+} GameBoard;
+
+void GameBoard_init(this_p(GameBoard));
 
 #endif

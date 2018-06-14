@@ -89,16 +89,16 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, SinglePlayerGa
 static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen) {
     uint32_t x, y;
 
-    for (x = 0; x < this->logic.board.width; x++) {
-        for (y = 0; y < this->logic.board.height; y++) {
-            GameBoardElement *element = VT(this->logic.board)->get2D(&this->logic.board, y, x);
+    for (x = 0; x < this->logic.board.board.width; x++) {
+        for (y = 0; y < this->logic.board.board.height; y++) {
+            GameBoardElement *element = VT(this->logic.board.board)->get2D(&this->logic.board.board, y, x);
 
             switch (element->type) {
                 case GameBoardElement_Virus:
                     drawVirus(screen, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board, x, y));
+                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board.board, x, y));
                     break;
                 default:
                     break;
@@ -191,12 +191,12 @@ static void pillLaunchAnim(this_p(MultiPlayerGameState), uint32_t currentTime) {
 
 }
 
-static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(MultiPlayerGameState)) {
+static PillDirection getDirectionFromKeyboard(this_p(MultiPlayerGameState)) {
     InputState *inputState = VTP(this->base.engine->inputDevice)->getInputState(this->base.engine->inputDevice);
-    if (inputState->leftButton) return SinglePlayerDirection_Left;
-    else if (inputState->rightButton) return SinglePlayerDirection_Right;
-    else if (inputState->downButton) return SinglePlayerDirection_Down;
-    else return SinglePlayerDirection_Nothing;
+    if (inputState->leftButton) return PillDirection_Left;
+    else if (inputState->rightButton) return PillDirection_Right;
+    else if (inputState->downButton) return PillDirection_Down;
+    else return PillDirection_Nothing;
 }
 
 static void update(this_p(GameState)) {

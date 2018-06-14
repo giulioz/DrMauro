@@ -7,14 +7,13 @@
 #define GAMESTATE_H
 
 #include "Object.h"
+#include "Bool.h"
 
 class GameState;
 
 struct GameState_VTABLE {
-    void (*update)(this_p(GameState));
+    bool (*update)(this_p(GameState)); /* returns false if state ended */
     void (*draw)(this_p(GameState));
-    void (*load)(this_p(GameState));
-    void (*unload)(this_p(GameState));
 };
 
 typedef class GameState {

@@ -41,10 +41,6 @@ typedef enum {
 typedef class DifficultySelectionGameState {
     GameState base;
 
-    /* Next state */
-    SinglePlayerGameState singlePlayerGameState;
-    MultiPlayerGameState multiPlayerGameState;
-
     DifficultySelectionGameState_SelectedEntry selectedMenuEntry;
     bool multiplayer;
     DifficultySelectionGameState_PlayerInfo playerInfos[2];

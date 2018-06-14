@@ -13,7 +13,7 @@ static SDL_Screen screen;
 static BootState bootState;
 static SDL_InputDevice inputDevice;
 
-/* Usage pring */
+/* Usage print */
 void usage() {
     printf( "DR.MAURO - dr.Mario Clone                        \n"
             "Usage: drmauro [-f FILE | -d DIFFICULTY] [-s SPEED] [-h] \n"
@@ -30,7 +30,7 @@ int _main(int argc, char **argv) {
     /* Init components */
     BootState_init(&bootState, &engine);
     SDL_InputDevice_init(&inputDevice);
-    SDL_Screen_init(&screen, 256, 240, "DR. MAURO", NULL, &inputDevice);
+    SDL_Screen_init(&screen, 256, 240, "DR. MAURO", &inputDevice);
 
     /* Init and startup engine */
     Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState, (InputDevice *) &inputDevice);

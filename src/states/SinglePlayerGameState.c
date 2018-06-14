@@ -20,6 +20,10 @@
 /*#define SAVE_DEBUG
 #include "SDL_Screen.h"*/
 
+static void unload(this_p(SinglePlayerGameState)) {
+    VT(this->timeline)->dispose(&this->timeline);
+}
+
 
 /* *************************************************************** */
 /* Graphics Elements                                               */
@@ -99,16 +103,16 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, SinglePlayerGa
 static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
     uint32_t x, y;
 
-    for (x = 0; x < this->logic.board.width; x++) {
-        for (y = 0; y < this->logic.board.height; y++) {
-            GameBoardElement *element = VT(this->logic.board)->get2D(&this->logic.board, y, x);
+    for (x = 0; x < this->logic.board.board.width; x++) {
+        for (y = 0; y < this->logic.board.board.height; y++) {
+            GameBoardElement *element = VT(this->logic.board.board)->get2D(&this->logic.board.board, y, x);
 
             switch (element->type) {
                 case GameBoardElement_Virus:
                     drawVirus(screen, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board, x, y));
+                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board.board, x, y));
                     break;
                 default:
                     break;
@@ -135,8 +139,8 @@ static void drawNextPill(this_p(SinglePlayerGameState), Graphics *graphics) {
 
 static bool isVirusPresent(this_p(SinglePlayerGameState), GameBoardElementColor virusColor) {
     size_t i;
-    Vector_foreach(this->logic.board,i) {
-        GameBoardElement *element = VT(this->logic.board)->base.get(&this->logic.board, i);
+    Vector_foreach(this->logic.board.board,i) {
+        GameBoardElement *element = VT(this->logic.board.board)->base.get((const struct Vector *) &this->logic.board.board, i);
         if (element->color == virusColor && element->type == GameBoardElement_Virus)
             return true;
     }
@@ -224,14 +228,14 @@ static void pillLaunchAnim(this_p(SinglePlayerGameState), uint32_t currentTime) 
 
 }
 
-static SinglePlayerGame_Direction getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
+static PillDirection getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
     InputState *inputState = VTP(this->base.engine->inputDevice)->getInputState(this->base.engine->inputDevice);
-    if (inputState->leftButton) return SinglePlayerDirection_Left;
-    else if (inputState->rightButton) return SinglePlayerDirection_Right;
-    else if (inputState->downButton) return SinglePlayerDirection_Down;
-    else if (inputState->rotateLeftButton) return SinglePlayerDirection_RotateLeft;
-    else if (inputState->rotateRightButton) return SinglePlayerDirection_RotateRight;
-    else return SinglePlayerDirection_Nothing;
+    if (inputState->leftButton) return PillDirection_Left;
+    else if (inputState->rightButton) return PillDirection_Right;
+    else if (inputState->downButton) return PillDirection_Down;
+    else if (inputState->rotateLeftButton) return PillDirection_RotateLeft;
+    else if (inputState->rotateRightButton) return PillDirection_RotateRight;
+    else return PillDirection_Nothing;
 }
 
 static void startGame_AfterAnim(this_p(SinglePlayerGameState)) {
@@ -244,9 +248,10 @@ static void startGame(this_p(SinglePlayerGameState)) {
 	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) startGame_AfterAnim, startTime + 300, this);
 }
 
-static void update(this_p(GameState)) {
+static bool update(this_p(GameState)) {
 	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
     uint32_t currentTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
+    InputState *inputState = VTP(state->base.engine->inputDevice)->getInputState(state->base.engine->inputDevice);
 
 	if (state->logic.state == SinglePlayerState_FillingBoard) {
 		if (VT(state->logic)->addNextVirus(&state->logic, state->i))
@@ -258,6 +263,13 @@ static void update(this_p(GameState)) {
 		}
 		/* quanto figo sarebbe avere gli async-await in C */
 	}
+
+    /* Allow exit */
+    if ((state->logic.state == SinglePlayerState_EndLost || state->logic.state == SinglePlayerState_EndWon)
+            && inputState->enterButton) {
+        unload(state);
+        return false;
+    }
 
 	/* Update controller */
 	VT(state->logic)->update(&state->logic, this->engine, getDirectionFromKeyboard(state));
@@ -271,6 +283,8 @@ static void update(this_p(GameState)) {
 	if (state->logic.state < SinglePlayerState_EndWon)
         rotateVirusLarge(state, currentTime);
     pillLaunchAnim(state, currentTime);
+
+    return true;
 }
 
 
@@ -278,39 +292,32 @@ static void update(this_p(GameState)) {
 /* Initialization                                                  */
 /* *************************************************************** */
 
-static void load(this_p(GameState)) {
-    SinglePlayerGameState *state = (SinglePlayerGameState *) this;
-    uint32_t startTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
-
-    Timeline_init(&state->timeline, TIMELINE_PREALLOC);
-
-    /* Sprites */
-    Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 184, 76, 4);
-    Sprite_init(&state->virusLargeBlueSprite, this->engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
-    Sprite_init(&state->virusLargeYellowSprite, this->engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
-	Sprite_init(&state->virusLargeRedSprite, this->engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
-
-    /* Next pill */
-    state->nextPillVisible = true;
-    state->nextPillLX = 190;
-    state->nextPillLY = 70;
-    state->nextPillRX = 198;
-    state->nextPillRY = 70;
-}
-
-static void unload(this_p(GameState)) {
-    SinglePlayerGameState *state = (SinglePlayerGameState *) this;
-    VT(state->timeline)->dispose(&state->timeline);
-}
-
 static struct GameState_VTABLE _vtable = {
-        update, draw, load, unload
+        update, draw
 };
 
 void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
+    uint32_t startTime = VTP(engine->screen)->getCurrentTime(engine->screen);
+
     this->base.engine = engine;
     VT(this->base) = &_vtable;
 
     SinglePlayerGame_init(&this->logic, engine, top, level, virus, speed);
     this->lastLogicState = SinglePlayerState_Nothing;
+    this->i = 0;
+
+    Timeline_init(&this->timeline, TIMELINE_PREALLOC);
+
+    /* Sprites */
+    Sprite_init(&this->marioSprite, this->base.engine->screen, &Asset_Mario, 184, 76, 4);
+    Sprite_init(&this->virusLargeBlueSprite, this->base.engine->screen, &Asset_VirusLargeBlue, 31, 136, 0);
+    Sprite_init(&this->virusLargeYellowSprite, this->base.engine->screen, &Asset_VirusLargeYellow, 18, 167, 0);
+    Sprite_init(&this->virusLargeRedSprite, this->base.engine->screen, &Asset_VirusLargeRed, 46, 164, 0);
+
+    /* Next pill */
+    this->nextPillVisible = true;
+    this->nextPillLX = 190;
+    this->nextPillLY = 70;
+    this->nextPillRX = 198;
+    this->nextPillRY = 70;
 }

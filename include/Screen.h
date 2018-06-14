@@ -9,23 +9,14 @@
 #include "IntTypes.h"
 #include "Object.h"
 #include "Bool.h"
+#include "GameState.h"
 
 class Graphics;
 class Screen;
-class ScreenCallbacks;
-
-struct ScreenCallbacks_VTABLE {
-    void (*update)(this_p(ScreenCallbacks));
-    void (*draw)(this_p(ScreenCallbacks));
-};
-
-typedef class ScreenCallbacks {
-    struct ScreenCallbacks_VTABLE *VTABLE;
-} ScreenCallbacks;
 
 struct Screen_VTABLE {
     void (*init)(this_p(Screen));
-    void (*run)(this_p(Screen));
+    void (*run)(this_p(Screen), GameState* callbacks);
     void (*close)(this_p(Screen));
     class Graphics* (*getGraphics)(this_p(Screen));
     uint32_t (*getCurrentTime)(this_p(Screen));
@@ -33,7 +24,6 @@ struct Screen_VTABLE {
 
 typedef class Screen {
     struct Screen_VTABLE *VTABLE;
-    ScreenCallbacks* callbacks;
 
     uint16_t width, height;
     bool running;

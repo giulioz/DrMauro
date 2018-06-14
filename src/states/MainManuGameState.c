@@ -49,7 +49,7 @@ static void draw(this_p(GameState)) {
 /* Game Logic                                                      */
 /* *************************************************************** */
 
-static void update(this_p(GameState)) {
+static bool update(this_p(GameState)) {
     MainMenuGameState *state = (MainMenuGameState *)this;
     InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
@@ -60,13 +60,16 @@ static void update(this_p(GameState)) {
     }
 
     if (inputState->enterButton) {
+        DifficultySelectionGameState difficultySelectionGameState;
         if (state->selectedMenuEntry == 0) {
-            DifficultySelectionGameState_init(&state->difficultySelectionGameState, this->engine, false);
+            DifficultySelectionGameState_init(&difficultySelectionGameState, this->engine, false);
         } else if (state->selectedMenuEntry == 1) {
-            DifficultySelectionGameState_init(&state->difficultySelectionGameState, this->engine, true);
+            DifficultySelectionGameState_init(&difficultySelectionGameState, this->engine, true);
         }
-        VTP(this->engine)->loadState(this->engine, (GameState *) &state->difficultySelectionGameState);
+        VTP(this->engine)->loadState(this->engine, (GameState *) &difficultySelectionGameState);
     }
+
+    return true;
 }
 
 
@@ -74,26 +77,19 @@ static void update(this_p(GameState)) {
 /* Initialization                                                  */
 /* *************************************************************** */
 
-static void load(this_p(GameState)) {
-    MainMenuGameState *state = (MainMenuGameState *) this;
-    state->selectedMenuEntry = 0;
-
-    /* Sprites */
-    Sprite_init(&state->marioSprite, this->engine->screen, &Asset_Mario, 37, 168, 3);
-    Sprite_init(&state->virusSprite, this->engine->screen, &Asset_VirusLargeBlue, 192, 177, 0);
-    Sprite_init(&state->titleSprite, this->engine->screen, &Asset_BigTitle, 34, 63, 0);
-    Sprite_init(&state->selectorSprite, this->engine->screen, &Asset_Heart, 69, 169, 0);
-}
-
-static void unload(this_p(GameState)) {
-
-}
-
 static struct GameState_VTABLE _vtable = {
-        update, draw, load, unload
+        update, draw
 };
 
 void MainMenuGameState_init(this_p(MainMenuGameState), Engine *engine) {
     this->base.engine = engine;
     VT(this->base) = &_vtable;
+
+    this->selectedMenuEntry = 0;
+
+    /* Sprites */
+    Sprite_init(&this->marioSprite, this->base.engine->screen, &Asset_Mario, 37, 168, 3);
+    Sprite_init(&this->virusSprite, this->base.engine->screen, &Asset_VirusLargeBlue, 192, 177, 0);
+    Sprite_init(&this->titleSprite, this->base.engine->screen, &Asset_BigTitle, 34, 63, 0);
+    Sprite_init(&this->selectorSprite, this->base.engine->screen, &Asset_Heart, 69, 169, 0);
 }

@@ -28,7 +28,7 @@ static void dispose(Timeline *this) {
 	VT(this->events)->dispose(&this->events);
 }
 
-struct Timeline_VTABLE _vtable = {
+static struct Timeline_VTABLE _vtable = {
 	update, addEvent, dispose
 };
 

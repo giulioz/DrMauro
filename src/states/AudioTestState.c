@@ -108,7 +108,7 @@ static void unload(this_p(GameState)) {
 }
 
 static struct GameState_VTABLE _vtable = {
-        update, draw, load, unload
+        update, draw
 };
 
 void AudioTestState_init(this_p(AudioTestState), Engine *engine) {

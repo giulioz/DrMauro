@@ -77,7 +77,7 @@ static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
     }
 }
 
-static void run(this_p(Screen)) {
+static void run(this_p(Screen), GameState* callbacks) {
     SDL_Screen *screen = (SDL_Screen *) this;
 
     SDL_Rect dstRect = { 0, 0, 0, 0 };
@@ -107,8 +107,9 @@ static void run(this_p(Screen)) {
         }
 
         /* callbacks */
-        VTP(this->callbacks)->update(this->callbacks);
-        VTP(this->callbacks)->draw(this->callbacks);
+        if (!VTP(callbacks)->update(callbacks))
+            break;
+        VTP(callbacks)->draw(callbacks);
         SDL_BlitScaled(screen->screenSurface, NULL, screen->tempSurface, &dstRect);
         SDL_UpdateWindowSurface(screen->window);
 
@@ -142,9 +143,8 @@ static struct Screen_VTABLE _vtable = {
 
 /* ********************************************************* */
 /* Constructor                                               */
-void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, ScreenCallbacks* callbacks, SDL_InputDevice *inputDevice) {
+void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, SDL_InputDevice *inputDevice) {
     VT(this->base) = &_vtable;
-    this->base.callbacks = callbacks;
 
     this->base.width = width;
     this->base.height = height;

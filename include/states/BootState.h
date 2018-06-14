@@ -16,10 +16,6 @@
 
 typedef class BootState {
     GameState base;
-
-    MainMenuGameState mainMenuGameState;
-
-    AudioTestState audioTestState;
 } BootState;
 
 void BootState_init(this_p(BootState), Engine *engine);

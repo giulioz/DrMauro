@@ -13,16 +13,12 @@
 #include "Vector.h"
 #include "Engine.h"
 
-#define SPBoardWidth 8
-#define SPBoardHeight 16
-#define SPBoardVirusUpperLimit 5
 #define SPMaxVirus 20
 
 typedef enum {
 	SinglePlayerState_FillingBoard,
     SinglePlayerState_Begin,	/* still to begin */
     SinglePlayerState_Moving,   /* pill moving */
-
     SinglePlayerState_Still,    /* pill still, waiting for falling */
     SinglePlayerState_Ready,    /* next pill */
     SinglePlayerState_EndWon,
@@ -36,22 +32,12 @@ typedef enum {
     SinglePlayerSpeed_Hi
 } SinglePlayerGame_Speed;
 
-typedef enum {
-    SinglePlayerDirection_Up,
-    SinglePlayerDirection_Down,
-    SinglePlayerDirection_Left,
-    SinglePlayerDirection_Right,
-    SinglePlayerDirection_RotateLeft,
-    SinglePlayerDirection_RotateRight,
-    SinglePlayerDirection_Nothing
-} SinglePlayerGame_Direction;
-
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
     bool (*addNextVirus)(this_p(SinglePlayerGame), uint32_t i);
     void (*startGame)(this_p(SinglePlayerGame), Engine* engine);
-    void (*update)(this_p(SinglePlayerGame), Engine* engine, SinglePlayerGame_Direction direction);
+    void (*update)(this_p(SinglePlayerGame), Engine* engine, PillDirection direction);
 };
 
 typedef class SinglePlayerGame {
@@ -66,8 +52,7 @@ typedef class SinglePlayerGame {
     SinglePlayerGame_Speed speed;
 
     /* Board */
-    GameBoardElement boardAlloc[SPBoardWidth*SPBoardHeight];
-    Vector2D board;
+    GameBoard board;
 
     /* Next pill in Mario hands */
     GameBoardElementColor nextPillColorL, nextPillColorR;

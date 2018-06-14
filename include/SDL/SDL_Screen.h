@@ -28,6 +28,6 @@ typedef class SDL_Screen {
     SDL_InputDevice* inputDevice;
 } SDL_Screen;
 
-void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, ScreenCallbacks* callbacks, SDL_InputDevice *inputDevice);
+void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* windowTitle, SDL_InputDevice *inputDevice);
 
 #endif

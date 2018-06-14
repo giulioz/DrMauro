@@ -174,7 +174,7 @@ static void allKeysDown(this_p(GameState)) {
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 }
 
-static void update(this_p(GameState)) {
+static bool update(this_p(GameState)) {
     DifficultySelectionGameState *state = (DifficultySelectionGameState *)this;
     InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
@@ -201,15 +201,26 @@ static void update(this_p(GameState)) {
         allKeysDown(this);
     }
 
+    if (inputState->rotateRightButton || inputState->rotateLeftButton) {
+        allKeysDown(this);
+        return false;
+    }
+
     if (inputState->enterButton) {
         if (state->multiplayer) {
-            MultiPlayerGameState_init(&state->multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
-            VTP(this->engine)->loadState(this->engine, (GameState *) &state->multiPlayerGameState);
+            MultiPlayerGameState multiPlayerGameState;
+            MultiPlayerGameState_init(&multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
+            VTP(this->engine)->loadState(this->engine, (GameState *) &multiPlayerGameState);
+            return false;
         } else {
-            SinglePlayerGameState_init(&state->singlePlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, state->playerInfos[0].speed);
-            VTP(this->engine)->loadState(this->engine, (GameState *) &state->singlePlayerGameState);
+            SinglePlayerGameState singlePlayerGameState;
+            SinglePlayerGameState_init(&singlePlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, state->playerInfos[0].speed);
+            VTP(this->engine)->loadState(this->engine, (GameState *) &singlePlayerGameState);
+            return false;
         }
     }
+
+    return true;
 }
 
 
@@ -217,23 +228,15 @@ static void update(this_p(GameState)) {
 /* Initialization                                                  */
 /* *************************************************************** */
 
-static void load(this_p(GameState)) {
-    DifficultySelectionGameState *state = (DifficultySelectionGameState *)this;
-    state->selectedMenuEntry = DifficultySelectionGameState_VirusLevel;
-    state->music = Fever;
-    memset(state->playerInfos, 0, sizeof(DifficultySelectionGameState_PlayerInfo) * 2);
-}
-
-static void unload(this_p(GameState)) {
-
-}
-
 static struct GameState_VTABLE _vtable = {
-        update, draw, load, unload
+        update, draw
 };
 
 void DifficultySelectionGameState_init(this_p(DifficultySelectionGameState), Engine *engine, bool multiplayer) {
     this->base.engine = engine;
     VT(this->base) = &_vtable;
     this->multiplayer = multiplayer;
+    this->selectedMenuEntry = DifficultySelectionGameState_VirusLevel;
+    this->music = Fever;
+    memset(this->playerInfos, 0, sizeof(DifficultySelectionGameState_PlayerInfo) * 2);
 }

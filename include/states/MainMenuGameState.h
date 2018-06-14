@@ -21,9 +21,6 @@
 typedef class MainMenuGameState {
     GameState base;
 
-    /* Next state */
-    DifficultySelectionGameState difficultySelectionGameState;
-
     Sprite marioSprite, virusSprite, titleSprite, selectorSprite;
     int selectedMenuEntry;
 
