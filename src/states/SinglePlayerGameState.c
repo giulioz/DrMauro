@@ -230,7 +230,7 @@ static void updateAnimations(this_p(SinglePlayerGameState)) {
     if (this->logic->state != this->lastLogicState) {
         switch (this->logic->state) {
             case SinglePlayerState_WaitingForPill:
-                VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill, currentTime + 1000, this);
+                VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill, currentTime + 300, this);
                 break;
             case SinglePlayerState_Moving:
                 break;
@@ -259,7 +259,7 @@ static bool update(this_p(GameState)) {
 
 	if (state->logic->state == SinglePlayerState_FillingBoard) {
 		if (!VTP(state->logic)->addNextVirus(state->logic)) {
-            VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) newPill, currentTime + 1000, this);
+            VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) newPill, currentTime + 100, this);
 			state->logic->state = SinglePlayerState_WaitingForPill;
 		}
 	}

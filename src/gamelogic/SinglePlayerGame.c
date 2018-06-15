@@ -73,8 +73,8 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
 }
 
 static int getGravityTimeoutTime(this_p(SinglePlayerGame)) {
-    if (this->state == SinglePlayerState_NoControl) return 200; /* faster for non user pill */
-    else return 2000 / ((this->speed + 1) * 1.5);
+    if (this->state == SinglePlayerState_NoControl) return 70; /* faster for non user pill */
+    else return 500 / ((this->speed + 1) * 1.5);
 }
 
 
