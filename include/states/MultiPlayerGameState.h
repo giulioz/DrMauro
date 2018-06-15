@@ -17,7 +17,7 @@
 #include "Sprite.h"
 #include "SinglePlayerGame.h"
 #include "Vector.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "Timeline.h"
 #include "GameBoard.h"
 #include "CommonGameUtils.h"

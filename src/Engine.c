@@ -6,9 +6,9 @@
 #include "Engine.h"
 
 /* Startup all the components */
-static void startup(this_p(Engine)) {
+static void startup(this_p(Engine), GameState *bootState) {
     VTP(this->screen)->init(this->screen);
-    VTP(this)->loadState(this, this->currentState);
+    VTP(this)->loadState(this, bootState);
 }
 
 /* Shutdown all the components */
@@ -18,11 +18,8 @@ static void shutdown(this_p(Engine)) {
 
 /* Unload old state and load another one */
 static void loadState(this_p(Engine), GameState *state) {
-    /* load new state */
-    this->currentState = state;
+    VTP(this->inputDevice)->reset(this->inputDevice);
     VTP(this->screen)->run(this->screen, state);
-
-    /* reset keyboard */
     VTP(this->inputDevice)->reset(this->inputDevice);
 }
 
@@ -31,11 +28,11 @@ static struct Engine_VTABLE _vtable = {
         startup, shutdown, loadState
 };
 
-Engine *Engine_init(this_p(Engine), Screen *screen, GameState *bootState, InputDevice* inputDevice) {
+Engine *Engine_init(this_p(Engine), Screen *screen, InputDevice* inputDevice, Parameters *parameters) {
     VTP(this) = &_vtable;
 
     this->screen = screen;
-    this->currentState = bootState;
     this->inputDevice = inputDevice;
+    this->parameters = parameters;
     return this;
 }

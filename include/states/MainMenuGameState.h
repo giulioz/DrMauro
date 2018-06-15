@@ -14,7 +14,7 @@
 #include "Bool.h"
 #include "Sprite.h"
 #include "Vector.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "Timeline.h"
 #include "DifficultySelectionGameState.h"
 

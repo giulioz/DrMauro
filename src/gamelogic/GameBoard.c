@@ -63,23 +63,21 @@ static bool isColorLegalInBoard(this_p(GameBoard), size_t x, size_t y, GameBoard
 }
 
 /* Returns true if virus was added */
-static bool addRandomVirus(this_p(GameBoard), uint32_t index) {
+static void addRandomVirus(this_p(GameBoard)) {
     GameBoardElement *element;
-    uint32_t y, x;
+    uint32_t y = 0, x = 0;
     GameBoardElementColor color;
 
-    y = randomBetween(0, this->board.height - BoardVirusUpperLimit);
-    x = randomBetween(0, this->board.width);
-    color = (GameBoardElementColor) (index % 3);
+    do {
+        y = randomBetween(0, this->board.height - BoardVirusUpperLimit);
+        x = randomBetween(0, this->board.width);
+        color = (GameBoardElementColor) (this->virusCount % 3);
+    } while (!isColorLegalInBoard(this, x, y, color));
 
-    if (isColorLegalInBoard(this, x, y, color)) {
-        element = getElement(this, x, y);
-        element->type = GameBoardElement_Virus;
-        element->color = color;
-        return true;
-    } else {
-        return false;
-    }
+    element = getElement(this, x, y);
+    element->type = GameBoardElement_Virus;
+    element->color = color;
+    this->virusCount++;
 }
 
 
@@ -246,9 +244,9 @@ static bool applyGravity(this_p(GameBoard), int endId) {
     int id;
     bool moved = false;
 
-    for (id = 0; id <= endId; id++) {
+    for (id = 0; id <= endId; id++)
         moved |= pillMove(this, id, PillDirection_Down);
-    }
+
     return moved;
 }
 
@@ -257,42 +255,62 @@ static bool applyGravity(this_p(GameBoard), int endId) {
 /* Removal                                                         */
 /* *************************************************************** */
 
-static size_t countColor(this_p(GameBoard), size_t x, size_t y, int dx, int dy, GameBoardElementColor color) {
-    if (x >= this->board.width || y >= this->board.height
-        || getElement(this, x, y)->color != color
-        || getElement(this, x, y)->type == GameBoardElement_Empty)
+static size_t countColor(this_p(GameBoard), long x, long y, int dx, int dy, GameBoardElementColor color) {
+    if (x < 0 || y < 0 || x >= this->board.width || y >= this->board.height
+        || getElement(this, (size_t) x, (size_t) y)->color != color
+        || getElement(this, (size_t) x, (size_t) y)->type == GameBoardElement_Empty)
         return 0;
     else
         return 1 + countColor(this, x + dx, y + dy, dx, dy, color);
 }
 
-static int removeCells(this_p(GameBoard), size_t x, size_t y, int dx, int dy, size_t toRemove) {
-    int removed = 0;
+static int removeCells(this_p(GameBoard), long x, long y, int dx, int dy, long toRemove) {
     if (toRemove > 0) {
-        GameBoardElement *element = getElement(this, x, y);
-        if (element->type == GameBoardElement_Virus) {
-            removed++;
-        }
+        GameBoardElement *element = getElement(this, (size_t) x, (size_t) y);
 
-        element->id = -1;
-        element->type = GameBoardElement_Empty;
-        removeCells(this, x + dx, y + dy, dx, dy, toRemove - 1);
-    }
-    return removed;
+        if (element->type == GameBoardElement_Virus) {
+            element->id = -1;
+            element->type = GameBoardElement_Empty;
+            return removeCells(this, x + dx, y + dy, dx, dy, toRemove - 1) + 1;
+        } else {
+            element->id = -1;
+            element->type = GameBoardElement_Empty;
+            return removeCells(this, x + dx, y + dy, dx, dy, toRemove - 1);
+        }
+    } else return 0;
 }
+
+/*static int removeFirstCross(this_p(GameBoard)) {
+    long x, y, toRemoveL, toRemoveR, toRemoveD;
+    for (x = 0; x < this->board.width; x++) {
+        for (y = this->board.height; y >= 0; y--) {
+            toRemoveL = countColor(this, x, y, -1, 0, getElement(this, (size_t) x, (size_t) y)->color);
+            toRemoveR = countColor(this, x, y, 1, 0, getElement(this, (size_t) x, (size_t) y)->color);
+            toRemoveD = countColor(this, x, y, 0, -1, getElement(this, (size_t) x, (size_t) y)->color);
+
+            if (toRemoveL >= 4 && toRemoveD >= 4) {
+                return removeCells(this, x, y, 0, 1, toRemoveL)
+                    + removeCells(this, x, y, 0, 1, toRemoveU);
+            } else if (toRemoveR >= 4 && toRemoveD >= 4) {
+                return removeCells(this, x, y, 0, 1, toRemoveVert);
+            }
+        }
+    }
+    return 0;
+}*/
 
 /* returns removed viruses */
 static int removeFirst(this_p(GameBoard)) {
-    size_t x, y, toRemoveVert, toRemoveHor;
+    long x, y, toRemoveD, toRemoveR;
     for (x = 0; x < this->board.width; x++) {
-        for (y = 0; y < this->board.height; y++) {
-            toRemoveVert = countColor(this, x, y, 0, 1, getElement(this, x, y)->color);
-            if (toRemoveVert >= 4) {
-                return removeCells(this, x, y, 0, 1, toRemoveVert);
-            }
-            toRemoveHor = countColor(this, x, y, 1, 0, getElement(this, x, y)->color);
-            if (toRemoveHor >= 4) {
-                return removeCells(this, x, y, 1, 0, toRemoveHor);
+        for (y = this->board.height - 1; y >= 0; y--) {
+            toRemoveR = countColor(this, x, y, 1, 0, getElement(this, (size_t) x, (size_t) y)->color);
+            toRemoveD = countColor(this, x, y, 0, -1, getElement(this, (size_t) x, (size_t) y)->color);
+
+            if (toRemoveD >= 4) {
+                return removeCells(this, x, y, 0, -1, toRemoveD);
+            } else if (toRemoveR >= 4) {
+                return removeCells(this, x, y, 1, 0, toRemoveR);
             }
         }
     }
@@ -325,6 +343,7 @@ static struct GameBoard_VTABLE _vtable = {
 
 void GameBoard_init(this_p(GameBoard)) {
     VTP(this) = &_vtable;
+    this->virusCount = 0;
     StackVector2D_init(&this->board, BoardWidth, BoardHeight, sizeof(GameBoardElement), this->boardAlloc);
     initBoard(this);
 }

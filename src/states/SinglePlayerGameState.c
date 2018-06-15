@@ -103,16 +103,16 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, SinglePlayerGa
 static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
     uint32_t x, y;
 
-    for (x = 0; x < this->logic->board.board.width; x++) {
-        for (y = 0; y < this->logic->board.board.height; y++) {
-            GameBoardElement *element = VT(this->logic->board.board)->get2D(&this->logic->board.board, y, x);
+    for (x = 0; x < this->logic->board->board.width; x++) {
+        for (y = 0; y < this->logic->board->board.height; y++) {
+            GameBoardElement *element = VT(this->logic->board->board)->get2D(&this->logic->board->board, y, x);
 
             switch (element->type) {
                 case GameBoardElement_Virus:
                     drawVirus(screen, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic->board.board, x, y));
+                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic->board->board, x, y));
                     break;
                 default:
                     break;
@@ -139,8 +139,8 @@ static void drawNextPill(this_p(SinglePlayerGameState), Graphics *graphics) {
 
 static bool isVirusPresent(this_p(SinglePlayerGameState), GameBoardElementColor virusColor) {
     size_t i;
-    Vector_foreach(this->logic->board.board,i) {
-        GameBoardElement *element = VT(this->logic->board.board)->base.get((const struct Vector *) &this->logic->board.board, i);
+    Vector_foreach(this->logic->board->board,i) {
+        GameBoardElement *element = VT(this->logic->board->board)->base.get((const struct Vector *) &this->logic->board->board, i);
         if (element->color == virusColor && element->type == GameBoardElement_Virus)
             return true;
     }
@@ -186,30 +186,6 @@ static void draw(this_p(GameState)) {
 /* Game Logic                                                      */
 /* *************************************************************** */
 
-static void updateAnimations(this_p(SinglePlayerGameState)) {
-	if (this->logic->state != this->lastLogicState) {
-		switch (this->logic->state) {
-			case SinglePlayerState_Begin:
-				break;
-            case SinglePlayerState_Moving:
-                break;
-            case SinglePlayerState_Still:
-                break;
-			case SinglePlayerState_EndWon:
-				break;
-			case SinglePlayerState_EndLost:
-				VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 1);
-				VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 1);
-				VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 1);
-				VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 2);
-				break;
-			default:
-				break;
-		}
-		this->lastLogicState = this->logic->state;
-	}
-}
-
 static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
 	float centerX = 31.78f;
 	float centerY = 155.13f;
@@ -238,15 +214,43 @@ static PillDirection getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
     else return PillDirection_Nothing;
 }
 
-static void startGame_AfterAnim(this_p(SinglePlayerGameState)) {
-	VT(this->logic)->startGame(&this->logic, this->base.engine);
+static void newPill_AfterAnim(this_p(SinglePlayerGameState)) {
+	this->logic->state = SinglePlayerState_Ready;
 }
 
-static void startGame(this_p(SinglePlayerGameState)) {
+static void newPill(this_p(SinglePlayerGameState)) {
 	uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
 	VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
-	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) startGame_AfterAnim, startTime + 300, this);
+	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) newPill_AfterAnim, startTime + 300, this);
 }
+
+static void updateAnimations(this_p(SinglePlayerGameState)) {
+    uint32_t currentTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
+
+    if (this->logic->state != this->lastLogicState) {
+        switch (this->logic->state) {
+            case SinglePlayerState_WaitingForPill:
+                VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill, currentTime + 1000, this);
+                break;
+            case SinglePlayerState_Moving:
+                break;
+            case SinglePlayerState_NoControl:
+                break;
+            case SinglePlayerState_EndWon:
+                break;
+            case SinglePlayerState_EndLost:
+                VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 1);
+                VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 1);
+                VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 1);
+                VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 2);
+                break;
+            default:
+                break;
+        }
+        this->lastLogicState = this->logic->state;
+    }
+}
+
 
 static bool update(this_p(GameState)) {
 	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
@@ -254,14 +258,10 @@ static bool update(this_p(GameState)) {
     InputState *inputState = VTP(state->base.engine->inputDevice)->getInputState(state->base.engine->inputDevice);
 
 	if (state->logic->state == SinglePlayerState_FillingBoard) {
-		if (VT(state->logic)->addNextVirus(&state->logic, state->i))
-			state->i++;
-		else {
-			VT(state->timeline)->addEvent(&state->timeline, (void(*)(void *)) startGame,
-				VTP(this->engine->screen)->getCurrentTime(this->engine->screen) + 1000, this);
-			state->logic->state = SinglePlayerState_Begin;
+		if (!VTP(state->logic)->addNextVirus(state->logic)) {
+            VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) newPill, currentTime + 1000, this);
+			state->logic->state = SinglePlayerState_WaitingForPill;
 		}
-		/* quanto figo sarebbe avere gli async-await in C */
 	}
 
     /* Allow exit */
@@ -272,7 +272,7 @@ static bool update(this_p(GameState)) {
     }
 
 	/* Update controller */
-	VT(state->logic)->update(&state->logic, this->engine, getDirectionFromKeyboard(state));
+	VTP(state->logic)->update(state->logic, this->engine, getDirectionFromKeyboard(state));
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */
@@ -304,7 +304,6 @@ void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, S
 
     this->logic = logic;
     this->lastLogicState = SinglePlayerState_Nothing;
-    this->i = 0;
 
     Timeline_init(&this->timeline, TIMELINE_PREALLOC);
 

@@ -8,7 +8,7 @@
 
 #include "Object.h"
 #include "Bool.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 
 typedef class InputState {
     bool rotateLeftButton, rotateRightButton;

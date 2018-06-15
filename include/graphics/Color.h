@@ -8,7 +8,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include "IntTypes.h"
+#include "CIntTypes.h"
 
 typedef unsigned char ColorIndex;
 

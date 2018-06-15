@@ -8,7 +8,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "optparse.h"
 #include "Bool.h"
 #include "Screen.h"
 #include "Graphics.h"
@@ -18,5 +17,6 @@
 #include "GameState.h"
 #include "SDL/SDL_Screen.h"
 #include "states/BootState.h"
+#include "Parameters.h"
 
 #endif

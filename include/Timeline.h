@@ -8,7 +8,7 @@
 
 #include "Object.h"
 #include "Bool.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "Vector.h"
 
 typedef struct TimelineEvent {

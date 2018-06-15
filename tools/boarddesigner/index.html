@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dr. Mauro Board Designer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    />
+    <style>
+        td {
+            width: 20px;
+            height: 20px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dr. Mauro Board Designer</h1>
+    <h3>Board:</h3>
+    <table>
+        <tbody>
+        </tbody>
+    </table>
+    <h3>Output:</h3>
+    <textarea></textarea>
+
+    <script>
+        const BoardWidth = 8;
+        const BoardHeight = 16;
+        let Board = [];
+
+        (function GenerateTable() {
+            let tbody = document.getElementsByTagName("tbody")[0];
+
+            for (let y = 0; y < BoardHeight; y++) {
+                let tr = document.createElement("tr");
+                let row = [];
+
+                for (let x = 0; x < BoardWidth; x++) {
+                    let td = document.createElement("td");
+                    let val = { color: " " };
+                    td.textContent = " ";
+                    td.onclick = () => {
+                        if (td.textContent == " ") {
+                            td.textContent = "R";
+                            td.bgColor = "#FF0000";
+                            val.color = "R";
+                        } else if (td.textContent == "R") {
+                            td.textContent = "G";
+                            td.bgColor = "#FFFF00";
+                            val.color = "G";
+                        } else if (td.textContent == "G") {
+                            td.textContent = "B";
+                            td.bgColor = "#0000FF";
+                            val.color = "B";
+                        } else if (td.textContent == "B") {
+                            td.textContent = " ";
+                            td.bgColor = "#FFFFFF";
+                            val.color = " ";
+                        }
+                        UpdateOutput();
+                    };
+                    tr.appendChild(td);
+                    row.push(val);
+                }
+
+                tbody.appendChild(tr);
+                Board.push(row);
+            }
+        })();
+
+        function UpdateOutput() {
+            let outputControl = document.getElementsByTagName("textarea")[0];
+            outputControl.textContent = Board.map(x => x.map(y => y.color).join("")).join("\n");
+        }
+
+    </script>
+</body>
+
+</html>

@@ -13,7 +13,7 @@
 #include "Object.h"
 #include "Bool.h"
 #include "Vector.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 
 typedef enum {
     GameBoardElement_Empty,
@@ -54,7 +54,7 @@ class GameBoard;
 
 struct GameBoard_VTABLE {
     GameBoardElement* (*getElement)(this_p(GameBoard), size_t x, size_t y);
-    bool (*addRandomVirus)(this_p(GameBoard), uint32_t index);
+    void (*addRandomVirus)(this_p(GameBoard));
     int (*removeFirst)(this_p(GameBoard));
     bool (*pillMove)(this_p(GameBoard), int id, PillDirection direction);
     bool (*applyGravity)(this_p(GameBoard), int endId);
@@ -65,6 +65,7 @@ typedef class GameBoard {
 
     GameBoardElement boardAlloc[BoardWidth*BoardHeight];
     Vector2D board;
+    size_t virusCount;
 } GameBoard;
 
 void GameBoard_init(this_p(GameBoard));

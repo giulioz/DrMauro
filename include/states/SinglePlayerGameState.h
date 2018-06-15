@@ -17,7 +17,7 @@
 #include "Sprite.h"
 #include "SinglePlayerGame.h"
 #include "Vector.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "Timeline.h"
 #include "GameBoard.h"
 #include "CommonGameUtils.h"
@@ -31,7 +31,6 @@ typedef class SinglePlayerGameState {
     /* Game logic */
     SinglePlayerGame *logic;
 	SinglePlayerGame_State lastLogicState;
-	uint32_t i;
 
     /* Sprites */
     Sprite marioSprite;

@@ -141,7 +141,7 @@ static void draw(this_p(GameState)) {
 static void increment(this_p(DifficultySelectionGameState), int playerId) {
     switch (this->selectedMenuEntry) {
         case DifficultySelectionGameState_VirusLevel:
-            if (this->playerInfos[playerId].virusLevel < SPMaxVirus) this->playerInfos[playerId].virusLevel++;
+            if (this->playerInfos[playerId].virusLevel < SinglePlayerGame_MaxVirus) this->playerInfos[playerId].virusLevel++;
             break;
         case DifficultySelectionGameState_Speed:
             if (this->playerInfos[playerId].speed < SinglePlayerSpeed_Hi) this->playerInfos[playerId].speed++;
@@ -208,13 +208,20 @@ static bool update(this_p(GameState)) {
 
     if (inputState->enterButton) {
         if (state->multiplayer) {
-            MultiPlayerGameState multiPlayerGameState;
+            /*MultiPlayerGameState multiPlayerGameState;
             MultiPlayerGameState_init(&multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
-            VTP(this->engine)->loadState(this->engine, (GameState *) &multiPlayerGameState);
+            VTP(this->engine)->loadState(this->engine, (GameState *) &multiPlayerGameState);*/
             return false;
         } else {
             SinglePlayerGameState singlePlayerGameState;
-            SinglePlayerGameState_init(&singlePlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, state->playerInfos[0].speed);
+            SinglePlayerGame logic;
+            GameBoard board;
+            GameBoard_init(&board);
+            SinglePlayerGame_init(&logic, this->engine, 0, 0,
+                                  state->playerInfos[0].virusLevel,
+                                  state->playerInfos[0].speed,
+                                  &board);
+            SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
             VTP(this->engine)->loadState(this->engine, (GameState *) &singlePlayerGameState);
             return false;
         }

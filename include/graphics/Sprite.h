@@ -8,7 +8,7 @@
 
 #include "Texture.h"
 #include "Object.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "Graphics.h"
 #include "Engine.h"
 #include "Bool.h"

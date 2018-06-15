@@ -4,9 +4,7 @@
  */
 
 #include "SinglePlayerGame.h"
-#include <string.h>
 #include <time.h>
-#include <stdio.h>
 
 static uint32_t randomBetween(size_t min, size_t max) {
     return (uint32_t)((rand() % (max - min)) + min);
@@ -14,13 +12,11 @@ static uint32_t randomBetween(size_t min, size_t max) {
 
 
 /* For board init animation */
-static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
-    if (i < this->virusCount) {
-        while (!VTP(this->board)->addRandomVirus(this->board, i));
-		return true;
-	} else {
-		return false;
-	}
+static bool addNextVirus(this_p(SinglePlayerGame)) {
+    if (this->board->virusCount < this->virusCount) {
+        VTP(this->board)->addRandomVirus(this->board);
+        return true;
+    } else return false;
 }
 
 static bool addNextPill(this_p(SinglePlayerGame)) {
@@ -49,6 +45,38 @@ static void updateScore(this_p(SinglePlayerGame)) {
 	this->deletedVirusCount = 0;
 }
 
+static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
+    if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_NoControl) {
+        if (this->nextAction == SinglePlayerAction_Remove) {
+            int removedVirus = VTP(this->board)->removeFirst(this->board);
+            if (removedVirus) {
+                this->state = SinglePlayerState_NoControl;
+                this->virusCount -= removedVirus;
+                this->deletedVirusCount += removedVirus;
+            } else {
+                if (!this->lastActionResult) {
+                    this->state = SinglePlayerState_WaitingForPill;
+                    this->nextAction = SinglePlayerAction_Gravity;
+                }
+            }
+
+            this->lastAction = SinglePlayerAction_Remove;
+            this->nextAction = SinglePlayerAction_Gravity;
+        } else if (this->nextAction == SinglePlayerAction_Gravity) {
+            bool gResult = VTP(this->board)->applyGravity(this->board, this->currentPillId);
+            this->lastAction = SinglePlayerAction_Gravity;
+            this->nextAction = SinglePlayerAction_Remove;
+
+            this->lastActionResult = gResult;
+        }
+    }
+}
+
+static int getGravityTimeoutTime(this_p(SinglePlayerGame)) {
+    if (this->state == SinglePlayerState_NoControl) return 200; /* faster for non user pill */
+    else return 2000 / ((this->speed + 1) * 1.5);
+}
+
 
 static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
@@ -58,23 +86,15 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
         this->state = SinglePlayerState_EndWon;
     }
 
-    if (this->state == SinglePlayerState_Moving) {
-        VTP(this->board)->pillMove(this->board, this->currentPillId, direction);
+    /* gravity timeout */
+    if (time - this->lastGravityTime > getGravityTimeoutTime(this)) {
+        gravityTimeoutCallback(this);
+        this->lastGravityTime = time;
     }
 
-    if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_Still) {
-        if (time - this->lastGravity >
-            (this->state == SinglePlayerState_Still ? 300 : 2000) / ((this->speed + 1) * 1.5)) {
-            if (!VTP(this->board)->applyGravity(this->board, this->currentPillId)) {
-                this->state = SinglePlayerState_Still;
-                int removedVirus = VTP(this->board)->removeFirst(this->board);
-                if (!removedVirus)
-                    this->state = SinglePlayerState_Ready;
-                this->virusCount -= removedVirus;
-                this->deletedVirusCount += removedVirus;
-            }
-            this->lastGravity = time;
-        }
+    /* keyboard movement */
+    if (this->state == SinglePlayerState_Moving) {
+        VTP(this->board)->pillMove(this->board, this->currentPillId, direction);
     }
 
     /* create new pill */
@@ -85,17 +105,11 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
 			this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
 			this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
 			this->state = SinglePlayerState_Moving;
+            this->lastGravityTime = VTP(engine->screen)->getCurrentTime(engine->screen);
 		} else {
 			this->state = SinglePlayerState_EndLost;
 		}
 	}
-}
-
-
-static void startGame(this_p(SinglePlayerGame), Engine* engine) {
-    addNextPill(this);
-    this->state = SinglePlayerState_Moving;
-    this->lastGravity = VTP(engine->screen)->getCurrentTime(engine->screen);
 }
 
 
@@ -104,10 +118,10 @@ static void startGame(this_p(SinglePlayerGame), Engine* engine) {
 /* *************************************************************** */
 
 static struct SinglePlayerGame_VTABLE _vtable = {
-        addNextVirus, startGame, update
+        addNextVirus, update
 };
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus,
+void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top, size_t level, size_t virus,
                            SinglePlayerGame_Speed speed, GameBoard *board) {
 	VTP(this) = &_vtable;
     this->state = SinglePlayerState_FillingBoard;
@@ -117,6 +131,10 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
     this->virusCount = 4 * (virus + 1);
     this->speed = speed;
 	this->deletedVirusCount = 0;
+    this->board = board;
+    this->lastActionResult = true;
+    this->lastAction = SinglePlayerAction_Gravity;
+    this->nextAction = SinglePlayerAction_Gravity;
 
     srand((unsigned int) time(NULL));
 

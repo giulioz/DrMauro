@@ -5,7 +5,44 @@
 
 #include "BootState.h"
 
+static void startMenu(this_p(GameState)) {
+    MainMenuGameState nextState;
+
+    MainMenuGameState_init(&nextState, this->engine);
+    VTP(this->engine)->loadState(this->engine, (GameState*)&nextState);
+}
+
+static void startGameWithDifficulty(this_p(GameState)) {
+    SinglePlayerGameState singlePlayerGameState;
+    SinglePlayerGame logic;
+    GameBoard board;
+
+    GameBoard_init(&board);
+    SinglePlayerGame_init(&logic, this->engine, 0, 0,
+                          this->engine->parameters->difficulty,
+                          (SinglePlayerGame_Speed) this->engine->parameters->speed,
+                          &board);
+    SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
+    VTP(this->engine)->startup(this->engine, (GameState *) &singlePlayerGameState);
+}
+
+static void startGameWithCustomBoard(this_p(GameState)) {
+    SinglePlayerGameState singlePlayerGameState;
+    SinglePlayerGame logic;
+    FileGameBoard board;
+
+    FileGameBoard_init(&board, this->engine->parameters->boardFile);
+    SinglePlayerGame_init(&logic, this->engine, 0, 0, 0,
+                          (SinglePlayerGame_Speed) this->engine->parameters->speed,
+                          (GameBoard *) &board);
+    logic.virusCount = board.fileVirusCount;
+    SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
+    VTP(this->engine)->startup(this->engine, (GameState *) &singlePlayerGameState);
+}
+
+
 static bool update(this_p(GameState)) {
+    /* stay always active */
     return true;
 }
 
@@ -15,10 +52,17 @@ static void draw(this_p(GameState)) {
     /* Loading screen (nearly useless) */
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 10, 10, "Loading", 1);
 
-    /* Load next state */
-    MainMenuGameState nextState;
-    MainMenuGameState_init(&nextState, this->engine);
-    VTP(this->engine)->loadState(this->engine, (GameState*)&nextState);
+    switch (this->engine->parameters->type) {
+        case GameType_CustomParams:
+            startGameWithDifficulty(this);
+            break;
+        case GameType_CustomBoard:
+            startGameWithCustomBoard(this);
+            break;
+        default:
+            startMenu(this);
+            break;
+    }
 }
 
 static struct GameState_VTABLE _vtable = {

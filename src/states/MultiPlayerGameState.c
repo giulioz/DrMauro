@@ -89,16 +89,16 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, SinglePlayerGa
 static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen) {
     uint32_t x, y;
 
-    for (x = 0; x < this->logic.board.board.width; x++) {
-        for (y = 0; y < this->logic.board.board.height; y++) {
-            GameBoardElement *element = VT(this->logic.board.board)->get2D(&this->logic.board.board, y, x);
+    for (x = 0; x < this->logic.board->board.width; x++) {
+        for (y = 0; y < this->logic.board->board.height; y++) {
+            GameBoardElement *element = VT(this->logic.board->board)->get2D(&this->logic.board->board, y, x);
 
             switch (element->type) {
                 case GameBoardElement_Virus:
                     drawVirus(screen, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board.board, x, y));
+                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic.board->board, x, y));
                     break;
                 default:
                     break;
@@ -166,11 +166,11 @@ static void draw(this_p(GameState)) {
 static void updateAnimations(this_p(MultiPlayerGameState)) {
     if (this->logic.state != this->lastLogicState) {
         switch (this->logic.state) {
-            case SinglePlayerState_Begin:
+            case SinglePlayerState_WaitingForPill:
                 break;
             case SinglePlayerState_Moving:
                 break;
-            case SinglePlayerState_Still:
+            case SinglePlayerState_NoControl:
                 break;
             case SinglePlayerState_EndWon:
                 break;
@@ -199,7 +199,7 @@ static PillDirection getDirectionFromKeyboard(this_p(MultiPlayerGameState)) {
     else return PillDirection_Nothing;
 }
 
-static void update(this_p(GameState)) {
+static bool update(this_p(GameState)) {
     MultiPlayerGameState *state = (MultiPlayerGameState *)this;
     uint32_t currentTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
 
@@ -213,6 +213,8 @@ static void update(this_p(GameState)) {
     /* Change view */
     updateAnimations(state);
     pillLaunchAnim(state, currentTime);
+
+    return true;
 }
 
 
@@ -221,7 +223,6 @@ static void update(this_p(GameState)) {
 /* *************************************************************** */
 
 static void startGame_AfterAnim(this_p(MultiPlayerGameState)) {
-    VT(this->logic)->startGame(&this->logic, this->base.engine);
 }
 
 static void startGame(this_p(MultiPlayerGameState)) {
@@ -251,13 +252,13 @@ static void unload(this_p(GameState)) {
 }
 
 static struct GameState_VTABLE _vtable = {
-        update, draw, load, unload
+        update, draw
 };
 
 void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
     this->base.engine = engine;
     VT(this->base) = &_vtable;
 
-    SinglePlayerGame_init(&this->logic, engine, top, level, virus, speed);
+    //SinglePlayerGame_init(&this->logic, engine, top, level, virus, speed);
     this->lastLogicState = SinglePlayerState_Nothing;
 }

@@ -8,19 +8,19 @@
 
 #include "Object.h"
 #include "Bool.h"
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "GameBoard.h"
 #include "Vector.h"
 #include "Engine.h"
 
-#define SPMaxVirus 20
+#define SinglePlayerGame_MaxVirus 20
 
 typedef enum {
-	SinglePlayerState_FillingBoard,
-    SinglePlayerState_Begin,	/* still to begin */
-    SinglePlayerState_Moving,   /* pill moving */
-    SinglePlayerState_Still,    /* pill still, waiting for falling */
-    SinglePlayerState_Ready,    /* next pill */
+	SinglePlayerState_FillingBoard,     /* adding viruses for animation */
+    SinglePlayerState_WaitingForPill,	/* game start timeout */
+    SinglePlayerState_Moving,           /* current pill going down, user control */
+    SinglePlayerState_NoControl,        /* falling and elimination, no user control */
+    SinglePlayerState_Ready,            /* pill arrived, add it to the top */
     SinglePlayerState_EndWon,
     SinglePlayerState_EndLost,
     SinglePlayerState_Nothing
@@ -32,11 +32,16 @@ typedef enum {
     SinglePlayerSpeed_Hi
 } SinglePlayerGame_Speed;
 
+typedef enum {
+    SinglePlayerAction_Gravity,
+    SinglePlayerAction_Remove,
+    SinglePlayerAction_None
+} SinglePlayer_Action;
+
 class SinglePlayerGame;
 
 struct SinglePlayerGame_VTABLE {
-    bool (*addNextVirus)(this_p(SinglePlayerGame), uint32_t i);
-    void (*startGame)(this_p(SinglePlayerGame), Engine* engine);
+    bool (*addNextVirus)(this_p(SinglePlayerGame));
     void (*update)(this_p(SinglePlayerGame), Engine* engine, PillDirection direction);
 };
 
@@ -47,8 +52,8 @@ typedef class SinglePlayerGame {
     SinglePlayerGame_State state;
 
     /* Stats */
-    int top, score;
-    int level, virusCount;
+    size_t top, score;
+    size_t level, virusCount;
     SinglePlayerGame_Speed speed;
 
     /* Board */
@@ -61,13 +66,15 @@ typedef class SinglePlayerGame {
     int currentPillId;
 
     /* Gravity */
-    uint32_t lastGravity;
+    uint32_t lastGravityTime;
+    SinglePlayer_Action lastAction, nextAction;
+    bool lastActionResult;
 
 	/* Score logic */
 	uint32_t deletedVirusCount;
 } SinglePlayerGame;
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus,
+void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top, size_t level, size_t virus,
                            SinglePlayerGame_Speed speed, GameBoard *board);
 
 #endif

@@ -6,7 +6,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "IntTypes.h"
+#include "CIntTypes.h"
 #include "Object.h"
 #include "Bool.h"
 #include "GameState.h"

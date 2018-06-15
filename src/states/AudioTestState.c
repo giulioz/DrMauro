@@ -54,9 +54,10 @@ static void draw(this_p(GameState)) {
 
 }
 
-static void update(this_p(GameState)) {
+static bool update(this_p(GameState)) {
     AudioTestState *state = (AudioTestState *) this;
     soundio_wait_events(state->soundio);
+    return true;
 }
 
 static void load(this_p(GameState)) {
