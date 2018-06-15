@@ -21,7 +21,7 @@ static void loadState(this_p(Engine), GameState *state) {
     /* load new state */
     this->currentState = state;
     VTP(this->screen)->run(this->screen, state);
-    
+
     /* reset keyboard */
     VTP(this->inputDevice)->reset(this->inputDevice);
 }

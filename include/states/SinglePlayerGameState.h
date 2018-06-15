@@ -29,7 +29,7 @@ typedef class SinglePlayerGameState {
     Timeline timeline;
 
     /* Game logic */
-    SinglePlayerGame logic;
+    SinglePlayerGame *logic;
 	SinglePlayerGame_State lastLogicState;
 	uint32_t i;
 
@@ -42,6 +42,6 @@ typedef class SinglePlayerGameState {
     uint32_t nextPillLX, nextPillLY, nextPillRX, nextPillRY;
 } SinglePlayerGameState;
 
-void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
+void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, SinglePlayerGame *logic);
 
 #endif

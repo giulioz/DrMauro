@@ -52,7 +52,7 @@ typedef class SinglePlayerGame {
     SinglePlayerGame_Speed speed;
 
     /* Board */
-    GameBoard board;
+    GameBoard *board;
 
     /* Next pill in Mario hands */
     GameBoardElementColor nextPillColorL, nextPillColorR;
@@ -67,6 +67,7 @@ typedef class SinglePlayerGame {
 	uint32_t deletedVirusCount;
 } SinglePlayerGame;
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
+void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus,
+                           SinglePlayerGame_Speed speed, GameBoard *board);
 
 #endif

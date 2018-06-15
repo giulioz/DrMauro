@@ -5,12 +5,12 @@
  *  Game entry point
  */
 
+#define OPTPARSE_IMPLEMENTATION
 #include "main.h"
 
 /* Engine and components allocation */
 static Engine engine;
 static SDL_Screen screen;
-static BootState bootState;
 static SDL_InputDevice inputDevice;
 
 /* Usage print */
@@ -21,22 +21,73 @@ void usage() {
             "OPTIONS:                                                 \n"
             "  -f FILE         Load board from FILE                   \n"
             "  -d DIFFICULTY   Generate random board (default 5)      \n"
-            "  -s SPEED        Game speed (default 0.3 sec)           \n"
+            "  -s SPEED        Game speed (0, 1 or 2)                 \n" /* speed has been modified because accepting custom values was too difficult, sorry */
             "  -h              Show this help message                 \n"
     );
 }
 
-int _main(int argc, char **argv) {
-    /* Init components */
+void startGameMenu() {
+    BootState bootState;
     BootState_init(&bootState, &engine);
+    Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState, (InputDevice *) &inputDevice);
+    VT(engine)->startup(&engine);
+}
+
+void jumpToGame(int difficulty, int speed) {
+    SinglePlayerGameState singlePlayerGameState;
+    SinglePlayerGame logic;
+    GameBoard board;
+    Engine_init(&engine, (Screen*)&screen, (GameState *) &singlePlayerGameState, (InputDevice *) &inputDevice);
+    GameBoard_init(&board);
+    SinglePlayerGame_init(&logic, &engine, 0, 0, difficulty, (SinglePlayerGame_Speed) speed, &board);
+    SinglePlayerGameState_init(&singlePlayerGameState, &engine, &logic);
+    VT(engine)->startup(&engine);
+}
+
+int _main(int argc, char **argv) {
+    struct optparse options;
+    int option;
+
+    int difficulty = 0;
+    int speed = 0;
+    char* boardFile = NULL;
+
     SDL_InputDevice_init(&inputDevice);
     SDL_Screen_init(&screen, 256, 240, "DR. MAURO", &inputDevice);
 
-    /* Init and startup engine */
-    Engine_init(&engine, (Screen*)&screen, (GameState *) &bootState, (InputDevice *) &inputDevice);
-    VT(engine)->startup(&engine);
-    
-    return 0;
+    /* normal game */
+    if (argc <= 1) {
+        startGameMenu();
+        return EXIT_SUCCESS;
+    }
+
+    optparse_init(&options, argv);
+    while ((option = optparse(&options, "f:d:s:h")) != -1) {
+        switch (option) {
+            case 'f':
+                boardFile = options.optarg;
+                break;
+            case 'd':
+                difficulty = atoi(options.optarg);
+                break;
+            case 's':
+                speed = atoi(options.optarg);
+                break;
+            case 'h':
+                usage();
+                return EXIT_FAILURE;
+            default:
+                break;
+        }
+    }
+
+    if (boardFile) {
+
+    } else {
+        jumpToGame(difficulty, speed);
+    }
+
+    return EXIT_SUCCESS;
 }
 
 /* STUB */

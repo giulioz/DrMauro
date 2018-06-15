@@ -15,9 +15,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DrMauro_SOURCE_DIR}/cmake")
 
 file(GLOB SOURCES src/*.c src/*/*.c)
 file(GLOB INCLUDE_DIRS include/*)
-file(GLOB INCLUDES include/*.h include/*/*.h)
+file(GLOB INCLUDES deps/*.h include/*.h include/*/*.h)
 
 include_directories(
+		${DrMauro_SOURCE_DIR}/deps
 		${DrMauro_SOURCE_DIR}/deps/debugbreak
         ${DrMauro_SOURCE_DIR}/include
         ${DrMauro_SOURCE_DIR}/include/assets

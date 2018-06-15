@@ -16,7 +16,7 @@ static uint32_t randomBetween(size_t min, size_t max) {
 /* For board init animation */
 static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
     if (i < this->virusCount) {
-        while (!VT(this->board)->addRandomVirus(&this->board, i));
+        while (!VTP(this->board)->addRandomVirus(this->board, i));
 		return true;
 	} else {
 		return false;
@@ -25,8 +25,8 @@ static bool addNextVirus(this_p(SinglePlayerGame), uint32_t i) {
 
 static bool addNextPill(this_p(SinglePlayerGame)) {
     GameBoardElement *r, *l;
-    l = VT(this->board)->getElement(&this->board, 3, this->board.board.height - 1);
-    r = VT(this->board)->getElement(&this->board, 4, this->board.board.height - 1);
+    l = VTP(this->board)->getElement(this->board, 3, this->board->board.height - 1);
+    r = VTP(this->board)->getElement(this->board, 4, this->board->board.height - 1);
 
     if (r->type != GameBoardElement_Empty || l->type != GameBoardElement_Empty)
         return false; /* occupied, lose */
@@ -59,15 +59,15 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
     }
 
     if (this->state == SinglePlayerState_Moving) {
-        VT(this->board)->pillMove(&this->board, this->currentPillId, direction);
+        VTP(this->board)->pillMove(this->board, this->currentPillId, direction);
     }
 
     if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_Still) {
         if (time - this->lastGravity >
             (this->state == SinglePlayerState_Still ? 300 : 2000) / ((this->speed + 1) * 1.5)) {
-            if (!VT(this->board)->applyGravity(&this->board, this->currentPillId)) {
+            if (!VTP(this->board)->applyGravity(this->board, this->currentPillId)) {
                 this->state = SinglePlayerState_Still;
-                int removedVirus = VT(this->board)->removeFirst(&this->board);
+                int removedVirus = VTP(this->board)->removeFirst(this->board);
                 if (!removedVirus)
                     this->state = SinglePlayerState_Ready;
                 this->virusCount -= removedVirus;
@@ -107,7 +107,8 @@ static struct SinglePlayerGame_VTABLE _vtable = {
         addNextVirus, startGame, update
 };
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
+void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, int level, int virus,
+                           SinglePlayerGame_Speed speed, GameBoard *board) {
 	VTP(this) = &_vtable;
     this->state = SinglePlayerState_FillingBoard;
     this->top = top;
@@ -123,7 +124,4 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, int top, in
 	this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
 	this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
     this->currentPillId = -1;
-
-    /* Board */
-    GameBoard_init(&this->board);
 }
