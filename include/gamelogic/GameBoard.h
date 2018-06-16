@@ -55,7 +55,7 @@ class GameBoard;
 struct GameBoard_VTABLE {
     GameBoardElement* (*getElement)(this_p(GameBoard), size_t x, size_t y);
     void (*addRandomVirus)(this_p(GameBoard));
-    int (*removeFirst)(this_p(GameBoard));
+    bool (*removeFirst)(this_p(GameBoard), int *removedViruses);
     bool (*pillMove)(this_p(GameBoard), int id, PillDirection direction);
     bool (*applyGravity)(this_p(GameBoard), int endId);
 };

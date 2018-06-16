@@ -48,8 +48,9 @@ static void updateScore(this_p(SinglePlayerGame)) {
 static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
     if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_NoControl) {
         if (this->nextAction == SinglePlayerAction_Remove) {
-            int removedVirus = VTP(this->board)->removeFirst(this->board);
-            if (removedVirus) {
+            int removedVirus = 0;
+            bool removed = VTP(this->board)->removeFirst(this->board, &removedVirus);
+            if (removed) {
                 this->state = SinglePlayerState_NoControl;
                 this->virusCount -= removedVirus;
                 this->deletedVirusCount += removedVirus;
