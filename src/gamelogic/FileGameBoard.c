@@ -8,6 +8,7 @@
 #include "ExceptionManager.h"
 #include <stdio.h>
 
+/* fills the game board with the viruses loaded from a file */
 static void addRandomVirus(this_p(GameBoard)) {
     FileGameBoard *fileGameBoard = (FileGameBoard *) this;
     size_t j;
@@ -47,6 +48,8 @@ static void addRandomVirus(this_p(GameBoard)) {
     }
 }
 
+/* open a file containing a game board, raises
+   an exception if it encounter errors */
 static void readFile(this_p(FileGameBoard)) {
     FILE *file;
     size_t readt = 0;

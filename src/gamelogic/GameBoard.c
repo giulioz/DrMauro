@@ -6,6 +6,7 @@
 #include "GameBoard.h"
 #include "ExceptionManager.h"
 
+/* returns a pointer to the element at the position (x, y) of the game board */
 static GameBoardElement* getElement(this_p(GameBoard), size_t x, size_t y) {
     if (x > this->board.width)
         ThrowWarning("Out of bounds in board width, wrapping");
@@ -21,6 +22,7 @@ static uint32_t randomBetween(size_t min, size_t max) {
 /* Board generation                                                */
 /* *************************************************************** */
 
+/* returns true if the neighborhood cells are of the target color, false otherwise */
 static bool isColorLegalInBoard(this_p(GameBoard), size_t x, size_t y, GameBoardElementColor target) {
     GameBoardElementColor curCell;
     GameBoardElementColor aboveCell1, aboveCell2, belowCell1, belowCell2;
@@ -37,7 +39,7 @@ static bool isColorLegalInBoard(this_p(GameBoard), size_t x, size_t y, GameBoard
     if (curCell != GameBoardElement_NoColor) {
         return false;
     } else {
-        /* Find cells neighbourhoods if possible */
+        /* Find cells neighborhoods if possible */
         if (y > 0)
             belowCell1 = getElement(this, x, y - 1)->color;
         if (y > 1)
@@ -157,6 +159,7 @@ static bool rotateVertical(this_p(GameBoard), size_t x, size_t y) {
     } else return false;
 }
 
+/* handle pill moving and rotation */
 static bool pillMove(this_p(GameBoard), int id, PillDirection direction) {
     size_t x, y;
     for (x = 0; x < this->board.width; x++) {
@@ -239,7 +242,7 @@ static bool pillMove(this_p(GameBoard), int id, PillDirection direction) {
     return false;
 }
 
-/* true if something was moved */
+/* returns true if something was moved */
 static bool applyGravity(this_p(GameBoard), int endId) {
     int id;
     bool moved = false;
