@@ -48,7 +48,7 @@ static void drawScorePanel(Graphics* graphics, int top, int score) {
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 87, score_c, 0);
 }
 
-static void drawLevelPanel(Graphics* graphics, int level, SinglePlayerGame_Speed speed, int virus) {
+static void drawLevelPanel(Graphics* graphics, int level, int speed, int virus) {
     char level_c[3] = {0}, virus_c[3] = {0};
     sprintf_s(level_c, 3, "%02d", level);
     sprintf_s(virus_c, 3, "%02d", virus);
@@ -61,9 +61,9 @@ static void drawLevelPanel(Graphics* graphics, int level, SinglePlayerGame_Speed
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 199, virus_c, 0);
 
     switch (speed) {
-        case SinglePlayerSpeed_Low: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "LOW", 0); break;
-        case SinglePlayerSpeed_Med: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "MED", 0); break;
-        case SinglePlayerSpeed_Hi: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "HI", 0); break;
+        case 0: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "LOW", 0); break;
+        case 1: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "MED", 0); break;
+        case 2: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "HI", 0); break;
         default: break;
     }
 }
@@ -134,7 +134,7 @@ static void draw(this_p(GameState)) {
 
     /* Panels */
     drawScorePanel(graphics, state->logic.top, state->logic.score);
-    drawLevelPanel(graphics, state->logic.level, state->logic.speed, state->logic.virusCount);
+    drawLevelPanel(graphics, state->logic.level, state->logic.speedProvider->speed, state->logic.virusCount);
 
     /* Board */
     drawGameBoard(state, this->engine->screen);
@@ -255,7 +255,7 @@ static struct GameState_VTABLE _vtable = {
         update, draw
 };
 
-void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed) {
+void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, int speed) {
     this->base.engine = engine;
     VT(this->base) = &_vtable;
 

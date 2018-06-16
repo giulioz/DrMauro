@@ -29,12 +29,12 @@ static void unload(this_p(SinglePlayerGameState)) {
 /* Graphics Elements                                               */
 /* *************************************************************** */
 
-static void loadPalette(Graphics* graphics, SinglePlayerGame_Speed speed) {
+static void loadPalette(Graphics* graphics, size_t speed) {
     /* Load palette according to speed */
     switch (speed) {
-        case SinglePlayerSpeed_Low: graphics->currentPalette = &Asset_LowPalette; break;
-        case SinglePlayerSpeed_Med: graphics->currentPalette = &Asset_MedPalette; break;
-        case SinglePlayerSpeed_Hi: graphics->currentPalette = &Asset_HiPalette; break;
+        case 0: graphics->currentPalette = &Asset_LowPalette; break;
+        case 1: graphics->currentPalette = &Asset_MedPalette; break;
+        case 2: graphics->currentPalette = &Asset_HiPalette; break;
         default: break;
     }
 }
@@ -50,10 +50,10 @@ static void drawBaseElements(Graphics* graphics) {
     VT(Asset_MarioBox)->draw(&Asset_MarioBox, graphics, 176, 64, 38, 38);
 }
 
-static void drawScorePanel(Graphics* graphics, int top, int score) {
+static void drawScorePanel(Graphics* graphics, size_t top, size_t score) {
     char top_c[8] = {0}, score_c[8] = {0};
-    sprintf_s(top_c, 8, "%07d", top);
-	sprintf_s(score_c, 8, "%07d", score);
+    sprintf_s(top_c, 8, "%07d", (int)top);
+	sprintf_s(score_c, 8, "%07d", (int)score);
 
     VT(Asset_PanelLarge)->draw(&Asset_PanelLarge, graphics, 8, 34, 59);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP", 0);
@@ -62,10 +62,10 @@ static void drawScorePanel(Graphics* graphics, int top, int score) {
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 87, score_c, 0);
 }
 
-static void drawLevelPanel(Graphics* graphics, int level, SinglePlayerGame_Speed speed, int virus) {
+static void drawLevelPanel(Graphics* graphics, size_t level, size_t speed, size_t virus) {
     char level_c[3] = {0}, virus_c[3] = {0};
-	sprintf_s(level_c, 3, "%02d", level);
-	sprintf_s(virus_c, 3, "%02d", virus);
+	sprintf_s(level_c, 3, "%02d", (int)level);
+	sprintf_s(virus_c, 3, "%02d", (int)virus);
 
     VT(Asset_PanelSmall)->draw(&Asset_PanelSmall, graphics, 176, 122, 83);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL", 0);
@@ -75,9 +75,9 @@ static void drawLevelPanel(Graphics* graphics, int level, SinglePlayerGame_Speed
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 216, 199, virus_c, 0);
 
     switch (speed) {
-        case SinglePlayerSpeed_Low: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "LOW", 0); break;
-        case SinglePlayerSpeed_Med: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "MED", 0); break;
-        case SinglePlayerSpeed_Hi: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "HI", 0); break;
+        case 0: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "LOW", 0); break;
+        case 1: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "MED", 0); break;
+        case 2: VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 208, 175, "HI", 0); break;
         default: break;
     }
 }
@@ -153,12 +153,12 @@ static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
     SinglePlayerGameState *state = (SinglePlayerGameState *) this;
 
-    loadPalette(graphics, state->logic->speed);
+    loadPalette(graphics, state->logic->speedProvider->speed);
     drawBaseElements(graphics);
 
     /* Panels */
     drawScorePanel(graphics, state->logic->top, state->logic->score);
-    drawLevelPanel(graphics, state->logic->level, state->logic->speed, state->logic->virusCount);
+    drawLevelPanel(graphics, state->logic->level, state->logic->speedProvider->speed, state->logic->virusCount);
 
 	if (state->logic->state != SinglePlayerState_EndLost && state->logic->state != SinglePlayerState_EndWon)
 		drawGameBoard(state, this->engine->screen);
@@ -221,7 +221,8 @@ static void newPill_AfterAnim(this_p(SinglePlayerGameState)) {
 static void newPill(this_p(SinglePlayerGameState)) {
 	uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
 	VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
-	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) newPill_AfterAnim, startTime + 300, this);
+	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) newPill_AfterAnim,
+                                 startTime + this->logic->speedProvider->nextPillDelay, this);
 }
 
 static void updateAnimations(this_p(SinglePlayerGameState)) {
@@ -230,7 +231,8 @@ static void updateAnimations(this_p(SinglePlayerGameState)) {
     if (this->logic->state != this->lastLogicState) {
         switch (this->logic->state) {
             case SinglePlayerState_WaitingForPill:
-                VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill, currentTime + 300, this);
+                VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                             currentTime + this->logic->speedProvider->nextPillDelay, this);
                 break;
             case SinglePlayerState_Moving:
                 break;
@@ -256,13 +258,6 @@ static bool update(this_p(GameState)) {
 	SinglePlayerGameState *state = (SinglePlayerGameState *)this;
     uint32_t currentTime = VTP(this->engine->screen)->getCurrentTime(this->engine->screen);
     InputState *inputState = VTP(state->base.engine->inputDevice)->getInputState(state->base.engine->inputDevice);
-
-	if (state->logic->state == SinglePlayerState_FillingBoard) {
-		if (!VTP(state->logic)->addNextVirus(state->logic)) {
-            VT(state->timeline)->addEvent(&state->timeline, (void (*)(void *)) newPill, currentTime + 100, this);
-			state->logic->state = SinglePlayerState_WaitingForPill;
-		}
-	}
 
     /* Allow exit */
     if ((state->logic->state == SinglePlayerState_EndLost || state->logic->state == SinglePlayerState_EndWon)

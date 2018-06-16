@@ -23,8 +23,8 @@ typedef class Parameters {
     int argc;
     char **argv;
 
-    int difficulty;
-    int speed;
+    size_t difficulty;
+    uint32_t speed;
     char* boardFile;
     GameType type;
 } Parameters;

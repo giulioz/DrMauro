@@ -38,6 +38,6 @@ typedef class MultiPlayerGameState {
 
 } MultiPlayerGameState;
 
-void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, SinglePlayerGame_Speed speed);
+void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, int speed);
 
 #endif

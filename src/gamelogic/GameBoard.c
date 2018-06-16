@@ -70,7 +70,7 @@ static void addRandomVirus(this_p(GameBoard)) {
     do {
         y = randomBetween(0, this->board.height - BoardVirusUpperLimit);
         x = randomBetween(0, this->board.width);
-        color = (GameBoardElementColor) (this->virusCount % 3);
+        color = (GameBoardElementColor) (this->virusCount % GameBoardElement_NoColor);
     } while (!isColorLegalInBoard(this, x, y, color));
 
     element = getElement(this, x, y);
@@ -282,25 +282,6 @@ static int removeCells(this_p(GameBoard), long x, long y, int dx, int dy, long t
     } else return 0;
 }
 
-/*static int removeFirstCross(this_p(GameBoard)) {
-    long x, y, toRemoveL, toRemoveR, toRemoveD;
-    for (x = 0; x < this->board.width; x++) {
-        for (y = this->board.height; y >= 0; y--) {
-            toRemoveL = countColor(this, x, y, -1, 0, getElement(this, (size_t) x, (size_t) y)->color);
-            toRemoveR = countColor(this, x, y, 1, 0, getElement(this, (size_t) x, (size_t) y)->color);
-            toRemoveD = countColor(this, x, y, 0, -1, getElement(this, (size_t) x, (size_t) y)->color);
-
-            if (toRemoveL >= 4 && toRemoveD >= 4) {
-                return removeCells(this, x, y, 0, 1, toRemoveL)
-                    + removeCells(this, x, y, 0, 1, toRemoveU);
-            } else if (toRemoveR >= 4 && toRemoveD >= 4) {
-                return removeCells(this, x, y, 0, 1, toRemoveVert);
-            }
-        }
-    }
-    return 0;
-}*/
-
 /* returns true if something was removed, places virus number in pointer */
 static bool removeFirst(this_p(GameBoard), int *removedViruses) {
     long x, y, toRemoveD = 0, toRemoveR = 0, toRemoveL = 0;
@@ -323,6 +304,8 @@ static bool removeFirst(this_p(GameBoard), int *removedViruses) {
             }
         }
     }
+
+    /* remove always the maximum possible first, for L and T formations */
     if (xMax != -1 && yMax != -1) {
         *removedViruses += removeCells(this, xMax, yMax, 0, -1, toRemoveDMax);
         *removedViruses += removeCells(this, xMax, yMax, 1, 0, toRemoveRMax);

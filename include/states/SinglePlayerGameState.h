@@ -21,6 +21,7 @@
 #include "Timeline.h"
 #include "GameBoard.h"
 #include "CommonGameUtils.h"
+#include "GameSpeedProvider.h"
 
 typedef class SinglePlayerGameState {
     GameState base;

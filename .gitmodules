@@ -1,6 +1,3 @@
-[submodule "deps/libsoundio"]
-	path = deps/libsoundio
-	url = https://github.com/andrewrk/libsoundio.git
 [submodule "deps/SDL-mirror"]
 	path = deps/SDL-mirror
 	url = https://github.com/spurious/SDL-mirror.git

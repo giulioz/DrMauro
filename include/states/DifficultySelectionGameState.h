@@ -28,8 +28,8 @@ typedef enum {
 } DifficultySelectionGameState_SelectedEntry;
 
 typedef struct {
-    int virusLevel;
-    SinglePlayerGame_Speed speed;
+    size_t virusLevel;
+    int speed;
 } DifficultySelectionGameState_PlayerInfo;
 
 typedef enum {

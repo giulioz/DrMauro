@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <states/DifficultySelectionGameState.h>
 
 #ifndef WIN32
 #define sprintf_s(buffer, size, stringbuffer, ...) (snprintf(buffer, size, stringbuffer, __VA_ARGS__))
@@ -23,14 +24,14 @@
 
 static void drawTitle(Graphics* graphics, int playerNum) {
     char playerNum_c[2] = {0};
-    sprintf_s(playerNum_c, 2, "%01d", playerNum);
+    sprintf_s(playerNum_c, 2, "%01d", (int)playerNum);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 39, playerNum_c, 1);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 80, 39, "  PLAYER GAME", 1);
 }
 
-static void drawVirusNumber(Graphics* graphics, uint32_t x, uint32_t y, int virusLevel) {
+static void drawVirusNumber(Graphics* graphics, uint32_t x, uint32_t y, size_t virusLevel) {
     char virusLevel_c[3] = {0};
-    sprintf_s(virusLevel_c, 3, "%02d", virusLevel);
+    sprintf_s(virusLevel_c, 3, "%02d", (int)virusLevel);
 
     VT(Asset_DSNumberBox)->draw(&Asset_DSNumberBox, graphics, x, y, 20, 13);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, x + 5, y + 4, virusLevel_c, 1);
@@ -144,7 +145,7 @@ static void increment(this_p(DifficultySelectionGameState), int playerId) {
             if (this->playerInfos[playerId].virusLevel < SinglePlayerGame_MaxVirus) this->playerInfos[playerId].virusLevel++;
             break;
         case DifficultySelectionGameState_Speed:
-            if (this->playerInfos[playerId].speed < SinglePlayerSpeed_Hi) this->playerInfos[playerId].speed++;
+            if (this->playerInfos[playerId].speed < 2) this->playerInfos[playerId].speed++;
             break;
         case DifficultySelectionGameState_MusicType:
             if (this->music < Off) this->music++;
@@ -160,7 +161,7 @@ static void decrement(this_p(DifficultySelectionGameState), int playerId) {
             if (this->playerInfos[playerId].virusLevel > 0) this->playerInfos[playerId].virusLevel--;
             break;
         case DifficultySelectionGameState_Speed:
-            if (this->playerInfos[playerId].speed > SinglePlayerSpeed_Low) this->playerInfos[playerId].speed--;
+            if (this->playerInfos[playerId].speed > 0) this->playerInfos[playerId].speed--;
             break;
         case DifficultySelectionGameState_MusicType:
             if (this->music > Fever) this->music--;
@@ -213,16 +214,26 @@ static bool update(this_p(GameState)) {
             VTP(this->engine)->loadState(this->engine, (GameState *) &multiPlayerGameState);*/
             return false;
         } else {
+            /* allocations */
             SinglePlayerGameState singlePlayerGameState;
             SinglePlayerGame logic;
             GameBoard board;
+            GameSpeedProvider speedProvider;
+
             GameBoard_init(&board);
+
+            GameSpeedProvider_init(&speedProvider, (size_t) state->playerInfos[0].speed,
+                                   Default_NextPillDelay,
+                                   (uint32_t) (500 / ((state->playerInfos[0].speed + 1) * 1.5)),
+                                   Default_FallingGravityDelay);
+
             SinglePlayerGame_init(&logic, this->engine, 0, 0,
                                   state->playerInfos[0].virusLevel,
-                                  state->playerInfos[0].speed,
-                                  &board);
+                                  &speedProvider, &board);
+
             SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
             VTP(this->engine)->loadState(this->engine, (GameState *) &singlePlayerGameState);
+
             return false;
         }
     }

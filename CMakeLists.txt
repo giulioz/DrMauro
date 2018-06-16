@@ -5,7 +5,6 @@ if (MSVC)
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
-add_subdirectory(deps/libsoundio)
 add_subdirectory(deps/SDL-mirror)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
@@ -28,8 +27,6 @@ include_directories(
         ${DrMauro_SOURCE_DIR}/include/gamelogic
         ${DrMauro_SOURCE_DIR}/include/audio
         ${DrMauro_SOURCE_DIR}/deps/SDL-mirror/include
-        ${libsoundio_SOURCE_DIR}
-        ${libsoundio_BINARY_DIR}
 )
 
 if (MSVC)
@@ -42,7 +39,6 @@ if (MSVC)
 	set_target_properties(DrMauro PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
 	target_link_libraries(
 		DrMauro
-		libsoundio_shared
 		SDL2
 	)
 else()
@@ -50,7 +46,6 @@ else()
 	target_link_libraries(
 		DrMauro
 		m
-		libsoundio_shared
 		SDL2
 	)
 endif()

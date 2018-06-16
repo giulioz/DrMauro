@@ -8,14 +8,9 @@
 
 #include "Object.h"
 #include "Bool.h"
-#include <soundio/soundio.h>
 
 typedef class AudioManager {
-    struct SoundIo *soundio;
-    struct SoundIoDevice *device;
-    struct SoundIoOutStream *outstream;
+    int todo;
 } AudioManager;
-
-extern AudioManager AudioManager_Instance;
 
 #endif

@@ -61,11 +61,9 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
                 }
             }
 
-            this->lastAction = SinglePlayerAction_Remove;
             this->nextAction = SinglePlayerAction_Gravity;
         } else if (this->nextAction == SinglePlayerAction_Gravity) {
             bool gResult = VTP(this->board)->applyGravity(this->board, this->currentPillId);
-            this->lastAction = SinglePlayerAction_Gravity;
             this->nextAction = SinglePlayerAction_Remove;
 
             this->lastActionResult = gResult;
@@ -73,14 +71,16 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
     }
 }
 
-static int getGravityTimeoutTime(this_p(SinglePlayerGame)) {
-    if (this->state == SinglePlayerState_NoControl) return 70; /* faster for non user pill */
-    else return 500 / ((this->speed + 1) * 1.5);
-}
-
 
 static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
+
+    /* filling board */
+    if (this->state == SinglePlayerState_FillingBoard) {
+        if (!addNextVirus(this)) {
+            this->state = SinglePlayerState_WaitingForPill;
+        }
+    }
 
     /* win condition */
     if (this->virusCount <= 0) {
@@ -88,7 +88,7 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
     }
 
     /* gravity timeout */
-    if (time - this->lastGravityTime > getGravityTimeoutTime(this)) {
+    if (time - this->lastGravityTime > VTP(this->speedProvider)->getGravityTime(this->speedProvider, this->state)) {
         gravityTimeoutCallback(this);
         this->lastGravityTime = time;
     }
@@ -119,22 +119,23 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
 /* *************************************************************** */
 
 static struct SinglePlayerGame_VTABLE _vtable = {
-        addNextVirus, update
+        update
 };
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top, size_t level, size_t virus,
-                           SinglePlayerGame_Speed speed, GameBoard *board) {
+                           GameSpeedProvider *speedProvider, GameBoard *board) {
 	VTP(this) = &_vtable;
     this->state = SinglePlayerState_FillingBoard;
     this->top = top;
     this->score = 0;
     this->level = level;
     this->virusCount = 4 * (virus + 1);
-    this->speed = speed;
-	this->deletedVirusCount = 0;
     this->board = board;
+    this->speedProvider = speedProvider;
+
+    this->deletedVirusCount = 0;
+
     this->lastActionResult = true;
-    this->lastAction = SinglePlayerAction_Gravity;
     this->nextAction = SinglePlayerAction_Gravity;
 
     srand((unsigned int) time(NULL));

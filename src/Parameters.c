@@ -17,7 +17,7 @@ void usage() {
                     "OPTIONS:                                                 \n"
                     "  -f FILE         Load board from FILE                   \n"
                     "  -d DIFFICULTY   Generate random board (default 5)      \n"
-                    "  -s SPEED        Game speed (0, 1 or 2)                 \n" /* speed has been modified because accepting custom values was too difficult, sorry */
+                    "  -s SPEED        Game speed                             \n"
                     "  -h              Show this help message                 \n"
     );
 }
@@ -25,6 +25,8 @@ void usage() {
 static void parseParameters(this_p(Parameters)) {
     struct optparse options;
     int option;
+    double s = 0.3;
+    int diff = 0;
 
     bool dSet = false;
     bool sSet = false;
@@ -36,11 +38,11 @@ static void parseParameters(this_p(Parameters)) {
                 this->boardFile = options.optarg;
                 break;
             case 'd':
-                this->difficulty = options.optarg ? atoi(options.optarg) : 0;
+                diff = options.optarg ? atoi(options.optarg) : 0;
                 dSet = true;
                 break;
             case 's':
-                this->speed = options.optarg ? atoi(options.optarg) : 0;
+                s = (size_t) (options.optarg ? atof(options.optarg) : 0);
                 sSet = true;
                 break;
             case 'h':
@@ -51,16 +53,12 @@ static void parseParameters(this_p(Parameters)) {
         }
     }
 
+    this->speed = (uint32_t) (s * 1000.0);
+    this->difficulty = (size_t) diff;
+
     /* Check game type */
     if (this->boardFile) this->type = GameType_CustomBoard;
     else if (dSet || sSet) this->type = GameType_CustomParams;
-
-    if (!sSet && this->type != GameType_Menu) {
-        ThrowError("Game speed not set");
-    }
-    if (!dSet && this->type == GameType_CustomParams) {
-        ThrowError("Game difficulty not set");
-    }
 }
 
 void Parameters_init(this_p(Parameters), int argc, char **argv) {
