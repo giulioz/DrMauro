@@ -10,7 +10,6 @@ add_subdirectory(deps/SDL-mirror)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -g")
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DrMauro_SOURCE_DIR}/cmake")
 
 file(GLOB SOURCES src/*.c src/*/*.c)
 file(GLOB INCLUDE_DIRS include/*)
@@ -43,11 +42,7 @@ if (MSVC)
 	)
 else()
 	add_executable(DrMauro ${SOURCES} ${INCLUDES})
-	target_link_libraries(
-		DrMauro
-		m
-		SDL2
-	)
+	target_link_libraries(DrMauro m SDL2-static)
 endif()
 
 add_subdirectory(tools)
