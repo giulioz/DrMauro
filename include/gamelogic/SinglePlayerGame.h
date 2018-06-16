@@ -53,6 +53,7 @@ typedef class SinglePlayerGame {
 
 	/* Score logic */
 	uint32_t deletedVirusCount;
+	uint32_t scoreMultiplier;
 } SinglePlayerGame;
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top, size_t level, size_t virus,

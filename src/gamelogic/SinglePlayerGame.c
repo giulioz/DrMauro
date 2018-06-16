@@ -38,12 +38,15 @@ static bool addNextPill(this_p(SinglePlayerGame)) {
     }
 }
 
+
 static void updateScore(this_p(SinglePlayerGame)) {
 	for (int i = 1; i <= this->deletedVirusCount; i++)
-		this->score += 100 * (1 << i);
+		this->score += (100 * (1 << i)) * this->scoreMultiplier;
 
+	this->scoreMultiplier *= 2;
 	this->deletedVirusCount = 0;
 }
+
 
 static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
     if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_NoControl) {
@@ -54,6 +57,9 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
                 this->state = SinglePlayerState_NoControl;
                 this->virusCount -= removedVirus;
                 this->deletedVirusCount += removedVirus;
+
+				if (this->deletedVirusCount != 0)
+					updateScore(this);
             } else {
                 if (!this->lastActionResult) {
                     this->state = SinglePlayerState_WaitingForPill;
@@ -101,12 +107,11 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
     /* create new pill */
 	if (this->state == SinglePlayerState_Ready) {
 		if (addNextPill(this)) {
-			updateScore(this);
-
 			this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
 			this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
 			this->state = SinglePlayerState_Moving;
             this->lastGravityTime = VTP(engine->screen)->getCurrentTime(engine->screen);
+			this->scoreMultiplier = 1;
 		} else {
 			this->state = SinglePlayerState_EndLost;
 		}
@@ -134,6 +139,7 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top,
     this->speedProvider = speedProvider;
 
     this->deletedVirusCount = 0;
+	this->scoreMultiplier = 1;
 
     this->lastActionResult = true;
     this->nextAction = SinglePlayerAction_Gravity;
