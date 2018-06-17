@@ -5,6 +5,26 @@
 
 #include "CommonGameUtils.h"
 
+bool isVirusPresent(GameBoard *board, GameBoardElementColor virusColor) {
+	size_t i;
+	Vector_foreach(board->board, i) {
+		GameBoardElement *element = VT(board->board)->base.get((const struct Vector *) &board->board, i);
+		if (element->color == virusColor && element->type == GameBoardElement_Virus)
+			return true;
+	}
+	return false;
+}
+
+PillDirection getDirectionFromKeyboard(Engine *engine) {
+	InputState *inputState = VTP(engine->inputDevice)->getInputState(engine->inputDevice);
+	if (inputState->leftButton) return PillDirection_Left;
+	else if (inputState->rightButton) return PillDirection_Right;
+	else if (inputState->downButton) return PillDirection_Down;
+	else if (inputState->rotateLeftButton) return PillDirection_RotateLeft;
+	else if (inputState->rotateRightButton) return PillDirection_RotateRight;
+	else return PillDirection_Nothing;
+}
+
 void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color) {
     Graphics *graphics = VTP(screen)->getGraphics(screen);
     uint32_t x, y, frame;

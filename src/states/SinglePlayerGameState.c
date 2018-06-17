@@ -176,16 +176,6 @@ static void draw(this_p(GameState)) {
 /* Game Logic                                                      */
 /* *************************************************************** */
 
-static bool isVirusPresent(this_p(SinglePlayerGameState), GameBoardElementColor virusColor) {
-    size_t i;
-    Vector_foreach(this->logic->board->board,i) {
-        GameBoardElement *element = VT(this->logic->board->board)->base.get((const struct Vector *) &this->logic->board->board, i);
-        if (element->color == virusColor && element->type == GameBoardElement_Virus)
-            return true;
-    }
-    return false;
-}
-
 static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
 	if (this->rotationEnabled) {
         float centerX = 31.78f;
@@ -205,44 +195,37 @@ static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
     this->lastRot = time;
 }
 
-static void pillLaunchAnim(this_p(SinglePlayerGameState), uint32_t currentTime) {
-
-}
-
 static void endVirusAnimationRed(this_p(SinglePlayerGameState)) {
     VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 0);
-    if (!isVirusPresent(this, GameBoardElement_Red))
+    if (!isVirusPresent(this->logic->board, GameBoardElement_Red))
         this->virusLargeRedSprite.visible = false;
     this->rotationEnabled = true;
 }
 
 static void endVirusAnimationYellow(this_p(SinglePlayerGameState)) {
     VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 0);
-    if (!isVirusPresent(this, GameBoardElement_Red))
+    if (!isVirusPresent(this->logic->board, GameBoardElement_Yellow))
         this->virusLargeYellowSprite.visible = false;
     this->rotationEnabled = true;
 }
 
 static void endVirusAnimationBlue(this_p(SinglePlayerGameState)) {
     VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 0);
-    if (!isVirusPresent(this, GameBoardElement_Blue))
+    if (!isVirusPresent(this->logic->board, GameBoardElement_Blue))
         this->virusLargeBlueSprite.visible = false;
     this->rotationEnabled = true;
 }
 
-static PillDirection getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
-    InputState *inputState = VTP(this->base.engine->inputDevice)->getInputState(this->base.engine->inputDevice);
-    if (inputState->leftButton) return PillDirection_Left;
-    else if (inputState->rightButton) return PillDirection_Right;
-    else if (inputState->downButton) return PillDirection_Down;
-    else if (inputState->rotateLeftButton) return PillDirection_RotateLeft;
-    else if (inputState->rotateRightButton) return PillDirection_RotateRight;
-    else return PillDirection_Nothing;
+static void newPill_AfterAnimMario(this_p(SinglePlayerGameState)) {
+	this->nextPillVisible = true;
+	VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 4);
 }
 
 static void newPill_AfterAnim(this_p(SinglePlayerGameState)) {
+	uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
 	this->logic->state = SinglePlayerState_Ready;
-    this->nextPillVisible = true;
+	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) newPill_AfterAnimMario,
+		startTime + 200, this);
 }
 
 static void newPill(this_p(SinglePlayerGameState)) {
@@ -323,7 +306,7 @@ static bool update(this_p(GameState)) {
     }
 
 	/* Update controller */
-	VTP(state->logic)->update(state->logic, this->engine, getDirectionFromKeyboard(state));
+	VTP(state->logic)->update(state->logic, this->engine, getDirectionFromKeyboard(this->engine));
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */
@@ -333,7 +316,6 @@ static bool update(this_p(GameState)) {
 	updateAnimations(state);
 	if (state->logic->state < SinglePlayerState_EndWon)
         rotateVirusLarge(state, currentTime);
-    pillLaunchAnim(state, currentTime);
 
     return true;
 }

@@ -29,15 +29,11 @@ typedef class MultiPlayerGameState {
     Timeline timeline;
 
     /* Game logic */
-    SinglePlayerGame logic;
-    SinglePlayerGame_State lastLogicState;
-
-    /* Sprites */
-    Sprite marioSprite;
-    Sprite virusLargeBlueSprite, virusLargeYellowSprite, virusLargeRedSprite;
+    SinglePlayerGame *logic1, *logic2;
+    SinglePlayerGame_State lastLogicState1, lastLogicState2;
 
 } MultiPlayerGameState;
 
-void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, int top, int level, int virus, int speed);
+void MultiPlayerGameState_init(this_p(MultiPlayerGameState), Engine *engine, SinglePlayerGame *logic1, SinglePlayerGame *logic2);
 
 #endif

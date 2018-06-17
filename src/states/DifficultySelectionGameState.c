@@ -201,6 +201,42 @@ static void startSinglePlayer(this_p(DifficultySelectionGameState)) {
     }
 }
 
+static void startMultiPlayer(this_p(DifficultySelectionGameState)) {
+	MultiPlayerGameState multiPlayerGameState;
+	SinglePlayerGame logic1, logic2;
+	GameBoard board1, board2;
+	GameSpeedProvider speedProvider1, speedProvider2;
+	size_t currentLevel1, currentLevel2;
+	bool won = true;
+
+	GameSpeedProvider_init(&speedProvider1, (size_t)this->playerInfos[0].speed,
+		Default_FirstPillTimeout,
+		Default_NextPillDelay,
+		(uint32_t)(500 / ((this->playerInfos[0].speed + 1) * 1.5)),
+		Default_FallingGravityDelay);
+	GameSpeedProvider_init(&speedProvider2, (size_t)this->playerInfos[1].speed,
+		Default_FirstPillTimeout,
+		Default_NextPillDelay,
+		(uint32_t)(500 / ((this->playerInfos[1].speed + 1) * 1.5)),
+		Default_FallingGravityDelay);
+
+	//for (currentLevel = this->playerInfos[0].virusLevel; currentLevel <= 20 && won; currentLevel++) {
+		GameBoard_init(&board1);
+		GameBoard_init(&board2);
+
+		currentLevel1 = this->playerInfos[0].virusLevel;
+		currentLevel2 = this->playerInfos[1].virusLevel;
+		SinglePlayerGame_init(&logic1, 0, currentLevel1,
+			&speedProvider1, &board1);
+		SinglePlayerGame_init(&logic2, 0, currentLevel2,
+			&speedProvider2, &board2);
+
+		MultiPlayerGameState_init(&multiPlayerGameState, this->base.engine, &logic1, &logic2);
+		VTP(this->base.engine)->loadState(this->base.engine, (GameState *)&multiPlayerGameState);
+		//won = (bool)(logic1.state == SinglePlayerState_EndWon);
+	//}
+}
+
 
 
 static bool update(this_p(GameState)) {
@@ -237,9 +273,7 @@ static bool update(this_p(GameState)) {
 
     if (inputState->enterButton) {
         if (state->multiplayer) {
-            /*MultiPlayerGameState multiPlayerGameState;
-            MultiPlayerGameState_init(&multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
-            VTP(this->engine)->loadState(this->engine, (GameState *) &multiPlayerGameState);*/
+			startMultiPlayer(state);
         } else {
             startSinglePlayer(state);
         }
