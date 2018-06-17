@@ -14,12 +14,11 @@ static SDL_InputDevice inputDevice;
 static Parameters parameters;
 static BootState bootState;
 
-int _main(int argc, char **argv) {
+int _main() {
     SDL_InputDevice_init(&inputDevice);
     SDL_Screen_init(&screen, 256, 240, "DR. MAURO", &inputDevice);
     Engine_init(&engine, (Screen*)&screen, (InputDevice *) &inputDevice, &parameters);
     BootState_init(&bootState, &engine);
-    Parameters_init(&parameters, argc, argv);
 
     VT(engine)->startup(&engine, (GameState *) &bootState);
 
@@ -30,10 +29,13 @@ int _main(int argc, char **argv) {
 #ifdef WIN32
 #include <windows.h>
 int CALLBACK WinMain(HINSTANCE a, HINSTANCE b, LPSTR c, int d) {
+	Parameters_init(&parameters);
 	return _main(0, NULL);
 }
 #else
 int main(int argc, char **argv) {
-	return _main(argc, argv);
+	Parameters_init(&parameters);
+	VT(parameters)->parseParameters(&parameters, argc, argv);
+	return _main();
 }
 #endif

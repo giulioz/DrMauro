@@ -19,9 +19,14 @@ typedef enum {
     GameType_CustomBoard
 } GameType;
 
+class Parameters;
+
+struct Parameters_VTABLE {
+	void (*parseParameters)(this_p(Parameters), int argc, char **argv);
+};
+
 typedef class Parameters {
-    int argc;
-    char **argv;
+	struct Parameters_VTABLE *VTABLE;
 
     size_t difficulty;
     uint32_t speed;
@@ -29,6 +34,6 @@ typedef class Parameters {
     GameType type;
 } Parameters;
 
-void Parameters_init(this_p(Parameters), int argc, char **argv);
+void Parameters_init(this_p(Parameters));
 
 #endif

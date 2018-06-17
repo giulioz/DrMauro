@@ -22,7 +22,7 @@ void usage() {
     );
 }
 
-static void parseParameters(this_p(Parameters)) {
+static void parseParameters(this_p(Parameters), int argc, char **argv) {
     struct optparse options;
     int option;
     double s = 0.3;
@@ -31,7 +31,7 @@ static void parseParameters(this_p(Parameters)) {
     bool dSet = false;
     bool sSet = false;
 
-    optparse_init(&options, this->argv);
+    optparse_init(&options, argv);
     while ((option = optparse(&options, "f:d:s:h")) != -1) {
         switch (option) {
             case 'f':
@@ -61,13 +61,14 @@ static void parseParameters(this_p(Parameters)) {
     else if (dSet || sSet) this->type = GameType_CustomParams;
 }
 
-void Parameters_init(this_p(Parameters), int argc, char **argv) {
-    this->argc = argc;
-    this->argv = argv;
+static struct Parameters_VTABLE _vtable = {
+	parseParameters
+};
+
+void Parameters_init(this_p(Parameters)) {
+	VTP(this) = &_vtable;
     this->difficulty = 0;
     this->speed = 0;
     this->boardFile = NULL;
     this->type = GameType_Menu;
-
-    parseParameters(this);
 }
