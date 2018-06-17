@@ -175,6 +175,34 @@ static void allKeysDown(this_p(GameState)) {
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 }
 
+static void startSinglePlayer(this_p(DifficultySelectionGameState)) {
+    SinglePlayerGameState singlePlayerGameState;
+    SinglePlayerGame logic;
+    GameBoard board;
+    GameSpeedProvider speedProvider;
+    size_t currentLevel;
+    bool won = true;
+
+    GameSpeedProvider_init(&speedProvider, (size_t) this->playerInfos[0].speed,
+                           Default_FirstPillTimeout,
+                           Default_NextPillDelay,
+                           (uint32_t) (500 / ((this->playerInfos[0].speed + 1) * 1.5)),
+                           Default_FallingGravityDelay);
+
+    for (currentLevel = this->playerInfos[0].virusLevel; currentLevel <= 20 && won; currentLevel++) {
+        GameBoard_init(&board);
+
+        SinglePlayerGame_init(&logic, 0, currentLevel,
+                              &speedProvider, &board);
+
+        SinglePlayerGameState_init(&singlePlayerGameState, this->base.engine, &logic);
+        VTP(this->base.engine)->loadState(this->base.engine, (GameState *) &singlePlayerGameState);
+        won = (bool) (logic.state == SinglePlayerState_EndWon);
+    }
+}
+
+
+
 static bool update(this_p(GameState)) {
     DifficultySelectionGameState *state = (DifficultySelectionGameState *)this;
     InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
@@ -212,29 +240,8 @@ static bool update(this_p(GameState)) {
             /*MultiPlayerGameState multiPlayerGameState;
             MultiPlayerGameState_init(&multiPlayerGameState, this->engine, 0, 0, state->playerInfos[0].virusLevel, SinglePlayerSpeed_Med);
             VTP(this->engine)->loadState(this->engine, (GameState *) &multiPlayerGameState);*/
-            return false;
         } else {
-            /* allocations */
-            SinglePlayerGameState singlePlayerGameState;
-            SinglePlayerGame logic;
-            GameBoard board;
-            GameSpeedProvider speedProvider;
-
-            GameBoard_init(&board);
-
-            GameSpeedProvider_init(&speedProvider, (size_t) state->playerInfos[0].speed,
-                                   Default_NextPillDelay,
-                                   (uint32_t) (500 / ((state->playerInfos[0].speed + 1) * 1.5)),
-                                   Default_FallingGravityDelay);
-
-            SinglePlayerGame_init(&logic, this->engine, 0, 0,
-                                  state->playerInfos[0].virusLevel,
-                                  &speedProvider, &board);
-
-            SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
-            VTP(this->engine)->loadState(this->engine, (GameState *) &singlePlayerGameState);
-
-            return false;
+            startSinglePlayer(state);
         }
     }
 

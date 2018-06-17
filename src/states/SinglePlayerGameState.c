@@ -167,9 +167,12 @@ static void draw(this_p(GameState)) {
 
     /* Sprites */
     VT(state->marioSprite)->draw(&state->marioSprite, this->engine->screen, graphics);
-    VT(state->virusLargeRedSprite)->draw(&state->virusLargeRedSprite, this->engine->screen, graphics);
-    VT(state->virusLargeYellowSprite)->draw(&state->virusLargeYellowSprite, this->engine->screen, graphics);
-    VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
+    if (isVirusPresent(state, GameBoardElement_Red))
+        VT(state->virusLargeRedSprite)->draw(&state->virusLargeRedSprite, this->engine->screen, graphics);
+    if (isVirusPresent(state, GameBoardElement_Yellow))
+        VT(state->virusLargeYellowSprite)->draw(&state->virusLargeYellowSprite, this->engine->screen, graphics);
+    if (isVirusPresent(state, GameBoardElement_Blue))
+        VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
 
     /* Current Pill */
     if (state->nextPillVisible)

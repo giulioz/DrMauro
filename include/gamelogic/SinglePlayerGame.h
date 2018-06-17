@@ -56,7 +56,7 @@ typedef class SinglePlayerGame {
 	uint32_t scoreMultiplier;
 } SinglePlayerGame;
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top, size_t level, size_t virus,
+void SinglePlayerGame_init(this_p(SinglePlayerGame), size_t top, size_t level,
                            GameSpeedProvider *speedProvider, GameBoard *board);
 
 #endif

@@ -129,14 +129,14 @@ static struct SinglePlayerGame_VTABLE _vtable = {
         update
 };
 
-void SinglePlayerGame_init(this_p(SinglePlayerGame), Engine* engine, size_t top, size_t level, size_t virus,
+void SinglePlayerGame_init(this_p(SinglePlayerGame), size_t top, size_t level,
                            GameSpeedProvider *speedProvider, GameBoard *board) {
     VTP(this) = &_vtable;
     this->state = SinglePlayerState_FillingBoard;
     this->top = top;
     this->score = 0;
     this->level = level;
-    this->virusCount = 4 * (virus + 1);
+    this->virusCount = 4 * (level + 1);
     this->board = board;
     this->speedProvider = speedProvider;
 

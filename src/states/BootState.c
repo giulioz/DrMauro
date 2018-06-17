@@ -21,12 +21,12 @@ static void startGameWithDifficulty(this_p(GameState)) {
     GameBoard_init(&board);
 
     GameSpeedProvider_init(&speedProvider, 1, /* UI will be set to MED */
+                           Default_FirstPillTimeout
                            Default_NextPillDelay,
                            this->engine->parameters->speed,
                            Default_FallingGravityDelay);
 
-    SinglePlayerGame_init(&logic, this->engine, 0, 0,
-                          this->engine->parameters->difficulty,
+    SinglePlayerGame_init(&logic, 0, this->engine->parameters->difficulty,
                           &speedProvider, &board);
 
     SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
@@ -42,12 +42,12 @@ static void startGameWithCustomBoard(this_p(GameState)) {
     FileGameBoard_init(&board, this->engine->parameters->boardFile);
 
     GameSpeedProvider_init(&speedProvider, 1, /* UI will be set to MED */
+                           Default_FirstPillTimeout,
                            Default_NextPillDelay,
                            this->engine->parameters->speed,
                            Default_FallingGravityDelay);
 
-    SinglePlayerGame_init(&logic, this->engine, 0, 0, 0,
-                          &speedProvider, (GameBoard *) &board);
+    SinglePlayerGame_init(&logic, 0, 0, &speedProvider, (GameBoard *) &board);
     logic.virusCount = board.fileVirusCount;
 
     SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
