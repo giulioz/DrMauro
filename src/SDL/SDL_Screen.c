@@ -10,9 +10,17 @@
 static void init(this_p(Screen)) {
     SDL_Screen *screen = (SDL_Screen*)this;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0) {
         ThrowError("SDL_INIT failed!");
     }
+
+	if (SDL_NumJoysticks() < 1) {
+		ThrowWarning("No joysticks connected!");
+	} else {
+		screen->controller = SDL_JoystickOpen(0);
+		if (!screen->controller)
+			ThrowWarning("Cannot open joystick");
+	}
 
     screen->window = SDL_CreateWindow(
             screen->windowTitle,                                    /* title */
@@ -77,6 +85,38 @@ static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
     }
 }
 
+static void setJoy(this_p(SDL_Screen), SDL_Event *e, bool value) {
+	printf("%d", e->jbutton.button);
+	switch (e->jbutton.button) {
+		/* Player 1 */
+	case SDLK_LEFT:
+		this->inputDevice->currentState.leftButton = value;
+		break;
+	case SDLK_RIGHT:
+		this->inputDevice->currentState.rightButton = value;
+		break;
+	case SDLK_UP:
+		this->inputDevice->currentState.upButton = value;
+		break;
+	case SDLK_DOWN:
+		this->inputDevice->currentState.downButton = value;
+		break;
+	case SDLK_m:
+		this->inputDevice->currentState.rotateRightButton = value;
+		break;
+	case SDLK_n:
+		this->inputDevice->currentState.rotateLeftButton = value;
+		break;
+
+
+	case SDLK_RETURN:
+		this->inputDevice->currentState.enterButton = value;
+		break;
+	default:
+		break;
+	}
+}
+
 static void run(this_p(Screen), GameState* callbacks) {
     SDL_Screen *screen = (SDL_Screen *) this;
 
@@ -101,6 +141,12 @@ static void run(this_p(Screen), GameState* callbacks) {
                 case SDL_KEYDOWN:
                     setKey(screen, &event, true);
                     break;
+				case SDL_JOYBUTTONUP:
+					setJoy(screen, &event, false);
+					break;
+				case SDL_JOYBUTTONDOWN:
+					setJoy(screen, &event, true);
+					break;
                 default:
                     break;
             }
@@ -125,6 +171,7 @@ static void close(this_p(Screen)) {
     SDL_FreeSurface(screen->screenSurface);
     SDL_FreeSurface(screen->tempSurface);
     SDL_DestroyWindow(screen->window);
+	SDL_JoystickClose(screen->controller);
     SDL_Quit();
 }
 
@@ -151,5 +198,6 @@ void SDL_Screen_init(this_p(SDL_Screen), uint16_t width, uint16_t height, char* 
     this->base.running = false;
     this->windowTitle = windowTitle;
     this->inputDevice = inputDevice;
+	this->controller = NULL;
     SDL_Graphics_init(&this->graphics, this);
 }

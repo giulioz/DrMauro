@@ -23,6 +23,7 @@ typedef class SDL_Screen {
     char* windowTitle;
     SDL_Window *window;
     SDL_Surface *screenSurface, *tempSurface;
+	SDL_Joystick *controller;
 
     SDL_Graphics graphics;
     SDL_InputDevice* inputDevice;
