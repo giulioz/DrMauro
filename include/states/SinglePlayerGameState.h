@@ -36,6 +36,9 @@ typedef class SinglePlayerGameState {
     /* Sprites */
     Sprite marioSprite;
     Sprite virusLargeBlueSprite, virusLargeYellowSprite, virusLargeRedSprite;
+    GameBoardElementColor lastRemoved;
+    bool rotationEnabled;
+    uint32_t rotTime, lastRot;
 
     /* Next pill */
     bool nextPillVisible;

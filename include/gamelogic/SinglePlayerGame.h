@@ -54,6 +54,8 @@ typedef class SinglePlayerGame {
 	/* Score logic */
 	uint32_t deletedVirusCount;
 	uint32_t scoreMultiplier;
+
+    GameBoardElementColor lastVirusRemovedColor;
 } SinglePlayerGame;
 
 void SinglePlayerGame_init(this_p(SinglePlayerGame), size_t top, size_t level,

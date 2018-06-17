@@ -137,16 +137,6 @@ static void drawNextPill(this_p(SinglePlayerGameState), Graphics *graphics) {
                                0, 0, pillTextureR->width, pillTextureR->height);
 }
 
-static bool isVirusPresent(this_p(SinglePlayerGameState), GameBoardElementColor virusColor) {
-    size_t i;
-    Vector_foreach(this->logic->board->board,i) {
-        GameBoardElement *element = VT(this->logic->board->board)->base.get((const struct Vector *) &this->logic->board->board, i);
-        if (element->color == virusColor && element->type == GameBoardElement_Virus)
-            return true;
-    }
-    return false;
-}
-
 
 /* Drawing entry point */
 static void draw(this_p(GameState)) {
@@ -167,12 +157,9 @@ static void draw(this_p(GameState)) {
 
     /* Sprites */
     VT(state->marioSprite)->draw(&state->marioSprite, this->engine->screen, graphics);
-    if (isVirusPresent(state, GameBoardElement_Red))
-        VT(state->virusLargeRedSprite)->draw(&state->virusLargeRedSprite, this->engine->screen, graphics);
-    if (isVirusPresent(state, GameBoardElement_Yellow))
-        VT(state->virusLargeYellowSprite)->draw(&state->virusLargeYellowSprite, this->engine->screen, graphics);
-    if (isVirusPresent(state, GameBoardElement_Blue))
-        VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
+    VT(state->virusLargeRedSprite)->draw(&state->virusLargeRedSprite, this->engine->screen, graphics);
+    VT(state->virusLargeYellowSprite)->draw(&state->virusLargeYellowSprite, this->engine->screen, graphics);
+    VT(state->virusLargeBlueSprite)->draw(&state->virusLargeBlueSprite, this->engine->screen, graphics);
 
     /* Current Pill */
     if (state->nextPillVisible)
@@ -189,22 +176,58 @@ static void draw(this_p(GameState)) {
 /* Game Logic                                                      */
 /* *************************************************************** */
 
-static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
-	float centerX = 31.78f;
-	float centerY = 155.13f;
-	float radius = 18.13f;
-	float angle = -time * 0.0002f;
+static bool isVirusPresent(this_p(SinglePlayerGameState), GameBoardElementColor virusColor) {
+    size_t i;
+    Vector_foreach(this->logic->board->board,i) {
+        GameBoardElement *element = VT(this->logic->board->board)->base.get((const struct Vector *) &this->logic->board->board, i);
+        if (element->color == virusColor && element->type == GameBoardElement_Virus)
+            return true;
+    }
+    return false;
+}
 
-	this->virusLargeBlueSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle - 1.57f));
-	this->virusLargeBlueSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle - 1.57f));
-	this->virusLargeYellowSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 2.353f));
-	this->virusLargeYellowSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 2.353f));
-	this->virusLargeRedSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 0.575f));
-	this->virusLargeRedSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 0.575f));
+static void rotateVirusLarge(this_p(SinglePlayerGameState), uint32_t time) {
+	if (this->rotationEnabled) {
+        float centerX = 31.78f;
+        float centerY = 155.13f;
+        float radius = 18.13f;
+        float angle = -this->rotTime * 0.0002f;
+
+        this->virusLargeBlueSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle - 1.57f));
+        this->virusLargeBlueSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle - 1.57f));
+        this->virusLargeYellowSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 2.353f));
+        this->virusLargeYellowSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 2.353f));
+        this->virusLargeRedSprite.x = (uint32_t)(centerX + 0.9f * radius * cosf(angle + 0.575f));
+        this->virusLargeRedSprite.y = (uint32_t)(centerY + 1.1f * radius * sinf(angle + 0.575f));
+
+        this->rotTime += (time - this->lastRot);
+    }
+    this->lastRot = time;
 }
 
 static void pillLaunchAnim(this_p(SinglePlayerGameState), uint32_t currentTime) {
 
+}
+
+static void endVirusAnimationRed(this_p(SinglePlayerGameState)) {
+    VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 0);
+    if (!isVirusPresent(this, GameBoardElement_Red))
+        this->virusLargeRedSprite.visible = false;
+    this->rotationEnabled = true;
+}
+
+static void endVirusAnimationYellow(this_p(SinglePlayerGameState)) {
+    VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 0);
+    if (!isVirusPresent(this, GameBoardElement_Red))
+        this->virusLargeYellowSprite.visible = false;
+    this->rotationEnabled = true;
+}
+
+static void endVirusAnimationBlue(this_p(SinglePlayerGameState)) {
+    VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 0);
+    if (!isVirusPresent(this, GameBoardElement_Blue))
+        this->virusLargeBlueSprite.visible = false;
+    this->rotationEnabled = true;
 }
 
 static PillDirection getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
@@ -219,10 +242,12 @@ static PillDirection getDirectionFromKeyboard(this_p(SinglePlayerGameState)) {
 
 static void newPill_AfterAnim(this_p(SinglePlayerGameState)) {
 	this->logic->state = SinglePlayerState_Ready;
+    this->nextPillVisible = true;
 }
 
 static void newPill(this_p(SinglePlayerGameState)) {
 	uint32_t startTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
+    this->nextPillVisible = false;
 	VT(this->marioSprite)->setAnimation(&this->marioSprite, this->base.engine->screen, 1);
 	VT(this->timeline)->addEvent(&this->timeline, (void(*)(void *)) newPill_AfterAnim,
                                  startTime + this->logic->speedProvider->nextPillDelay, this);
@@ -231,11 +256,39 @@ static void newPill(this_p(SinglePlayerGameState)) {
 static void updateAnimations(this_p(SinglePlayerGameState)) {
     uint32_t currentTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
 
+    if (this->logic->lastVirusRemovedColor != GameBoardElement_NoColor) {
+        switch (this->logic->lastVirusRemovedColor) {
+            case GameBoardElement_Red:
+                VT(this->virusLargeRedSprite)->setAnimation(&this->virusLargeRedSprite, this->base.engine->screen, 2);
+                VT(this->timeline)->addEvent(&this->timeline,
+                                             (void (*)(void *)) endVirusAnimationRed, currentTime + 3000, this);
+                break;
+            case GameBoardElement_Blue:
+                VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 2);
+                VT(this->timeline)->addEvent(&this->timeline,
+                                             (void (*)(void *)) endVirusAnimationBlue, currentTime + 3000, this);
+                break;
+            case GameBoardElement_Yellow:
+                VT(this->virusLargeYellowSprite)->setAnimation(&this->virusLargeYellowSprite, this->base.engine->screen, 2);
+                VT(this->timeline)->addEvent(&this->timeline,
+                                             (void (*)(void *)) endVirusAnimationYellow, currentTime + 3000, this);
+                break;
+            default:
+                break;
+        }
+        this->rotationEnabled = false;
+        this->logic->lastVirusRemovedColor = GameBoardElement_NoColor;
+    }
+
     if (this->logic->state != this->lastLogicState) {
         switch (this->logic->state) {
             case SinglePlayerState_WaitingForPill:
-                VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
-                                             currentTime + this->logic->speedProvider->nextPillDelay, this);
+                if (this->lastLogicState == SinglePlayerState_FillingBoard)
+                    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                             currentTime + this->logic->speedProvider->firstPillTimeout, this);
+                else
+                    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                                 currentTime + this->logic->speedProvider->nextPillDelay, this);
                 break;
             case SinglePlayerState_Moving:
                 break;
@@ -317,4 +370,9 @@ void SinglePlayerGameState_init(this_p(SinglePlayerGameState), Engine *engine, S
     this->nextPillLY = 70;
     this->nextPillRX = 198;
     this->nextPillRY = 70;
+
+    this->lastRemoved = GameBoardElement_NoColor;
+    this->rotationEnabled = true;
+    this->rotTime = startTime;
+    this->lastRot = startTime;
 }

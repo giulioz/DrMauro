@@ -297,7 +297,7 @@ static int removeCells(this_p(GameBoard), long x, long y, int dx, int dy, long t
 }
 
 /* returns true if something was removed, places virus number in pointer */
-static bool removeFirst(this_p(GameBoard), int *removedViruses) {
+static bool removeFirst(this_p(GameBoard), int *removedViruses, GameBoardElementColor *removedColor) {
     long x, y, toRemoveU = 0, toRemoveD = 0, toRemoveR = 0, toRemoveL = 0;
     long xMax = -1, yMax = 0, toRemoveUMax = 0, toRemoveDMax = 0, toRemoveRMax = 0, toRemoveLMax = 0;
     for (y = this->board.height - 1; y >= 0; y--) {
@@ -323,6 +323,7 @@ static bool removeFirst(this_p(GameBoard), int *removedViruses) {
 
     /* remove always the maximum possible first, for L and T formations */
     if (xMax != -1 && yMax != -1) {
+        *removedColor = getElement(this, (size_t) xMax, (size_t) yMax)->color;
         *removedViruses += removeCells(this, xMax, yMax, 0, 1, toRemoveUMax);
         *removedViruses += removeCells(this, xMax, yMax, 0, -1, toRemoveDMax);
         *removedViruses += removeCells(this, xMax, yMax, 1, 0, toRemoveRMax);

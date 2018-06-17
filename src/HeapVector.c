@@ -75,13 +75,17 @@ static void _insert(Vector* vector, const size_t index, const void* element) {
 }
 
 static void _delete(Vector* vector, const size_t index) {
-	size_t i;
 	if (index == vector->count - 1) {
 		vector->count--;
 	} else {
-		for (i = vector->count - 1; i >= index && i > 0; i--) {
-			_set(vector, i - 1, _get(vector, i));
-		}
+        char *lastVector = vector->data;
+        char *newVector = calloc(vector->allocatedCount, vector->elementSize);
+        memcpy(newVector, lastVector, vector->elementSize * index);
+        memcpy(newVector + (vector->elementSize * index),
+               lastVector + (vector->elementSize * (index + 1)),
+               vector->elementSize * ((vector->count - 1) - index));
+        free(lastVector);
+        vector->data = newVector;
         vector->count--;
 	}
 }

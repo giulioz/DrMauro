@@ -31,13 +31,13 @@ static Texture VirusLargeRed_Texture = {
 static SpriteAnimation VirusLarge_Animations[] = {
         { 0, 2, 200, false, true },    /* Dancing  */
         { 3, 4,	 70, false, true },    /* Laughing */
-        { 5, 6, 500, false, true }     /* Falling  */
+        { 5, 6,  70, false, true }     /* Falling  */
 };
 
 static SpriteAnimation VirusLarge_AnimationsRED[] = {
 		{ 0, 2, 200, false, true },    /* Dancing  */
 		{ 3, 4, 120, false, true },    /* Laughing */
-		{ 5, 6, 500, false, true }     /* Falling  */
+		{ 5, 6,  70, false, true }     /* Falling  */
 };
 
 static StackVector_Static(VirusLarge_AnimVector, sizeof(SpriteAnimation), 3, 3, VirusLarge_Animations);

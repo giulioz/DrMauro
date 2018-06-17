@@ -21,7 +21,7 @@ static void startGameWithDifficulty(this_p(GameState)) {
     GameBoard_init(&board);
 
     GameSpeedProvider_init(&speedProvider, 1, /* UI will be set to MED */
-                           Default_FirstPillTimeout
+                           Default_FirstPillTimeout,
                            Default_NextPillDelay,
                            this->engine->parameters->speed,
                            Default_FallingGravityDelay);

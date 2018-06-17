@@ -19,12 +19,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/gamelogic/GameSpeedProvider.h" afterPath="$PROJECT_DIR$/include/gamelogic/GameSpeedProvider.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/gamelogic/GameBoard.h" afterPath="$PROJECT_DIR$/include/gamelogic/GameBoard.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" afterPath="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/GameSpeedProvider.c" afterPath="$PROJECT_DIR$/src/gamelogic/GameSpeedProvider.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/states/SinglePlayerGameState.h" afterPath="$PROJECT_DIR$/include/states/SinglePlayerGameState.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HeapVector.c" afterPath="$PROJECT_DIR$/src/HeapVector.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/VirusLarge.c" afterPath="$PROJECT_DIR$/src/assets/VirusLarge.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/GameBoard.c" afterPath="$PROJECT_DIR$/src/gamelogic/GameBoard.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" afterPath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/BootState.c" afterPath="$PROJECT_DIR$/src/states/BootState.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/DifficultySelectionGameState.c" afterPath="$PROJECT_DIR$/src/states/DifficultySelectionGameState.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" afterPath="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -37,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SinglePlayerGameState.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SinglePlayerGameState.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="276" column="28" lean-forward="false" selection-start-line="276" selection-start-column="28" selection-end-line="276" selection-end-column="28" />
+            <state relative-caret-position="342">
+              <caret line="202" column="48" lean-forward="true" selection-start-line="202" selection-start-column="48" selection-end-line="202" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -50,28 +53,8 @@
       <file leaf-file-name="SinglePlayerGameState.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/states/SinglePlayerGameState.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="32" column="11" lean-forward="true" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SinglePlayerGame.c" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="92" column="23" lean-forward="true" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SinglePlayerGame.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="56" column="2" lean-forward="false" selection-start-line="56" selection-start-column="2" selection-end-line="56" selection-end-column="2" />
+            <state relative-caret-position="187">
+              <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -81,8 +64,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getElement</find>
-      <find>rand</find>
       <find>SinglePlayerDirection</find>
       <find>return false;</find>
       <find>argc</find>
@@ -111,6 +92,8 @@
       <find>fill</find>
       <find>Fillin</find>
       <find>nextPill</find>
+      <find>remo</find>
+      <find>large</find>
     </findStrings>
     <replaceStrings>
       <replace>window-&gt;getFramebuffer();</replace>
@@ -142,13 +125,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/assets/MenuUI.c" />
         <option value="$PROJECT_DIR$/src/SDL/SDL_InputDevice.c" />
         <option value="$PROJECT_DIR$/tools/imgtool/imgtool.c" />
         <option value="$PROJECT_DIR$/src/SDL/SDL_Graphics.c" />
         <option value="$PROJECT_DIR$/include/InputDevice.h" />
         <option value="$PROJECT_DIR$/src/assets/Mario.c" />
-        <option value="$PROJECT_DIR$/src/HeapVector.c" />
         <option value="$PROJECT_DIR$/include/assets/Assets.h" />
         <option value="$PROJECT_DIR$/src/assets/DSMenuUI.c" />
         <option value="$PROJECT_DIR$/src/states/CommonGameUtils.c" />
@@ -173,26 +154,28 @@
         <option value="$PROJECT_DIR$/boards/test.txt" />
         <option value="$PROJECT_DIR$/include/gamelogic/FileGameBoard.h" />
         <option value="$PROJECT_DIR$/src/gamelogic/FileGameBoard.c" />
-        <option value="$PROJECT_DIR$/include/gamelogic/GameBoard.h" />
         <option value="$PROJECT_DIR$/include/states/DifficultySelectionGameState.h" />
         <option value="$PROJECT_DIR$/.gitmodules" />
         <option value="$PROJECT_DIR$/include/audio/AudioManager.h" />
         <option value="$PROJECT_DIR$/include/gamelogic/SInglePlayerGame_State.h" />
-        <option value="$PROJECT_DIR$/include/states/SinglePlayerGameState.h" />
         <option value="$PROJECT_DIR$/include/Parameters.h" />
         <option value="$PROJECT_DIR$/src/states/MultiPlayerGameState.c" />
         <option value="$PROJECT_DIR$/include/states/MultiPlayerGameState.h" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/Parameters.c" />
         <option value="$PROJECT_DIR$/boards/multiple.txt" />
-        <option value="$PROJECT_DIR$/src/gamelogic/GameBoard.c" />
-        <option value="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" />
-        <option value="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
-        <option value="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
         <option value="$PROJECT_DIR$/include/gamelogic/GameSpeedProvider.h" />
         <option value="$PROJECT_DIR$/src/states/DifficultySelectionGameState.c" />
         <option value="$PROJECT_DIR$/src/gamelogic/GameSpeedProvider.c" />
         <option value="$PROJECT_DIR$/src/states/BootState.c" />
+        <option value="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
+        <option value="$PROJECT_DIR$/include/gamelogic/GameBoard.h" />
+        <option value="$PROJECT_DIR$/src/gamelogic/GameBoard.c" />
+        <option value="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
+        <option value="$PROJECT_DIR$/include/states/SinglePlayerGameState.h" />
+        <option value="$PROJECT_DIR$/src/assets/VirusLarge.c" />
+        <option value="$PROJECT_DIR$/src/HeapVector.c" />
+        <option value="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" />
       </list>
     </option>
   </component>
@@ -434,12 +417,12 @@
       <workItem from="1526129323360" duration="31064000" />
       <workItem from="1526292893152" duration="132600000" />
       <workItem from="1527437785092" duration="80483000" />
-      <workItem from="1529148956336" duration="10417000" />
+      <workItem from="1529148956336" duration="14484000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="437785000" />
+    <option name="totallyTimeSpent" value="441852000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -458,13 +441,13 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34893617" sideWeight="0.496875" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34893617" sideWeight="0.503125" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2496454" sideWeight="0.496875" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2496454" sideWeight="0.496875" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2359375" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32765958" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34751773" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34184396" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31875" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -494,32 +477,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="136" />
+      <option name="time" value="155" />
     </breakpoint-manager>
-    <watches-manager />
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="this-&gt;events" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/include/SDL/SDL_Screen.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="15" lean-forward="false" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/Screen.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="33" lean-forward="false" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/states/MainMenuGameState.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/states/BootState.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -570,6 +536,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="21" column="48" lean-forward="false" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -626,6 +593,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -640,6 +608,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="87">
           <caret line="70" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -674,26 +643,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/gamelogic/GameBoard.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-460">
-          <caret line="0" column="2" lean-forward="false" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Parameters.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame_State.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="2" lean-forward="false" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
           <folding />
         </state>
       </provider>
@@ -811,14 +764,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gamelogic/GameBoard.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="320" column="9" lean-forward="true" selection-start-line="320" selection-start-column="9" selection-end-line="320" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/states/DifficultySelectionGameState.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="515">
@@ -843,34 +788,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/BootState.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="44" column="52" lean-forward="false" selection-start-line="44" selection-start-column="52" selection-end-line="44" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="56" column="2" lean-forward="false" selection-start-line="56" selection-start-column="2" selection-end-line="56" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/states/DifficultySelectionGameState.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="681">
           <caret line="186" column="52" lean-forward="false" selection-start-line="186" selection-start-column="52" selection-end-line="186" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/states/SinglePlayerGameState.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="32" column="11" lean-forward="true" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -883,18 +804,90 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
+    <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame_State.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="276" column="28" lean-forward="false" selection-start-line="276" selection-start-column="28" selection-end-line="276" selection-end-column="28" />
+        <state relative-caret-position="120">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/BootState.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-194">
+          <caret line="23" column="52" lean-forward="false" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="57" column="47" lean-forward="true" selection-start-line="57" selection-start-column="47" selection-end-line="57" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/gamelogic/GameBoard.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="57" column="101" lean-forward="true" selection-start-line="57" selection-start-column="101" selection-end-line="57" selection-end-column="101" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gamelogic/GameBoard.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="325" column="56" lean-forward="false" selection-start-line="325" selection-start-column="56" selection-end-line="325" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="92" column="23" lean-forward="true" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="23" />
+        <state relative-caret-position="274">
+          <caret line="56" column="113" lean-forward="false" selection-start-line="56" selection-start-column="113" selection-end-line="56" selection-end-column="113" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/VirusLarge.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="33" column="17" lean-forward="false" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HeapVector.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="85" column="36" lean-forward="false" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Timeline.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="12" column="38" lean-forward="false" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/states/SinglePlayerGameState.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/SinglePlayerGameState.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="202" column="48" lean-forward="true" selection-start-line="202" selection-start-column="48" selection-end-line="202" selection-end-column="48" />
           <folding />
         </state>
       </provider>

@@ -54,7 +54,7 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
     if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_NoControl) {
         if (this->nextAction == SinglePlayerAction_Remove) {
             int removedVirus = 0;
-            bool removed = VTP(this->board)->removeFirst(this->board, &removedVirus);
+            bool removed = VTP(this->board)->removeFirst(this->board, &removedVirus, &this->lastVirusRemovedColor);
             if (removed) {
                 this->state = SinglePlayerState_NoControl;
                 this->virusCount -= removedVirus;
@@ -152,4 +152,6 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), size_t top, size_t level,
     this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
     this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
     this->currentPillId = -1;
+
+    this->lastVirusRemovedColor = GameBoardElement_NoColor;
 }
