@@ -42,7 +42,7 @@ static void parseParameters(this_p(Parameters)) {
                 dSet = true;
                 break;
             case 's':
-                s = (size_t) (options.optarg ? atof(options.optarg) : 0);
+                s = options.optarg ? atof(options.optarg) : 0.0;
                 sSet = true;
                 break;
             case 'h':
