@@ -29,9 +29,9 @@ typedef enum {
 
 bool isVirusPresent(GameBoard *board, GameBoardElementColor virusColor);
 PillDirection getDirectionFromKeyboard(Engine *engine);
-void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color);
+void drawVirus(Screen* screen, size_t sx, uint32_t row, uint32_t col, GameBoardElementColor color);
 Texture* getPillTexture(GameBoardElementColor color, PillType type);
-void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type);
+void drawPill(Screen* screen, size_t sx, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type);
 PillType checkPillNeighborhoods(Vector2D *board, uint32_t x, uint32_t y);
 
 #endif

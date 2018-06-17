@@ -109,10 +109,10 @@ static void drawGameBoard(this_p(SinglePlayerGameState), Screen* screen) {
 
             switch (element->type) {
                 case GameBoardElement_Virus:
-                    drawVirus(screen, y, x, element->color);
+                    drawVirus(screen, 95, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&this->logic->board->board, x, y));
+                    drawPill(screen, 96, y, x, element->color, checkPillNeighborhoods(&this->logic->board->board, x, y));
                     break;
                 default:
                     break;
@@ -272,12 +272,6 @@ static void updateAnimations(this_p(SinglePlayerGameState)) {
                 else
                     VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
                                                  currentTime + this->logic->speedProvider->nextPillDelay, this);
-                break;
-            case SinglePlayerState_Moving:
-                break;
-            case SinglePlayerState_NoControl:
-                break;
-            case SinglePlayerState_EndWon:
                 break;
             case SinglePlayerState_EndLost:
                 VT(this->virusLargeBlueSprite)->setAnimation(&this->virusLargeBlueSprite, this->base.engine->screen, 1);

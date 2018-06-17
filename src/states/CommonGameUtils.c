@@ -25,12 +25,12 @@ PillDirection getDirectionFromKeyboard(Engine *engine) {
 	else return PillDirection_Nothing;
 }
 
-void drawVirus(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color) {
+void drawVirus(Screen* screen, size_t sx, uint32_t row, uint32_t col, GameBoardElementColor color) {
     Graphics *graphics = VTP(screen)->getGraphics(screen);
     uint32_t x, y, frame;
     Sprite virusSprite = { 0 };
 
-    x = (uint32_t) (95 + col * (Asset_VirusRed.spriteWidth - 1));
+    x = (uint32_t) (sx + col * (Asset_VirusRed.spriteWidth - 1));
     y = (uint32_t) (199 - row * (Asset_VirusRed.spriteHeight - 1));
     frame = (uint32_t) ((int)(VTP(screen)->getCurrentTime(screen) * 0.005) % 2);
 
@@ -83,12 +83,12 @@ Texture* getPillTexture(GameBoardElementColor color, PillType type) {
     };
 }
 
-void drawPill(Screen* screen, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type) {
+void drawPill(Screen* screen, size_t sx, uint32_t row, uint32_t col, GameBoardElementColor color, PillType type) {
     Graphics *graphics = VTP(screen)->getGraphics(screen);
     uint32_t x, y;
     Texture *pillTexture = getPillTexture(color, type);
 
-    x = (uint32_t) (96 + col * (Asset_PillRed.width + 1));
+    x = (uint32_t) (sx + col * (Asset_PillRed.width + 1));
     y = (uint32_t) (200 - row * (Asset_PillRed.height + 1));
 
     VTP(graphics)->drawTexture(graphics, pillTexture,

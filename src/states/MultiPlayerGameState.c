@@ -17,8 +17,8 @@
 #define TIMELINE_PREALLOC 64
 
 /* Save bmp screenshoot */
-/*#define SAVE_DEBUG
-#include "SDL_Screen.h"*/
+//#define SAVE_DEBUG
+#include "SDL_Screen.h"
 
 static void unload(this_p(MultiPlayerGameState)) {
 	VT(this->timeline)->dispose(&this->timeline);
@@ -28,11 +28,6 @@ static void unload(this_p(MultiPlayerGameState)) {
 /* *************************************************************** */
 /* Graphics Elements                                               */
 /* *************************************************************** */
-
-static void drawBaseElements(Graphics* graphics) {
-    /* Background and Logo */
-    VTP(graphics)->drawCheckerboard(graphics, 8, 2, 0);
-}
 
 static void drawScorePanel(Graphics* graphics, size_t top, size_t score) {
     char top_c[8] = {0}, score_c[8] = {0};
@@ -85,7 +80,10 @@ static void drawEndMessage(this_p(GameState), Graphics* graphics, SinglePlayerGa
 }
 
 static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen, SinglePlayerGame *logic, uint32_t sx) {
+    Graphics *graphics = VTP(screen)->getGraphics(screen);
     uint32_t x, y;
+
+    VT(Asset_PanelBottle)->draw(&Asset_PanelBottle, graphics, sx, 40, 128);
 
     for (x = 0; x < logic->board->board.width; x++) {
         for (y = 0; y < logic->board->board.height; y++) {
@@ -93,10 +91,10 @@ static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen, SinglePl
 
             switch (element->type) {
                 case GameBoardElement_Virus:
-                    drawVirus(screen, y, x, element->color);
+                    drawVirus(screen, sx + 8, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, y, x, element->color, checkPillNeighborhoods(&logic->board->board, x, y));
+                    drawPill(screen, sx + 7, y, x, element->color, checkPillNeighborhoods(&logic->board->board, x, y));
                     break;
                 default:
                     break;
@@ -105,20 +103,20 @@ static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen, SinglePl
     }
 }
 
-static void drawNextPill(this_p(MultiPlayerGameState), Graphics *graphics, SinglePlayerGame *logic, uint32_t x) {
+static void drawNextPill(this_p(MultiPlayerGameState), Graphics *graphics, SinglePlayerGame *logic, uint32_t sx) {
     Texture *pillTextureL, *pillTextureR;
 
     pillTextureL = getPillTexture(logic->nextPillColorL, Left);
     pillTextureR = getPillTexture(logic->nextPillColorR, Right);
 
-    /*VTP(graphics)->drawTexture(graphics, pillTextureL,
-                               this->nextPillLX, this->nextPillLY,
-                               this->nextPillLX + pillTextureL->width, this->nextPillLY + pillTextureL->height,
+    VTP(graphics)->drawTexture(graphics, pillTextureL,
+                               sx, 52,
+                               sx + pillTextureL->width, 52 + pillTextureL->height,
                                0, 0, pillTextureL->width, pillTextureL->height);
     VTP(graphics)->drawTexture(graphics, pillTextureR,
-                               this->nextPillRX, this->nextPillRY,
-                               this->nextPillRX + pillTextureR->width, this->nextPillRY + pillTextureR->height,
-                               0, 0, pillTextureR->width, pillTextureR->height);*/
+                               sx + 8, 52,
+                               sx + 8 + pillTextureR->width, 52 + pillTextureR->height,
+                               0, 0, pillTextureR->width, pillTextureR->height);
 }
 
 
@@ -126,24 +124,26 @@ static void drawNextPill(this_p(MultiPlayerGameState), Graphics *graphics, Singl
 static void draw(this_p(GameState)) {
     Graphics *graphics = VTP(this->engine->screen)->getGraphics(this->engine->screen);
     MultiPlayerGameState *state = (MultiPlayerGameState *) this;
+    graphics->currentPalette = &Asset_MedPalette;
 
     /* Background */
-    drawBaseElements(graphics);
+    VTP(graphics)->drawCheckerboard(graphics, 8, 2, 0);
 
     /* Panels */
     //drawScorePanel(graphics, state->logic.top, state->logic.score);
     //drawLevelPanel(graphics, state->logic.level, state->logic.speedProvider->speed, state->logic.virusCount);
 
     /* Boards */
-    drawGameBoard(state, this->engine->screen, state->logic1, 0);
-	drawGameBoard(state, this->engine->screen, state->logic2, 100);
+    drawGameBoard(state, this->engine->screen, state->logic1, 24);
+	drawGameBoard(state, this->engine->screen, state->logic2, 152);
 
     /* End game */
     //if (state->logic.state == SinglePlayerState_EndLost || state->logic.state == SinglePlayerState_EndWon)
         //drawEndMessage(this, graphics, state->logic.state);
 
     /* Current Pill */
-    //drawNextPill(state, graphics);
+    drawNextPill(state, graphics, state->logic1, 56);
+    drawNextPill(state, graphics, state->logic1, 184);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");
@@ -155,6 +155,51 @@ static void draw(this_p(GameState)) {
 /* *************************************************************** */
 /* Game Logic                                                      */
 /* *************************************************************** */
+
+static void newPill(this_p(SinglePlayerGame)) {
+    this->state = SinglePlayerState_Ready;
+}
+
+static void updateAnimations(this_p(MultiPlayerGameState)) {
+    uint32_t currentTime = VTP(this->base.engine->screen)->getCurrentTime(this->base.engine->screen);
+
+    if (this->logic1->state != this->lastLogicState1) {
+        switch (this->logic1->state) {
+            case SinglePlayerState_WaitingForPill:
+                if (this->lastLogicState1 == SinglePlayerState_FillingBoard)
+                    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                                 currentTime + this->logic1->speedProvider->firstPillTimeout, this->logic1);
+                else
+                    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                                 currentTime + this->logic1->speedProvider->nextPillDelay*2, this->logic1);
+                break;
+            case SinglePlayerState_EndLost:
+                break;
+            default:
+                break;
+        }
+        this->lastLogicState1 = this->logic1->state;
+    }
+
+    if (this->logic2->state != this->lastLogicState2) {
+        switch (this->logic2->state) {
+            case SinglePlayerState_WaitingForPill:
+                if (this->lastLogicState2 == SinglePlayerState_FillingBoard)
+                    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                                 currentTime + this->logic2->speedProvider->firstPillTimeout, this->logic2);
+                else
+                    VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
+                                                 currentTime + this->logic2->speedProvider->nextPillDelay*2, this->logic2);
+                break;
+            case SinglePlayerState_EndLost:
+                break;
+            default:
+                break;
+        }
+        this->lastLogicState2 = this->logic2->state;
+    }
+}
+
 
 static bool update(this_p(GameState)) {
     MultiPlayerGameState *state = (MultiPlayerGameState *)this;
@@ -169,12 +214,15 @@ static bool update(this_p(GameState)) {
 		return false;
 	}
 
+    /* Update game logic */
 	if (!(state->logic1->state == SinglePlayerState_EndLost || state->logic1->state == SinglePlayerState_EndWon
 		|| state->logic2->state == SinglePlayerState_EndLost || state->logic2->state == SinglePlayerState_EndWon)) {
 		VTP(state->logic1)->update(state->logic1, this->engine, getDirectionFromKeyboard(this->engine));
 		VTP(state->logic2)->update(state->logic2, this->engine, getDirectionFromKeyboard(this->engine));
 	}
+    updateAnimations(state);
 
+    /* Reset input */
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */
