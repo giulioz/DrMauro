@@ -86,35 +86,44 @@ static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
 }
 
 static void setJoy(this_p(SDL_Screen), SDL_Event *e, bool value) {
-	printf("%d", e->jbutton.button);
 	switch (e->jbutton.button) {
-		/* Player 1 */
-	case SDLK_LEFT:
-		this->inputDevice->currentState.leftButton = value;
-		break;
-	case SDLK_RIGHT:
-		this->inputDevice->currentState.rightButton = value;
-		break;
-	case SDLK_UP:
-		this->inputDevice->currentState.upButton = value;
-		break;
-	case SDLK_DOWN:
-		this->inputDevice->currentState.downButton = value;
-		break;
-	case SDLK_m:
-		this->inputDevice->currentState.rotateRightButton = value;
-		break;
-	case SDLK_n:
-		this->inputDevice->currentState.rotateLeftButton = value;
-		break;
-
-
-	case SDLK_RETURN:
-		this->inputDevice->currentState.enterButton = value;
-		break;
-	default:
-		break;
+	    case 0:
+            this->inputDevice->currentState.rotateRightButton = value;
+            break;
+        case 3:
+            this->inputDevice->currentState.rotateLeftButton = value;
+            break;
+        case 11:
+            this->inputDevice->currentState.enterButton = value;
+            break;
+        default:
+            break;
 	}
+}
+
+static void setJoyHat(this_p(SDL_Screen), SDL_Event *e) {
+    printf("%d\n", e->jhat.hat);
+    switch (e->jhat.hat) {
+        case SDL_HAT_LEFT:
+            this->inputDevice->currentState.leftButton = true;
+            break;
+        case SDL_HAT_RIGHT:
+            this->inputDevice->currentState.rightButton = true;
+            break;
+        case SDL_HAT_UP:
+            this->inputDevice->currentState.upButton = true;
+            break;
+        case SDL_HAT_DOWN:
+            this->inputDevice->currentState.downButton = true;
+            break;
+        case SDL_HAT_CENTERED:
+            this->inputDevice->currentState.leftButton = false;
+            this->inputDevice->currentState.rightButton = false;
+            this->inputDevice->currentState.upButton = false;
+            this->inputDevice->currentState.downButton = false;
+        default:
+            break;
+    }
 }
 
 static void run(this_p(Screen), GameState* callbacks) {
@@ -147,6 +156,9 @@ static void run(this_p(Screen), GameState* callbacks) {
 				case SDL_JOYBUTTONDOWN:
 					setJoy(screen, &event, true);
 					break;
+                case SDL_JOYHATMOTION:
+                    setJoyHat(screen, &event);
+                    break;
                 default:
                     break;
             }
