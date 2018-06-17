@@ -328,6 +328,7 @@ static bool removeFirst(this_p(GameBoard), int *removedViruses, GameBoardElement
         *removedViruses += removeCells(this, xMax, yMax, 0, -1, toRemoveDMax);
         *removedViruses += removeCells(this, xMax, yMax, 1, 0, toRemoveRMax);
         *removedViruses += removeCells(this, xMax, yMax, -1, 0, toRemoveLMax);
+		if (*removedViruses == 0) *removedColor = GameBoardElement_NoColor;
         return true;
     } else {
         return false;
