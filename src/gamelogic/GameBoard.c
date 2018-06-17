@@ -6,6 +6,7 @@
 #include "GameBoard.h"
 #include "ExceptionManager.h"
 
+
 /* returns a pointer to the element at the position (x, y) of the game board */
 static GameBoardElement* getElement(this_p(GameBoard), size_t x, size_t y) {
     if (x > this->board.width)
@@ -18,11 +19,12 @@ static uint32_t randomBetween(size_t min, size_t max) {
 }
 
 
+
 /* *************************************************************** */
 /* Board generation                                                */
 /* *************************************************************** */
 
-/* returns true if the neighborhood cells are of the target color, false otherwise */
+/* true if neighborhood cells have target color */
 static bool isColorLegalInBoard(this_p(GameBoard), size_t x, size_t y, GameBoardElementColor target) {
     GameBoardElementColor curCell;
     GameBoardElementColor aboveCell1, aboveCell2, belowCell1, belowCell2;
@@ -64,6 +66,7 @@ static bool isColorLegalInBoard(this_p(GameBoard), size_t x, size_t y, GameBoard
     }
 }
 
+/* adds a new virus and increase virus count */
 static void addRandomVirus(this_p(GameBoard)) {
     GameBoardElement *element;
     uint32_t y = 0, x = 0;
@@ -82,10 +85,12 @@ static void addRandomVirus(this_p(GameBoard)) {
 }
 
 
+
 /* *************************************************************** */
 /* Pill Manipulation                                               */
 /* *************************************************************** */
 
+/* check pill type using a sliding window */
 static PillWindowType checkWindow(this_p(GameBoard), size_t x, size_t y) {
     GameBoardElement *thisElement = getElement(this, x, y);
     if (y < this->board.height - 1 && getElement(this, x, y + 1)->id == thisElement->id)
@@ -96,6 +101,7 @@ static PillWindowType checkWindow(this_p(GameBoard), size_t x, size_t y) {
         return Single;
 }
 
+/* swaps two elements in board */
 static bool swapElement(this_p(GameBoard), GameBoardElement *dest, GameBoardElement *src) {
     GameBoardElement bak = *dest;
     *dest = *src;
@@ -103,6 +109,7 @@ static bool swapElement(this_p(GameBoard), GameBoardElement *dest, GameBoardElem
     return true;
 }
 
+/* swaps two elements in board given direction of next */
 static bool swapElementDirection(this_p(GameBoard), size_t x, size_t y, PillDirection direction) {
     GameBoardElement *currentElement = getElement(this, x, y);
     switch (direction) {
@@ -117,7 +124,7 @@ static bool swapElementDirection(this_p(GameBoard), size_t x, size_t y, PillDire
     }
 }
 
-/* check immediate pill boundary */
+/* check if immediate pill boundary is empty */
 bool isBoundaryEmpty(this_p(GameBoard), size_t x, size_t y, PillDirection direction) {
     switch (direction) {
         case PillDirection_Up:
@@ -135,6 +142,8 @@ bool isBoundaryEmpty(this_p(GameBoard), size_t x, size_t y, PillDirection direct
     }
 }
 
+
+/* rotate an horizontal pill 90 degrees */
 static bool rotateHorizontal(this_p(GameBoard), size_t x, size_t y) {
     if (isBoundaryEmpty(this, x, y, PillDirection_Up)) {
         swapElement(this, getElement(this, x, y + 1),
@@ -147,6 +156,7 @@ static bool rotateHorizontal(this_p(GameBoard), size_t x, size_t y) {
     } else return false;
 }
 
+/* rotate a vertical pill 90 degrees */
 static bool rotateVertical(this_p(GameBoard), size_t x, size_t y) {
     if (isBoundaryEmpty(this, x, y, PillDirection_Right)) {
         swapElement(this, getElement(this, x + 1, y),
@@ -159,7 +169,7 @@ static bool rotateVertical(this_p(GameBoard), size_t x, size_t y) {
     } else return false;
 }
 
-/* handle pill moving and rotation */
+/* handle pill move and rotation */
 static bool pillMove(this_p(GameBoard), int id, PillDirection direction) {
     size_t x, y;
     for (x = 0; x < this->board.width; x++) {
@@ -242,7 +252,7 @@ static bool pillMove(this_p(GameBoard), int id, PillDirection direction) {
     return false;
 }
 
-/* returns true if something was moved */
+/* move everything down, true if something was moved */
 static bool applyGravity(this_p(GameBoard), int endId) {
     int id;
     bool moved = false;
@@ -252,6 +262,7 @@ static bool applyGravity(this_p(GameBoard), int endId) {
 
     return moved;
 }
+
 
 
 /* *************************************************************** */
@@ -287,17 +298,19 @@ static int removeCells(this_p(GameBoard), long x, long y, int dx, int dy, long t
 
 /* returns true if something was removed, places virus number in pointer */
 static bool removeFirst(this_p(GameBoard), int *removedViruses) {
-    long x, y, toRemoveD = 0, toRemoveR = 0, toRemoveL = 0;
-    long xMax = -1, yMax = 0, toRemoveDMax = 0, toRemoveRMax = 0, toRemoveLMax = 0;
+    long x, y, toRemoveU = 0, toRemoveD = 0, toRemoveR = 0, toRemoveL = 0;
+    long xMax = -1, yMax = 0, toRemoveUMax = 0, toRemoveDMax = 0, toRemoveRMax = 0, toRemoveLMax = 0;
     for (y = this->board.height - 1; y >= 0; y--) {
         for (x = 0; x < this->board.width; x++) {
             long sum;
+            toRemoveU = countColor(this, x, y, 0, 1, getElement(this, (size_t) x, (size_t) y)->color);
             toRemoveD = countColor(this, x, y, 0, -1, getElement(this, (size_t) x, (size_t) y)->color);
             toRemoveR = countColor(this, x, y, 1, 0, getElement(this, (size_t) x, (size_t) y)->color);
             toRemoveL = countColor(this, x, y, -1, 0, getElement(this, (size_t) x, (size_t) y)->color);
-            sum = toRemoveD + toRemoveL + toRemoveR;
-            if (toRemoveD >= 4 || toRemoveL >= 4 || toRemoveR >= 4) {
-                if (sum > (toRemoveDMax + toRemoveLMax + toRemoveRMax)) {
+            sum = toRemoveU + toRemoveD + toRemoveL + toRemoveR;
+            if (toRemoveU >= 4 || toRemoveD >= 4 || toRemoveL >= 4 || toRemoveR >= 4) {
+                if (sum > (toRemoveUMax + toRemoveDMax + toRemoveLMax + toRemoveRMax)) {
+                    toRemoveUMax = toRemoveU >= 4 ? toRemoveU : 0;
                     toRemoveDMax = toRemoveD >= 4 ? toRemoveD : 0;
                     toRemoveLMax = toRemoveL >= 4 ? toRemoveL : 0;
                     toRemoveRMax = toRemoveR >= 4 ? toRemoveR : 0;
@@ -310,6 +323,7 @@ static bool removeFirst(this_p(GameBoard), int *removedViruses) {
 
     /* remove always the maximum possible first, for L and T formations */
     if (xMax != -1 && yMax != -1) {
+        *removedViruses += removeCells(this, xMax, yMax, 0, 1, toRemoveUMax);
         *removedViruses += removeCells(this, xMax, yMax, 0, -1, toRemoveDMax);
         *removedViruses += removeCells(this, xMax, yMax, 1, 0, toRemoveRMax);
         *removedViruses += removeCells(this, xMax, yMax, -1, 0, toRemoveLMax);

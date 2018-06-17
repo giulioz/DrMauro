@@ -19,7 +19,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b897a21d-348f-4298-a336-84ba50d9153e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Parameters.c" afterPath="$PROJECT_DIR$/src/Parameters.c" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/boards/multiple.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/GameBoard.c" afterPath="$PROJECT_DIR$/src/gamelogic/GameBoard.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" afterPath="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,21 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FileGameBoard.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gamelogic/FileGameBoard.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="44" column="16" lean-forward="false" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameBoard.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameBoard.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gamelogic/GameBoard.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="302" column="66" lean-forward="false" selection-start-line="302" selection-start-column="66" selection-end-line="302" selection-end-column="66" />
+            <state relative-caret-position="346">
+              <caret line="325" column="45" lean-forward="true" selection-start-line="325" selection-start-column="45" selection-end-line="325" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -54,18 +47,8 @@
       <file leaf-file-name="SinglePlayerGame.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="18" column="24" lean-forward="true" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Parameters.c" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Parameters.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="44" column="63" lean-forward="false" selection-start-line="44" selection-start-column="63" selection-end-line="44" selection-end-column="63" />
+            <state relative-caret-position="590">
+              <caret line="155" column="0" lean-forward="true" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -136,7 +119,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/assets/BigPill.c" />
         <option value="$PROJECT_DIR$/src/assets/MenuUI.c" />
         <option value="$PROJECT_DIR$/src/SDL/SDL_InputDevice.c" />
         <option value="$PROJECT_DIR$/tools/imgtool/imgtool.c" />
@@ -169,7 +151,6 @@
         <option value="$PROJECT_DIR$/include/gamelogic/FileGameBoard.h" />
         <option value="$PROJECT_DIR$/src/gamelogic/FileGameBoard.c" />
         <option value="$PROJECT_DIR$/include/gamelogic/GameBoard.h" />
-        <option value="$PROJECT_DIR$/src/gamelogic/GameBoard.c" />
         <option value="$PROJECT_DIR$/include/states/DifficultySelectionGameState.h" />
         <option value="$PROJECT_DIR$/.gitmodules" />
         <option value="$PROJECT_DIR$/include/audio/AudioManager.h" />
@@ -180,13 +161,15 @@
         <option value="$PROJECT_DIR$/src/states/BootState.c" />
         <option value="$PROJECT_DIR$/src/states/MultiPlayerGameState.c" />
         <option value="$PROJECT_DIR$/include/gamelogic/SinglePlayerGame.h" />
-        <option value="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
         <option value="$PROJECT_DIR$/include/states/MultiPlayerGameState.h" />
         <option value="$PROJECT_DIR$/src/states/DifficultySelectionGameState.c" />
         <option value="$PROJECT_DIR$/src/states/SinglePlayerGameState.c" />
         <option value="$PROJECT_DIR$/src/gamelogic/GameSpeedProvider.c" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/Parameters.c" />
+        <option value="$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c" />
+        <option value="$PROJECT_DIR$/boards/multiple.txt" />
+        <option value="$PROJECT_DIR$/src/gamelogic/GameBoard.c" />
       </list>
     </option>
   </component>
@@ -376,7 +359,7 @@
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all">
       <envs />
     </configuration>
-    <configuration name="DrMauro" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-f ../boards/test.txt -s 0.3" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="DrMauro" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DrMauro" RUN_TARGET_NAME="DrMauro">
+    <configuration name="DrMauro" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-f ../boards/multiple.txt -s 0.3" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="DrMauro" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DrMauro" RUN_TARGET_NAME="DrMauro">
       <envs />
     </configuration>
     <configuration name="SDL2-static" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DrMauro" TARGET_NAME="SDL2-static" CONFIG_NAME="Debug">
@@ -428,12 +411,12 @@
       <workItem from="1526129323360" duration="31064000" />
       <workItem from="1526292893152" duration="132600000" />
       <workItem from="1527437785092" duration="80483000" />
-      <workItem from="1529148956336" duration="7184000" />
+      <workItem from="1529148956336" duration="8596000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="434552000" />
+    <option name="totallyTimeSpent" value="435964000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -493,20 +476,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/include/Object.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="8" lean-forward="false" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/assets/Palettes.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="73" column="9" lean-forward="false" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Timeline.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
@@ -567,6 +536,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="15" lean-forward="false" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -653,13 +623,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deps/debugbreak/debugbreak.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/gamelogic/FileGameBoard.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -728,6 +691,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="2" lean-forward="false" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -837,22 +801,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gamelogic/FileGameBoard.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="44" column="16" lean-forward="false" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gamelogic/GameBoard.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="302" column="66" lean-forward="false" selection-start-line="302" selection-start-column="66" selection-end-line="302" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deps/SDL-mirror/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="890">
@@ -869,18 +817,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
+    <entry file="file://$PROJECT_DIR$/src/Parameters.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="18" column="24" lean-forward="true" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+        <state relative-caret-position="299">
+          <caret line="46" column="22" lean-forward="true" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Parameters.c">
+    <entry file="file://$PROJECT_DIR$/boards/combo.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="44" column="63" lean-forward="false" selection-start-line="44" selection-start-column="63" selection-end-line="44" selection-end-column="63" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/boards/multiple.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="8" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="15" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deps/debugbreak/debugbreak.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gamelogic/FileGameBoard.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="59" column="26" lean-forward="false" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gamelogic/SinglePlayerGame.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="590">
+          <caret line="155" column="0" lean-forward="true" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gamelogic/GameBoard.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="325" column="45" lean-forward="true" selection-start-line="325" selection-start-column="45" selection-end-line="325" selection-end-column="45" />
           <folding />
         </state>
       </provider>

@@ -11,7 +11,7 @@ static uint32_t randomBetween(size_t min, size_t max) {
 }
 
 
-/* for board init animation */
+/* for board init animation, returns false if virus number reached */
 static bool addNextVirus(this_p(SinglePlayerGame)) {
     if (this->board->virusCount < this->virusCount) {
         VTP(this->board)->addRandomVirus(this->board);
@@ -19,6 +19,7 @@ static bool addNextVirus(this_p(SinglePlayerGame)) {
     } else return false;
 }
 
+/* new pill on top, false if loose */
 static bool addNextPill(this_p(SinglePlayerGame)) {
     GameBoardElement *r, *l;
     l = VTP(this->board)->getElement(this->board, 3, this->board->board.height - 1);
@@ -48,6 +49,7 @@ static void updateScore(this_p(SinglePlayerGame)) {
 }
 
 
+/* update gravity every time */
 static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
     if (this->state == SinglePlayerState_Moving || this->state == SinglePlayerState_NoControl) {
         if (this->nextAction == SinglePlayerAction_Remove) {
@@ -77,14 +79,14 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
     }
 }
 
-
+/* callback from frontend */
 static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direction) {
     uint32_t time = VTP(engine->screen)->getCurrentTime(engine->screen);
 
     /* filling board */
     if (this->state == SinglePlayerState_FillingBoard) {
         if (!addNextVirus(this)) {
-            this->state = SinglePlayerState_WaitingForPill;
+            this->state = SinglePlayerState_WaitingForPill; /* ready for begin the game */
         }
     }
 
