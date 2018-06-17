@@ -12,7 +12,10 @@ static InputState* getInputState(this_p(InputDevice)) {
 }
 
 static void reset(this_p(InputDevice)) {
-    memset(&((SDL_InputDevice*)this)->currentState, 0, sizeof(InputState));
+	SDL_InputDevice *device = (SDL_InputDevice *)this;
+	device->currentState.direction1 = PillDirection_Nothing;
+	device->currentState.direction2 = PillDirection_Nothing;
+	device->currentState.enterButton = false;
 }
 
 static struct InputDevice_VTABLE _vtable = {

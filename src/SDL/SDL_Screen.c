@@ -6,6 +6,12 @@
 #include "SDL_Screen.h"
 
 #define scaling 2
+#define joystick_axisTollerance 20
+
+
+/*****************************************************************/
+/* Init                                                          */
+/*****************************************************************/
 
 static void init(this_p(Screen)) {
     SDL_Screen *screen = (SDL_Screen*)this;
@@ -34,97 +40,122 @@ static void init(this_p(Screen)) {
     screen->screenSurface = SDL_CreateRGBSurface(0, this->width, this->height, 32, 0, 0, 0, 0);
 }
 
-static void setKey(this_p(SDL_Screen), SDL_Event *e, bool value) {
-    switch (e->key.keysym.sym) {
-        /* Player 1 */
-        case SDLK_LEFT:
-            this->inputDevice->currentState.leftButton = value;
-            break;
-        case SDLK_RIGHT:
-            this->inputDevice->currentState.rightButton = value;
-            break;
-        case SDLK_UP:
-            this->inputDevice->currentState.upButton = value;
-            break;
-        case SDLK_DOWN:
-            this->inputDevice->currentState.downButton = value;
-            break;
-        case SDLK_m:
-            this->inputDevice->currentState.rotateRightButton = value;
-            break;
-        case SDLK_n:
-            this->inputDevice->currentState.rotateLeftButton = value;
-            break;
 
-        /* Player 2 */
-        case SDLK_a:
-            this->inputDevice->currentState.leftButton2 = value;
-            break;
-        case SDLK_d:
-            this->inputDevice->currentState.rightButton2 = value;
-            break;
-        case SDLK_w:
-            this->inputDevice->currentState.upButton2 = value;
-            break;
-        case SDLK_s:
-            this->inputDevice->currentState.downButton2 = value;
-            break;
-        case SDLK_1:
-            this->inputDevice->currentState.rotateRightButton2 = value;
-            break;
-        case SDLK_2:
-            this->inputDevice->currentState.rotateLeftButton2 = value;
-            break;
+/*****************************************************************/
+/* Input                                                         */
+/*****************************************************************/
+
+static void setKey(this_p(SDL_Screen), SDL_Event *e) {
+	if (e->key.type == SDL_KEYUP) {
+		/* Player 1 */
+		if(e->key.keysym.sym == SDLK_LEFT
+			|| e->key.keysym.sym == SDLK_RIGHT
+			|| e->key.keysym.sym == SDLK_UP
+			|| e->key.keysym.sym == SDLK_DOWN
+			|| e->key.keysym.sym == SDLK_m
+			|| e->key.keysym.sym == SDLK_n)
+			this->inputDevice->currentState.direction1 = PillDirection_Nothing;
+
+		/* Player 2 */
+		if (e->key.keysym.sym == SDLK_a
+			|| e->key.keysym.sym == SDLK_s
+			|| e->key.keysym.sym == SDLK_d
+			|| e->key.keysym.sym == SDLK_w
+			|| e->key.keysym.sym == SDLK_1
+			|| e->key.keysym.sym == SDLK_2)
+			this->inputDevice->currentState.direction2 = PillDirection_Nothing;
+
+		if (e->key.keysym.sym == SDLK_RETURN)
+			this->inputDevice->currentState.enterButton = false;
+	}
+	else {
+		switch (e->key.keysym.sym) {
+			/* Player 1 */
+			case SDLK_LEFT:
+				this->inputDevice->currentState.direction1 = PillDirection_Left;
+				break;
+			case SDLK_RIGHT:
+				this->inputDevice->currentState.direction1 = PillDirection_Right;
+				break;
+			case SDLK_UP:
+				this->inputDevice->currentState.direction1 = PillDirection_Up;
+				break;
+			case SDLK_DOWN:
+				this->inputDevice->currentState.direction1 = PillDirection_Down;
+				break;
+			case SDLK_m:
+				this->inputDevice->currentState.direction1 = PillDirection_RotateRight;
+				break;
+			case SDLK_n:
+				this->inputDevice->currentState.direction1 = PillDirection_RotateLeft;
+				break;
+
+			/* Player 2 */
+			case SDLK_a:
+				this->inputDevice->currentState.direction2 = PillDirection_Left;
+				break;
+			case SDLK_d:
+				this->inputDevice->currentState.direction2 = PillDirection_Right;
+				break;
+			case SDLK_w:
+				this->inputDevice->currentState.direction2 = PillDirection_Up;
+				break;
+			case SDLK_s:
+				this->inputDevice->currentState.direction2 = PillDirection_Down;
+				break;
+			case SDLK_1:
+				this->inputDevice->currentState.direction2 = PillDirection_RotateRight;
+				break;
+			case SDLK_2:
+				this->inputDevice->currentState.direction2 = PillDirection_RotateLeft;
+				break;
 
 
-        case SDLK_RETURN:
-            this->inputDevice->currentState.enterButton = value;
-            break;
-        default:
-            break;
-    }
+			case SDLK_RETURN:
+				this->inputDevice->currentState.enterButton = true;
+				break;
+			default:
+				break;
+		}
+	}
 }
 
-static void setJoy(this_p(SDL_Screen), SDL_Event *e, bool value) {
+static void setJoy(this_p(SDL_Screen), SDL_Event *e, PillDirection *dest) {
 	switch (e->jbutton.button) {
 	    case 0:
-            this->inputDevice->currentState.rotateRightButton = value;
+            this->inputDevice->currentState.direction1 = PillDirection_RotateRight;
             break;
         case 3:
-            this->inputDevice->currentState.rotateLeftButton = value;
+            this->inputDevice->currentState.direction1 = PillDirection_RotateLeft;
             break;
         case 11:
-            this->inputDevice->currentState.enterButton = value;
+            this->inputDevice->currentState.enterButton = true;
             break;
         default:
             break;
 	}
 }
 
-static void setJoyHat(this_p(SDL_Screen), SDL_Event *e) {
-    printf("%d\n", e->jhat.hat);
-    switch (e->jhat.hat) {
-        case SDL_HAT_LEFT:
-            this->inputDevice->currentState.leftButton = true;
-            break;
-        case SDL_HAT_RIGHT:
-            this->inputDevice->currentState.rightButton = true;
-            break;
-        case SDL_HAT_UP:
-            this->inputDevice->currentState.upButton = true;
-            break;
-        case SDL_HAT_DOWN:
-            this->inputDevice->currentState.downButton = true;
-            break;
-        case SDL_HAT_CENTERED:
-            this->inputDevice->currentState.leftButton = false;
-            this->inputDevice->currentState.rightButton = false;
-            this->inputDevice->currentState.upButton = false;
-            this->inputDevice->currentState.downButton = false;
-        default:
-            break;
-    }
+static void setJoyAxis(this_p(SDL_Screen), SDL_Event *e, PillDirection *destination) {
+	int xAxis = SDL_JoystickGetAxis(this->controller, 0);
+	int yAxis = SDL_JoystickGetAxis(this->controller, 1);
+
+	if (abs(xAxis) <= joystick_axisTollerance && abs(yAxis) <= joystick_axisTollerance)
+		*destination = PillDirection_Nothing;
+	else if (xAxis > joystick_axisTollerance && abs(yAxis) <= joystick_axisTollerance)
+		*destination = PillDirection_Right;
+	else if (xAxis < -joystick_axisTollerance && abs(yAxis) <= joystick_axisTollerance)
+		*destination = PillDirection_Left;
+	else if (abs(xAxis) <= joystick_axisTollerance && yAxis > joystick_axisTollerance)
+		*destination = PillDirection_Down;
+	else if (abs(xAxis) <= joystick_axisTollerance && yAxis < -joystick_axisTollerance)
+		*destination = PillDirection_Up;
 }
+
+
+/*****************************************************************/
+/* Run                                                           */
+/*****************************************************************/
 
 static void run(this_p(Screen), GameState* callbacks) {
     SDL_Screen *screen = (SDL_Screen *) this;
@@ -156,9 +187,9 @@ static void run(this_p(Screen), GameState* callbacks) {
 				case SDL_JOYBUTTONDOWN:
 					setJoy(screen, &event, true);
 					break;
-                case SDL_JOYHATMOTION:
-                    setJoyHat(screen, &event);
-                    break;
+				case SDL_JOYAXISMOTION:
+					setJoyAxis(screen, &event, &(screen->inputDevice->currentState.direction1));
+					break;
                 default:
                     break;
             }
@@ -175,6 +206,11 @@ static void run(this_p(Screen), GameState* callbacks) {
         SDL_Delay(10);
     }
 }
+
+
+/*****************************************************************/
+/* Close                                                         */
+/*****************************************************************/
 
 static void close(this_p(Screen)) {
     SDL_Screen *screen = (SDL_Screen*)this;

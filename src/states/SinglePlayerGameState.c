@@ -306,7 +306,7 @@ static bool update(this_p(GameState)) {
     }
 
 	/* Update controller */
-	VTP(state->logic)->update(state->logic, this->engine, getDirectionFromKeyboard(this->engine));
+	VTP(state->logic)->update(state->logic, this->engine, inputState->direction1);
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */

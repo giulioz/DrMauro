@@ -243,32 +243,27 @@ static bool update(this_p(GameState)) {
     DifficultySelectionGameState *state = (DifficultySelectionGameState *)this;
     InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
-    if (inputState->downButton) {
+    if (inputState->direction1 == PillDirection_Down) {
         state->selectedMenuEntry += state->selectedMenuEntry < DifficultySelectionGameState_MusicType ? 1 : 0;
         allKeysDown(this);
-    } else if (inputState->upButton) {
+    } else if (inputState->direction1 == PillDirection_Up) {
         state->selectedMenuEntry -= state->selectedMenuEntry > DifficultySelectionGameState_VirusLevel ? 1 : 0;
         allKeysDown(this);
     }
 
-    if (inputState->rightButton) {
+    if (inputState->direction1 == PillDirection_Right) {
         increment(state, 0);
         allKeysDown(this);
-    } else if (inputState->leftButton) {
+    } else if (inputState->direction1 == Left) {
         decrement(state, 0);
         allKeysDown(this);
     }
-    if (inputState->rightButton2) {
+    if (inputState->direction2 == PillDirection_Right) {
         increment(state, 1);
         allKeysDown(this);
-    } else if (inputState->leftButton2) {
+    } else if (inputState->direction2 == PillDirection_Left) {
         decrement(state, 1);
         allKeysDown(this);
-    }
-
-    if (inputState->rotateRightButton || inputState->rotateLeftButton) {
-        allKeysDown(this);
-        return false;
     }
 
     if (inputState->enterButton) {

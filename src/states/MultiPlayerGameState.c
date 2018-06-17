@@ -171,8 +171,8 @@ static bool update(this_p(GameState)) {
 
 	if (!(state->logic1->state == SinglePlayerState_EndLost || state->logic1->state == SinglePlayerState_EndWon
 		|| state->logic2->state == SinglePlayerState_EndLost || state->logic2->state == SinglePlayerState_EndWon)) {
-		VTP(state->logic1)->update(state->logic1, this->engine, getDirectionFromKeyboard(this->engine));
-		VTP(state->logic2)->update(state->logic2, this->engine, getDirectionFromKeyboard(this->engine));
+		VTP(state->logic1)->update(state->logic1, this->engine, inputState->direction1);
+		VTP(state->logic2)->update(state->logic2, this->engine, inputState->direction2);
 	}
 
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
