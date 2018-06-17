@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 /* fills the game board with the viruses loaded from a file */
-static void addRandomVirus(this_p(GameBoard)) {
+static GameBoardElement* addRandomVirus(this_p(GameBoard)) {
     FileGameBoard *fileGameBoard = (FileGameBoard *) this;
     size_t j;
     size_t x = fileGameBoard->lastX, y = fileGameBoard->lastY;
@@ -41,11 +41,16 @@ static void addRandomVirus(this_p(GameBoard)) {
             fileGameBoard->lastX = x + 1;
             fileGameBoard->lastY = y;
             this->virusCount++;
-            return;
+            this->lastAddedVirus = element;
+            this->lastAddedX = (uint32_t) x;
+            this->lastAddedY = (uint32_t) y;
+            return element;
         } else {
             x++;
         }
     }
+
+    return NULL;
 }
 
 /* open a file containing a game board, raises
@@ -79,8 +84,8 @@ static size_t getVirusCount(this_p(FileGameBoard)) {
 
 static struct GameBoard_VTABLE _vtable;
 
-void FileGameBoard_init(this_p(FileGameBoard), char *filePath) {
-    GameBoard_init(&this->base);
+void FileGameBoard_init(this_p(FileGameBoard), Random *random, char *filePath) {
+    GameBoard_init(&this->base, random);
 
     _vtable = *this->base.VTABLE;
     VT(this->base) = &_vtable;

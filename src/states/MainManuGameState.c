@@ -53,9 +53,9 @@ static bool update(this_p(GameState)) {
     MainMenuGameState *state = (MainMenuGameState *)this;
     InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
-    if (inputState->downButton) {
+    if (inputState->direction1 == PillDirection_Down) {
         state->selectedMenuEntry = 1;
-    } else if (inputState->upButton) {
+    } else if (inputState->direction1 == PillDirection_Up) {
         state->selectedMenuEntry = 0;
     }
 

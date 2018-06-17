@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <states/DifficultySelectionGameState.h>
+#include <time.h>
 
 #ifndef WIN32
 #define sprintf_s(buffer, size, stringbuffer, ...) (snprintf(buffer, size, stringbuffer, __VA_ARGS__))
@@ -180,9 +181,11 @@ static void startSinglePlayer(this_p(DifficultySelectionGameState)) {
     SinglePlayerGame logic;
     GameBoard board;
     GameSpeedProvider speedProvider;
+    Random random;
     size_t currentLevel;
     bool won = true;
 
+    Random_init(&random, (uint32_t) time(NULL));
     GameSpeedProvider_init(&speedProvider, (size_t) this->playerInfos[0].speed,
                            Default_FirstPillTimeout,
                            Default_NextPillDelay,
@@ -190,7 +193,7 @@ static void startSinglePlayer(this_p(DifficultySelectionGameState)) {
                            Default_FallingGravityDelay);
 
     for (currentLevel = this->playerInfos[0].virusLevel; currentLevel <= 20 && won; currentLevel++) {
-        GameBoard_init(&board);
+        GameBoard_init(&board, &random);
 
         SinglePlayerGame_init(&logic, 0, currentLevel,
                               &speedProvider, &board);
@@ -206,8 +209,9 @@ static void startMultiPlayer(this_p(DifficultySelectionGameState)) {
 	SinglePlayerGame logic1, logic2;
 	GameBoard board1, board2;
 	GameSpeedProvider speedProvider1, speedProvider2;
-	size_t currentLevel1, currentLevel2;
-	bool won = true;
+    Random random1, random2;
+    int currentStage;
+    int winners[3] = {0};
 
 	GameSpeedProvider_init(&speedProvider1, (size_t)this->playerInfos[0].speed,
 		Default_FirstPillTimeout,
@@ -220,21 +224,26 @@ static void startMultiPlayer(this_p(DifficultySelectionGameState)) {
 		(uint32_t)(500 / ((this->playerInfos[1].speed + 1) * 1.5)),
 		Default_FallingGravityDelay);
 
-	//for (currentLevel = this->playerInfos[0].virusLevel; currentLevel <= 20 && won; currentLevel++) {
-		GameBoard_init(&board1);
-		GameBoard_init(&board2);
+	for (currentStage = 0; currentStage < 3; currentStage++) {
+        /* having same random seed we will get same board :) */
+        time_t t = time(NULL);
+        Random_init(&random1, (uint32_t) t);
+        Random_init(&random2, (uint32_t) t);
 
-		currentLevel1 = this->playerInfos[0].virusLevel;
-		currentLevel2 = this->playerInfos[1].virusLevel;
-		SinglePlayerGame_init(&logic1, 0, currentLevel1,
+		GameBoard_init(&board1, &random1);
+		GameBoard_init(&board2, &random2);
+
+		SinglePlayerGame_init(&logic1, 0, this->playerInfos[0].virusLevel,
 			&speedProvider1, &board1);
-		SinglePlayerGame_init(&logic2, 0, currentLevel2,
+		SinglePlayerGame_init(&logic2, 0, this->playerInfos[1].virusLevel,
 			&speedProvider2, &board2);
 
 		MultiPlayerGameState_init(&multiPlayerGameState, this->base.engine, &logic1, &logic2);
 		VTP(this->base.engine)->loadState(this->base.engine, (GameState *)&multiPlayerGameState);
-		//won = (bool)(logic1.state == SinglePlayerState_EndWon);
-	//}
+
+        if (logic1.state == SinglePlayerState_EndWon) winners[currentStage] = 0;
+        else if (logic2.state == SinglePlayerState_EndWon) winners[currentStage] = 1;
+	}
 }
 
 
@@ -243,32 +252,27 @@ static bool update(this_p(GameState)) {
     DifficultySelectionGameState *state = (DifficultySelectionGameState *)this;
     InputState *inputState = VTP(this->engine->inputDevice)->getInputState(this->engine->inputDevice);
 
-    if (inputState->downButton) {
+    if (inputState->direction1 == PillDirection_Down) {
         state->selectedMenuEntry += state->selectedMenuEntry < DifficultySelectionGameState_MusicType ? 1 : 0;
         allKeysDown(this);
-    } else if (inputState->upButton) {
+    } else if (inputState->direction1 == PillDirection_Up) {
         state->selectedMenuEntry -= state->selectedMenuEntry > DifficultySelectionGameState_VirusLevel ? 1 : 0;
         allKeysDown(this);
     }
 
-    if (inputState->rightButton) {
+    if (inputState->direction1 == PillDirection_Right) {
         increment(state, 0);
         allKeysDown(this);
-    } else if (inputState->leftButton) {
+    } else if (inputState->direction1 == PillDirection_Left) {
         decrement(state, 0);
         allKeysDown(this);
     }
-    if (inputState->rightButton2) {
+    if (inputState->direction2 == PillDirection_Right) {
         increment(state, 1);
         allKeysDown(this);
-    } else if (inputState->leftButton2) {
+    } else if (inputState->direction2 == PillDirection_Left) {
         decrement(state, 1);
         allKeysDown(this);
-    }
-
-    if (inputState->rotateRightButton || inputState->rotateLeftButton) {
-        allKeysDown(this);
-        return false;
     }
 
     if (inputState->enterButton) {

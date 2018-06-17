@@ -1,11 +1,14 @@
 /*
  *  GameBoard.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  A DrMauro generic game board
  */
 
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
 
+/* Hard-coded board sizes */
 #define BoardWidth 8
 #define BoardHeight 16
 #define BoardVirusUpperLimit 5
@@ -14,6 +17,7 @@
 #include "Bool.h"
 #include "Vector.h"
 #include "CIntTypes.h"
+#include "Random.h"
 
 typedef enum {
     GameBoardElement_Empty,
@@ -53,10 +57,19 @@ typedef class GameBoardElement {
 class GameBoard;
 
 struct GameBoard_VTABLE {
+    /* gets the pointer to an element of the board */
     GameBoardElement* (*getElement)(this_p(GameBoard), size_t x, size_t y);
-    void (*addRandomVirus)(this_p(GameBoard));
+
+    /* adds a new random virus and returns the pointer to it */
+    GameBoardElement* (*addRandomVirus)(this_p(GameBoard));
+
+    /* try remove rows of 4 or more elements */
     bool (*removeFirst)(this_p(GameBoard), int *removedViruses, GameBoardElementColor *removedColor);
+
+    /* move a pill with a given direction */
     bool (*pillMove)(this_p(GameBoard), int id, PillDirection direction);
+
+    /* move pills down */
     bool (*applyGravity)(this_p(GameBoard), int endId);
 };
 
@@ -66,8 +79,13 @@ typedef class GameBoard {
     GameBoardElement boardAlloc[BoardWidth*BoardHeight];
     Vector2D board;
     size_t virusCount;
+
+    /* for multiplayer mirroring */
+    GameBoardElement* lastAddedVirus;
+    uint32_t lastAddedX, lastAddedY;
+    Random *random;
 } GameBoard;
 
-void GameBoard_init(this_p(GameBoard));
+void GameBoard_init(this_p(GameBoard), Random *random);
 
 #endif

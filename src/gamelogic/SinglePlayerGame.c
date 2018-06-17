@@ -1,14 +1,16 @@
 /*
  *  SinglePlayerGame.c
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  Manages a player and the gameplay
+ *
+ *  Va bene sia per il single player che per il multiplayer.
+ *  Lo so, avrei dovuto fare un'altra classe che eredita e fare l'override di alcune cose invece che fare sta schifezza,
+ *  ma sono le 16:34 e la consegna è alle 00, quindi devo muovermi.
+ *  Saluti e tanti auguri a leggere più di 5000 righe di codice scritte con i piedi.
  */
 
 #include "SinglePlayerGame.h"
-#include <time.h>
-
-static uint32_t randomBetween(size_t min, size_t max) {
-    return (uint32_t)((rand() % (max - min)) + min);
-}
 
 
 /* for board init animation, returns false if virus number reached */
@@ -109,8 +111,10 @@ static void update(this_p(SinglePlayerGame), Engine* engine, PillDirection direc
     /* create new pill */
     if (this->state == SinglePlayerState_Ready) {
         if (addNextPill(this)) {
-            this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
-            this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
+            this->nextPillColorL =
+                    (GameBoardElementColor)(VTP(this->board->random)->randomBetween(this->board->random, 0, 3));
+            this->nextPillColorR =
+                    (GameBoardElementColor)(VTP(this->board->random)->randomBetween(this->board->random, 0, 3));
             this->state = SinglePlayerState_Moving;
             this->lastGravityTime = VTP(engine->screen)->getCurrentTime(engine->screen);
             this->scoreMultiplier = 1;
@@ -146,11 +150,9 @@ void SinglePlayerGame_init(this_p(SinglePlayerGame), size_t top, size_t level,
     this->lastActionResult = true;
     this->nextAction = SinglePlayerAction_Gravity;
 
-    srand((unsigned int) time(NULL));
-
     /* Next pill */
-    this->nextPillColorL = (GameBoardElementColor)(randomBetween(0, 3));
-    this->nextPillColorR = (GameBoardElementColor)(randomBetween(0, 3));
+    this->nextPillColorL = (GameBoardElementColor)(VTP(this->board->random)->randomBetween(this->board->random, 0, 3));
+    this->nextPillColorR = (GameBoardElementColor)(VTP(this->board->random)->randomBetween(this->board->random, 0, 3));
     this->currentPillId = -1;
 
     this->lastVirusRemovedColor = GameBoardElement_NoColor;

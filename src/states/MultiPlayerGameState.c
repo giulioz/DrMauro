@@ -8,7 +8,7 @@
 #include "MultiPlayerGameState.h"
 
 #include <stdio.h>
-#include <math.h>
+
 #ifndef WIN32
 #define sprintf_s(buffer, size, stringbuffer, ...) (snprintf(buffer, size, stringbuffer, __VA_ARGS__))
 #endif
@@ -31,8 +31,8 @@ static void unload(this_p(MultiPlayerGameState)) {
 
 static void drawScorePanel(Graphics* graphics, size_t top, size_t score) {
     char top_c[8] = {0}, score_c[8] = {0};
-    sprintf_s(top_c, 8, "%07d", top);
-    sprintf_s(score_c, 8, "%07d", score);
+    sprintf_s(top_c, 8, "%07d", (int)top);
+    sprintf_s(score_c, 8, "%07d", (int)score);
 
     VT(Asset_PanelLarge)->draw(&Asset_PanelLarge, graphics, 8, 34, 59);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 16, 55, "TOP", 0);
@@ -43,8 +43,8 @@ static void drawScorePanel(Graphics* graphics, size_t top, size_t score) {
 
 static void drawLevelPanel(Graphics* graphics, size_t level, size_t speed, size_t virus) {
     char level_c[3] = {0}, virus_c[3] = {0};
-    sprintf_s(level_c, 3, "%02d", level);
-    sprintf_s(virus_c, 3, "%02d", virus);
+    sprintf_s(level_c, 3, "%02d", (int)level);
+    sprintf_s(virus_c, 3, "%02d", (int)virus);
 
     VT(Asset_PanelSmall)->draw(&Asset_PanelSmall, graphics, 176, 122, 83);
     VTP(graphics)->drawString(graphics, &Asset_DefaultFont, 184, 143, "LEVEL", 0);
@@ -94,7 +94,7 @@ static void drawGameBoard(this_p(MultiPlayerGameState), Screen* screen, SinglePl
                     drawVirus(screen, sx + 8, y, x, element->color);
                     break;
                 case GameBoardElement_Pill:
-                    drawPill(screen, sx + 7, y, x, element->color, checkPillNeighborhoods(&logic->board->board, x, y));
+                    drawPill(screen, sx + 9, y, x, element->color, checkPillNeighborhoods(&logic->board->board, x, y));
                     break;
                 default:
                     break;
@@ -143,7 +143,7 @@ static void draw(this_p(GameState)) {
 
     /* Current Pill */
     drawNextPill(state, graphics, state->logic1, 56);
-    drawNextPill(state, graphics, state->logic1, 184);
+    drawNextPill(state, graphics, state->logic2, 184);
 
 #ifdef SAVE_DEBUG
     SDL_SaveBMP(((SDL_Graphics*)graphics)->screen->screenSurface, "a.bmp");
@@ -166,10 +166,14 @@ static void updateAnimations(this_p(MultiPlayerGameState)) {
     if (this->logic1->state != this->lastLogicState1) {
         switch (this->logic1->state) {
             case SinglePlayerState_WaitingForPill:
-                if (this->lastLogicState1 == SinglePlayerState_FillingBoard)
+                if (this->lastLogicState1 == SinglePlayerState_FillingBoard) {
+                    /* to get the same pills in both boards */
+                    /* BTW pointers are best source of randomness IMHO */
+                    Random_init(this->logic1->board->random, (uint32_t) this->logic1->board->board.data);
                     VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
-                                                 currentTime + this->logic1->speedProvider->firstPillTimeout, this->logic1);
-                else
+                                                 currentTime + this->logic1->speedProvider->firstPillTimeout,
+                                                 this->logic1);
+                } else
                     VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
                                                  currentTime + this->logic1->speedProvider->nextPillDelay*2, this->logic1);
                 break;
@@ -184,10 +188,12 @@ static void updateAnimations(this_p(MultiPlayerGameState)) {
     if (this->logic2->state != this->lastLogicState2) {
         switch (this->logic2->state) {
             case SinglePlayerState_WaitingForPill:
-                if (this->lastLogicState2 == SinglePlayerState_FillingBoard)
+                if (this->lastLogicState2 == SinglePlayerState_FillingBoard) {
+                    Random_init(this->logic2->board->random, (uint32_t) this->logic1->board->board.data);
                     VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
-                                                 currentTime + this->logic2->speedProvider->firstPillTimeout, this->logic2);
-                else
+                                                 currentTime + this->logic2->speedProvider->firstPillTimeout,
+                                                 this->logic2);
+                } else
                     VT(this->timeline)->addEvent(&this->timeline, (void (*)(void *)) newPill,
                                                  currentTime + this->logic2->speedProvider->nextPillDelay*2, this->logic2);
                 break;
@@ -217,8 +223,8 @@ static bool update(this_p(GameState)) {
     /* Update game logic */
 	if (!(state->logic1->state == SinglePlayerState_EndLost || state->logic1->state == SinglePlayerState_EndWon
 		|| state->logic2->state == SinglePlayerState_EndLost || state->logic2->state == SinglePlayerState_EndWon)) {
-		VTP(state->logic1)->update(state->logic1, this->engine, getDirectionFromKeyboard(this->engine));
-		VTP(state->logic2)->update(state->logic2, this->engine, getDirectionFromKeyboard(this->engine));
+		VTP(state->logic1)->update(state->logic1, this->engine, inputState->direction2);
+		VTP(state->logic2)->update(state->logic2, this->engine, inputState->direction1);
 	}
     updateAnimations(state);
 

@@ -9,13 +9,11 @@
 #include "Object.h"
 #include "Bool.h"
 #include "CIntTypes.h"
+#include "GameBoard.h"
 
 typedef class InputState {
-    bool rotateLeftButton, rotateRightButton;
-    bool rotateLeftButton2, rotateRightButton2;
     bool enterButton;
-    bool upButton, downButton, leftButton, rightButton;
-    bool upButton2, downButton2, leftButton2, rightButton2;
+	PillDirection direction1, direction2;
 } InputState;
 
 class InputDevice;

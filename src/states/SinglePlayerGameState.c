@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <math.h>
+
 #ifndef WIN32
 #define sprintf_s(buffer, size, stringbuffer, ...) (snprintf(buffer, size, stringbuffer, __VA_ARGS__))
 #endif
@@ -300,7 +301,7 @@ static bool update(this_p(GameState)) {
     }
 
 	/* Update controller */
-	VTP(state->logic)->update(state->logic, this->engine, getDirectionFromKeyboard(this->engine));
+	VTP(state->logic)->update(state->logic, this->engine, inputState->direction1);
     VTP(this->engine->inputDevice)->reset(this->engine->inputDevice);
 
     /* Timeline */

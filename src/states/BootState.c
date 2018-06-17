@@ -3,6 +3,7 @@
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
  */
 
+#include <time.h>
 #include "BootState.h"
 
 static void startMenu(this_p(GameState)) {
@@ -17,8 +18,10 @@ static void startGameWithDifficulty(this_p(GameState)) {
     SinglePlayerGame logic;
     GameBoard board;
     GameSpeedProvider speedProvider;
+    Random random;
 
-    GameBoard_init(&board);
+    Random_init(&random, (uint32_t) time(NULL));
+    GameBoard_init(&board, &random);
 
     GameSpeedProvider_init(&speedProvider, 1, /* UI will be set to MED */
                            Default_FirstPillTimeout,
@@ -38,8 +41,10 @@ static void startGameWithCustomBoard(this_p(GameState)) {
     SinglePlayerGame logic;
     FileGameBoard board;
     GameSpeedProvider speedProvider;
+    Random random;
 
-    FileGameBoard_init(&board, this->engine->parameters->boardFile);
+    Random_init(&random, (uint32_t) time(NULL));
+    FileGameBoard_init(&board, &random, this->engine->parameters->boardFile);
 
     GameSpeedProvider_init(&speedProvider, 1, /* UI will be set to MED */
                            Default_FirstPillTimeout,

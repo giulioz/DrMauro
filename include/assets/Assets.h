@@ -1,6 +1,8 @@
 /*
  *  Assets.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  Definitions for static allocated assets
  */
 
 #ifndef ASSETS_H

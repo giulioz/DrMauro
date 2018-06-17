@@ -14,10 +14,6 @@ static GameBoardElement* getElement(this_p(GameBoard), size_t x, size_t y) {
     return VT(this->board)->get2D(&this->board, y, x);
 }
 
-static uint32_t randomBetween(size_t min, size_t max) {
-    return (uint32_t)((rand() % (max - min)) + min);
-}
-
 
 
 /* *************************************************************** */
@@ -67,14 +63,14 @@ static bool isColorLegalInBoard(this_p(GameBoard), size_t x, size_t y, GameBoard
 }
 
 /* adds a new virus and increase virus count */
-static void addRandomVirus(this_p(GameBoard)) {
+static GameBoardElement* addRandomVirus(this_p(GameBoard)) {
     GameBoardElement *element;
     uint32_t y = 0, x = 0;
     GameBoardElementColor color;
 
     do {
-        y = randomBetween(0, this->board.height - BoardVirusUpperLimit);
-        x = randomBetween(0, this->board.width);
+        y = VTP(this->random)->randomBetween(this->random, 0, (uint32_t) (this->board.height - BoardVirusUpperLimit));
+        x = VTP(this->random)->randomBetween(this->random, 0, (uint32_t) this->board.width);
         color = (GameBoardElementColor) (this->virusCount % GameBoardElement_NoColor);
     } while (!isColorLegalInBoard(this, x, y, color));
 
@@ -82,6 +78,11 @@ static void addRandomVirus(this_p(GameBoard)) {
     element->type = GameBoardElement_Virus;
     element->color = color;
     this->virusCount++;
+
+    this->lastAddedVirus = element;
+    this->lastAddedX = x;
+    this->lastAddedY = y;
+    return element;
 }
 
 
@@ -359,9 +360,11 @@ static struct GameBoard_VTABLE _vtable = {
         getElement, addRandomVirus, removeFirst, pillMove, applyGravity
 };
 
-void GameBoard_init(this_p(GameBoard)) {
+void GameBoard_init(this_p(GameBoard), Random *random) {
     VTP(this) = &_vtable;
+    this->random = random;
     this->virusCount = 0;
+    this->lastAddedVirus = NULL;
     StackVector2D_init(&this->board, BoardWidth, BoardHeight, sizeof(GameBoardElement), this->boardAlloc);
     initBoard(this);
 }

@@ -1,6 +1,8 @@
 /*
  *  Box.h
  *  Copyright © 2018 Giulio Zausa, Alessio Marotta
+ *
+ *  A 4-patches box
  */
 
 #ifndef BOX_H
