@@ -33,7 +33,7 @@ static void startGameWithDifficulty(this_p(GameState)) {
                           &speedProvider, &board);
 
     SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
-    VTP(this->engine)->startup(this->engine, (GameState *) &singlePlayerGameState);
+    VTP(this->engine)->loadState(this->engine, (GameState *) &singlePlayerGameState);
 }
 
 static void startGameWithCustomBoard(this_p(GameState)) {
@@ -56,7 +56,7 @@ static void startGameWithCustomBoard(this_p(GameState)) {
     logic.virusCount = board.fileVirusCount;
 
     SinglePlayerGameState_init(&singlePlayerGameState, this->engine, &logic);
-    VTP(this->engine)->startup(this->engine, (GameState *) &singlePlayerGameState);
+    VTP(this->engine)->loadState(this->engine, (GameState *) &singlePlayerGameState);
 }
 
 
