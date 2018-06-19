@@ -75,6 +75,9 @@ static void gravityTimeoutCallback(this_p(SinglePlayerGame)) {
         } else if (this->nextAction == SinglePlayerAction_Gravity) {
             bool gResult = VTP(this->board)->applyGravity(this->board, this->currentPillId);
             this->nextAction = SinglePlayerAction_Remove;
+            
+            if (!gResult)
+                this->state = SinglePlayerState_NoControl;
 
             this->lastActionResult = gResult;
         }
