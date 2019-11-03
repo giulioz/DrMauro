@@ -3,6 +3,8 @@ Assignment for C programming course (2017/2018).
 
 Clone of the famous 1990 NES game *"Dr. Mario"*.
 
+![image-20191103125830826](image-20191103125830826.png)
+
 ## Building
 
 This project uses **CMake** for building:
