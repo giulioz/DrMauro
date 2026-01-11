@@ -1,6 +1,6 @@
-[submodule "deps/SDL-mirror"]
-	path = deps/SDL-mirror
-	url = https://github.com/spurious/SDL-mirror.git
 [submodule "deps/debugbreak"]
 	path = deps/debugbreak
 	url = https://github.com/scottt/debugbreak.git
+[submodule "deps/SDL"]
+	path = deps/SDL
+	url = https://github.com/libsdl-org/SDL.git

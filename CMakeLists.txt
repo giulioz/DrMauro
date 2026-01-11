@@ -5,7 +5,7 @@ if (MSVC)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
-add_subdirectory(deps/SDL-mirror)
+add_subdirectory(deps/SDL)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -g")
@@ -26,7 +26,7 @@ include_directories(
         ${DrMauro_SOURCE_DIR}/include/states
         ${DrMauro_SOURCE_DIR}/include/gamelogic
         ${DrMauro_SOURCE_DIR}/include/audio
-        ${DrMauro_SOURCE_DIR}/deps/SDL-mirror/include
+        ${DrMauro_SOURCE_DIR}/deps/SDL/include
 )
 
 if (MSVC)
